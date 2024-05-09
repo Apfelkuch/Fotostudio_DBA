@@ -1,23 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="jakarta.faces.facelets">
-          
 
     <div>
         <h:form>
-            <!--
-            <div class="ui-input-icon-left">
-                <i class="pi pi-search" />
-                <p:inputText placeholder="Search" />
-            </div>
-            -->
+            <p:inputText id="suche_katagorie"
+                         placeholder="Suche"
+                         style="width: 100%; margin-bottom: 1.5rem; margin-top: 1.5rem;"/>
+            <br/>
             <p:menu id="menubar">
                 <p:submenu label="Kategorien">
                     <p:menuitem value="Alles" icon="pi pi-home" />
@@ -34,4 +25,4 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             </p:menu>
         </h:form>
     </div>
-</html>
+</ui:composition>

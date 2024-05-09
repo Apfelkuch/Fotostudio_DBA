@@ -1,10 +1,6 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
 /* 
     Created on : 07.05.2024, 11:19:21
-    Author     : Janis Wiegräbe
+    Author     : 
 */
 
 :root {
@@ -48,11 +44,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     background: var(--maincolor);
     width: var(--size);
     height: auto;
-    padding-top: 25px;;
 }
 
 .content {
-    background-color: gainsboro;
     width: calc(100% - var(--size));
     height:auto;
 }
