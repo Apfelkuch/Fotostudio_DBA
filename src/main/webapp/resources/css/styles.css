@@ -1,0 +1,67 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 07.05.2024, 11:19:21
+    Author     : Janis Wiegräbe
+*/
+
+:root {
+    --size: 200px;
+    --maincolor: beige;
+}
+
+.aufbau {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.aufbau > div{
+    justify-content: flex-start;
+}
+
+.logo {
+    background-color: blueviolet;
+    height: var(--size);
+    width: var(--size);
+    display: flex;
+    justify-content: center;
+}
+
+.banner {
+    background-color: var(--maincolor);
+    height: var(--size);
+    width: calc(100% - var(--size));
+}
+
+.banner_items {
+    position: absolute;
+    right: 25px;
+    display: inline;
+    height: inherit;
+    align-content: center;
+}
+
+.menubar {
+    background: var(--maincolor);
+    width: var(--size);
+    height: auto;
+    padding-top: 25px;;
+}
+
+.content {
+    background-color: gainsboro;
+    width: calc(100% - var(--size));
+    height:auto;
+}
+
+.ui-button-icon-only .ui-icon.Fs23 {
+    font-size: 23px !important;
+    margin-top: -0.7rem !important;
+    margin-left: -0.7rem !important;
+    margin-bottom: auto !important;
+    margin-right: auto !important;
+
+}
