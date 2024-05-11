@@ -22,6 +22,8 @@ public class Produkte {
     
     private List<Produkt> aktuelle_produkt_liste;
     
+    private Produkt aktuelles_produkt;
+    
     @Inject
     private ProduktDaten produktDaten;
     
@@ -34,30 +36,32 @@ public class Produkte {
     @PostConstruct
     public void init() {
         aktuelle_produkt_liste = new ArrayList<>();
-        selectCategory(Kategorien.EQUIPMENT);
+        selectCategory(0);
+        aktuelles_produkt = new Produkt();
     }
     
-    public void selectCategory(Kategorien kategorien) {
-        LOG.info("[Produkte] Produkte durch Kategorie angepasst, neue Kategorie ist " + kategorien.getText());
+    public void selectCategory(int kategorieId) {
+        Kategorie kategorie = produktDaten.getKategorien().get(kategorieId);
+        LOG.info("[Produkte] Produkte durch Kategorie angepasst, neue Kategorie ist " + kategorie.getName());
         List<Produkt> immutableCopy = List.copyOf(produktDaten.getProdukte());
         aktuelle_produkt_liste = null;
-        switch (kategorien) {
-            case ALLES:
+        switch (kategorieId) {
+            case 0:
                 aktuelle_produkt_liste = immutableCopy;
                 break;
-            case AUSSERHAUS:
+            case 1:
                 aktuelle_produkt_liste = immutableCopy.stream()
-                        .filter(produkt -> produkt.inKategorie(Kategorien.AUSSERHAUS))
+                        .filter(produkt -> produkt.inKategorie(kategorie))
                         .collect(Collectors.toList());
                 break;
-            case INNERHAUS:
+            case 2:
                 aktuelle_produkt_liste = immutableCopy.stream()
-                        .filter(produkt -> produkt.inKategorie(Kategorien.INNERHAUS))
+                        .filter(produkt -> produkt.inKategorie(kategorie))
                         .collect(Collectors.toList());
                 break;
-            case EQUIPMENT:
+            case 3:
                 aktuelle_produkt_liste = immutableCopy.stream()
-                        .filter(produkt -> produkt.inKategorie(Kategorien.EQUIPMENT))
+                        .filter(produkt -> produkt.inKategorie(kategorie))
                         .collect(Collectors.toList());
                 break;
             default:
@@ -68,10 +72,53 @@ public class Produkte {
 //            LOG.info("[Produkte] aktuell erstes Produkt nach selektion: " + aktuelle_produkt_liste.get(0).getName());
     }
     
+    public boolean updateProdukt(int id, Produkt produkt) {
+        if (id < 0 || id >= produktDaten.getProdukte().size()){
+            return false;
+        }
+        
+        // update Produkt daten in Liste (Datenbank)
+        boolean returnValue = produktDaten.updateProdukte(id, produkt);
+        
+        // Kategorie setzen damit die Produktliste neu geladen wird
+        selectCategory(aktuelles_produkt.getKategorie().getId());
+        
+        return returnValue;
+    }
+    
+    public Kategorie findKategorieMitId(int id) {
+        LOG.info("[Produkte] findKategorieMitId => id: " + id);
+        for (Kategorie k : produktDaten.getKategorien()) {
+            if (k.getId() == id) {
+                return k;
+            }
+        }
+        return null;
+    }
+    
+    public Lagerstatus findLagerStatusMitId(int id) {
+        LOG.info("[Produkte] findLagerStatusMitId => id: " + id);
+        for (Lagerstatus l : produktDaten.getLagerstatusse()) {
+            if (l.getId() == id) {
+                return l;
+            }
+        }
+        return null;
+    }
+    
     // GETTER && SETTER
     
     public List<Produkt> getProdukt_liste() {
 //        LOG.info("[Produkte] aktuell erstes Produkt: " + aktuelle_produkt_liste.get(0).getName());
         return aktuelle_produkt_liste;
+    }
+
+    public Produkt getAktuelles_produkt() {
+        return aktuelles_produkt;
+    }
+
+    public void setAktuelles_produkt(Produkt aktuelles_produkt) {
+        LOG.info("[Produkte] Aktuelles Produkt: " + aktuelles_produkt.getName());
+        this.aktuelles_produkt = aktuelles_produkt;
     }
 }

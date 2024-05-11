@@ -4,6 +4,7 @@ import de.hsbi.fotostudio.modul.Produkt;
 import de.hsbi.fotostudio.modul.Produkte;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -19,11 +20,11 @@ import org.primefaces.PrimeFaces;
 @Named(value = "produktViewBean")
 @ViewScoped
 public class ProduktViewBean implements Serializable{
-
-    private Produkt aktuelles_produkt;
     
     @Inject
     private Produkte produkte;
+    
+    private Produkt aktuellesProdukt;
     
     private static final Logger LOG = Logger.getLogger(ProduktViewBean.class.getName());
     
@@ -42,19 +43,29 @@ public class ProduktViewBean implements Serializable{
                 .addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, id + "multiview state has been cleared out", null));
     }
+    
+    public void info(Produkt produkt) {
+        LOG.info("[ProduktViewBean] info: " + produkt.getName());
+        produkte.setAktuelles_produkt(produkt);
+        PrimeFaces.current().ajax().update(":form-produkt-dialog");
+    }
+    
+    public void infoListener(ActionEvent event) {
+        LOG.info("[ProduktViewBean] info Listener");
+    }
 
     // GETTER && SETTER
 
-    public Produkt getAktuelles_produkt() {
-        return aktuelles_produkt;
-    }
-
-    public void setAktuelles_produkt(Produkt aktuelles_produkt) {
-        this.aktuelles_produkt = aktuelles_produkt;
-    }
-
     public List<Produkt> getProdukt_liste() {
         return produkte.getProdukt_liste();
+    }
+
+    public Produkt getAktuellesProdukt() {
+        return produkte.getAktuelles_produkt();
+    }
+
+    public void setAktuellesProdukt(Produkt aktuellesProdukt) {
+        produkte.setAktuelles_produkt(aktuellesProdukt);
     }
     
 }

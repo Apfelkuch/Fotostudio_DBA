@@ -52,6 +52,7 @@
     top: 50%;
     height:2em;
     margin-top:-1em;
+    display: flex;
 }
 
 .product-price {

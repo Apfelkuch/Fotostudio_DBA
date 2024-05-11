@@ -1,47 +1,43 @@
 package de.hsbi.fotostudio.modul;
 
-import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Janis Wiegräbe
  */
-public class Produkt implements Serializable{
+public class Produkt {
     
     private int id;
     private String name;
     private String beschreibung;
-    private Kategorien kategorie;
-    private int lieferzeit;
+    private Kategorie kategorie;
+    private Abrechnungsart abrechnungsart;
     private float preis;
     /**
      * <= 0 : Menge vorhanden
      *  -1  : Menge unbegrenzt
      */
     private int menge;
-    private LagerStatus lagerStatus;
+    private Lagerstatus lagerStatus;
     
     private static final Logger LOG = Logger.getLogger(Produkt.class.getName());
     
     public Produkt() {
-        
+        kategorie = null;
+        abrechnungsart = new Abrechnungsart();
+        lagerStatus = new Lagerstatus();
     }
 
-    public Produkt(int id, String name, String beschreibung, Kategorien kategorie, int lieferzeit, float preis, int menge, LagerStatus lagerStatus) {
+    public Produkt(int id, String name, String beschreibung, Kategorie kategorie, Abrechnungsart abrechnungsart, float preis, int menge, Lagerstatus lagerStatus) {
         this.id = id;
         this.name = name;
         this.beschreibung = beschreibung;
         this.kategorie = kategorie;
-        this.lieferzeit = lieferzeit;
+        this.abrechnungsart = abrechnungsart;
         this.preis = preis;
         this.menge = menge;
         this.lagerStatus = lagerStatus;
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return new Produkt(getId(),getName(),getBeschreibung(),getKategorie(),getLieferzeit(),getPreis(),getMenge(),getLagerStatus());
     }
 
     @Override
@@ -60,9 +56,16 @@ public class Produkt implements Serializable{
         Produkt other = (Produkt) obj;
         return (this.id == other.id);
     }
+
+    @Override
+    public String toString() {
+        return "[" + id + ", " + name + ", " + beschreibung 
+                + ", " + kategorie.getName() + ", " + abrechnungsart.getName() + ", " 
+                + menge + ", " + preis + ", " + lagerStatus.getName()+ "]";
+    }
     
-    public boolean inKategorie(Kategorien kategorien) {
-        return this.kategorie.equals(kategorien);
+    public boolean inKategorie(Kategorie kategorie) {
+        return this.kategorie.equals(kategorie);
     }
     
     // GETTER && SETTER
@@ -91,20 +94,20 @@ public class Produkt implements Serializable{
         this.beschreibung = beschreibung;
     }
 
-    public Kategorien getKategorie() {
+    public Kategorie getKategorie() {
         return kategorie;
     }
 
-    public void setKategorie(Kategorien kategorie) {
+    public void setKategorie(Kategorie kategorie) {
         this.kategorie = kategorie;
     }
 
-    public int getLieferzeit() {
-        return lieferzeit;
+    public Abrechnungsart getAbrechnungsart() {
+        return abrechnungsart;
     }
 
-    public void setLieferzeit(int lieferzeit) {
-        this.lieferzeit = lieferzeit;
+    public void setAbrechnungsart(Abrechnungsart abrechnungsart) {
+        this.abrechnungsart = abrechnungsart;
     }
 
     public float getPreis() {
@@ -123,11 +126,11 @@ public class Produkt implements Serializable{
         this.menge = menge;
     }
 
-    public LagerStatus getLagerStatus() {
+    public Lagerstatus getLagerStatus() {
         return lagerStatus;
     }
 
-    public void setLagerStatus(LagerStatus lagerStatus) {
+    public void setLagerStatus(Lagerstatus lagerStatus) {
         this.lagerStatus = lagerStatus;
     }
     

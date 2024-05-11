@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
-import de.hsbi.fotostudio.modul.Kategorien;
 import de.hsbi.fotostudio.modul.Produkte;
+import de.hsbi.fotostudio.util.ProduktDaten;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -20,28 +20,31 @@ public class MenuBean implements Serializable{
     @Inject
     private Produkte produkte;
     
+    @Inject
+    private ProduktDaten produktDaten;
+    
     private static final Logger LOG = Logger.getLogger(MenuBean.class.getName());
     
     public MenuBean() {
     }
     
     public void kategorieWechselnZuAlles() {
-        produkte.selectCategory(Kategorien.ALLES);
+        produkte.selectCategory(produktDaten.getKategorien().get(0).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
     
     public void kategorieWechselnZuInnerhaus() {
-        produkte.selectCategory(Kategorien.INNERHAUS);
+        produkte.selectCategory(produktDaten.getKategorien().get(1).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
     
     public void kategorieWechselnZuAusserhaus() {
-        produkte.selectCategory(Kategorien.AUSSERHAUS);
+        produkte.selectCategory(produktDaten.getKategorien().get(2).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
     
     public void kategorieWechselnZuEquipment() {
-        produkte.selectCategory(Kategorien.EQUIPMENT);
+        produkte.selectCategory(produktDaten.getKategorien().get(3).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
 

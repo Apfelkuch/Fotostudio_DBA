@@ -12,6 +12,7 @@
     
     <ui:composition template="WEB-INF/templates/master.xhtml">
         <ui:define name="content">
+            <ui:include src="ProduktDialog.xhtml"/>
             <div class="card">
                 <h:form id="form-product-view">
                     <p:growl id="growl" showDetail="true" />
@@ -38,10 +39,10 @@
                                 <div class="product-grid-item-top">
                                     <div class="product-category">
                                         <i class="pi pi-tag product-category-icon"/>
-                                        <span>#{produkt.kategorie}</span>
+                                        <span>#{produkt.kategorie.name}</span>
                                     </div>
                                     <div class="product-grid-badge">
-                                        <span class="product-badge status-#{produkt.lagerStatus.name().toLowerCase()}">#{produkt.lagerStatus.text}</span>
+                                        <span class="product-badge status-#{produkt.lagerStatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerStatus.name}</span>
                                     </div>
                                 </div>
                                 <div class="product-grid-item-content">
@@ -58,9 +59,16 @@
                                     </div>
                                     <div class="product-grid-item-bottom-parts">
                                         <p:commandButton type="button"
+                                                         icon="pi pi-info"
+                                                         style="margin-right: 20px"
+                                                         styleClass="rounded-button"
+                                                         action="#{produktViewBean.info(produkt)}" >
+                                            <f:ajax event="click" onevent="PF('pD').show()" />
+                                        </p:commandButton>
+                                        <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button product-grid-action-buy"
-                                                         disabled="#{produkt.lagerStatus == 'OUTOFSTOCK'}">
+                                                         disabled="#{produkt.lagerStatus.id == 2}">
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -74,7 +82,7 @@
                                     <div class="product-description">#{produkt.beschreibung}</div>
                                     <i class="pi pi-tag product-category-icon"/>
                                     <span class="product-category">
-                                        #{produkt.kategorie}
+                                        #{produkt.kategorie.name}
                                     </span>
                                 </div>
                                 <div class="product-list-action">
@@ -84,13 +92,20 @@
                                                       style="justify-content: end">
                                             <f:convertNumber currencySymbol="€" type="currency"/>
                                         </h:outputText>
-                                        <span class="product-badge status-#{produkt.lagerStatus.name().toLowerCase()}">#{produkt.lagerStatus.text}</span>
+                                        <span class="product-badge status-#{produkt.lagerStatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerStatus.name}</span>
                                     </div>
                                     <div class="product-list-action-buy">
                                         <p:commandButton type="button"
+                                                         icon="pi pi-info"
+                                                         style="margin-right: 20px"
+                                                         styleClass="rounded-button"
+                                                         action="#{produktViewBean.info(produkt)}" >
+                                            <f:ajax event="click" onevent="PF('pD').show()" />
+                                        </p:commandButton>
+                                        <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button"
-                                                         disabled="#{produkt.lagerStatus == 'OUTOFSTOCK'}">
+                                                         disabled="#{produkt.lagerStatus.id == 2}" >
                                         </p:commandButton>
                                     </div>
                                 </div>
