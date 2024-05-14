@@ -25,7 +25,7 @@
 
                     <p:dataView id="data-view"
                                 var="produkt"
-                                value="#{produktViewBean.produkt_liste}"
+                                value="#{produktViewBean.aktuelleProdukte}"
                                 multiViewState="true"
                                 rows="12"
                                 paginator="true"
@@ -42,7 +42,7 @@
                                         <span>#{produkt.kategorie.name}</span>
                                     </div>
                                     <div class="product-grid-badge">
-                                        <span class="product-badge status-#{produkt.lagerStatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerStatus.name}</span>
+                                        <span class="product-badge status-#{produkt.lagerstatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerstatus.name}</span>
                                     </div>
                                 </div>
                                 <div class="product-grid-item-content">
@@ -68,7 +68,7 @@
                                         <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button product-grid-action-buy"
-                                                         disabled="#{produkt.lagerStatus.id == 2}">
+                                                         disabled="#{produkt.lagerstatus.id == 2}">
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                                       style="justify-content: end">
                                             <f:convertNumber currencySymbol="€" type="currency"/>
                                         </h:outputText>
-                                        <span class="product-badge status-#{produkt.lagerStatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerStatus.name}</span>
+                                        <span class="product-badge status-#{produkt.lagerstatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerstatus.name}</span>
                                     </div>
                                     <div class="product-list-action-buy">
                                         <p:commandButton type="button"
@@ -105,7 +105,7 @@
                                         <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button"
-                                                         disabled="#{produkt.lagerStatus.id == 2}" >
+                                                         disabled="#{produkt.lagerstatus.id == 2}" >
                                         </p:commandButton>
                                     </div>
                                 </div>

@@ -103,15 +103,15 @@
                     </p:inputNumber>
                     <h:outputText value="Lagerstatus:" />
                     <p:selectOneMenu id="LAGERSTATUS"
-                                     value="#{produktDialogBean.aktuellesProdukt.lagerStatus}" 
+                                     value="#{produktDialogBean.aktuellesProdukt.lagerstatus}" 
                                      valueChangeListener="#{produktDialogBean.getLagerstatus}"
                                      disabled="#{!produktDialogBean.editing}"
                                      converter="lagerstatusConverter"
                                      hideNoSelectionOption="true"
                                      style="width: 100%" >
                         <f:selectItem 
-                            itemLabel="#{produktDialogBean.aktuellesProdukt.lagerStatus.name}" 
-                            itemValue="#{produktDialogBean.aktuellesProdukt.lagerStatus}" 
+                            itemLabel="#{produktDialogBean.aktuellesProdukt.lagerstatus.name}" 
+                            itemValue="#{produktDialogBean.aktuellesProdukt.lagerstatus}" 
                             noSelectionOption="true"/>
                         <f:selectItems 
                             value="#{produktDialogBean.lagerstatusse}" 

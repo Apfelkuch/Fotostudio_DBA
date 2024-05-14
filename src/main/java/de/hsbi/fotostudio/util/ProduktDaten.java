@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- *
+ * The class ProduktDaten is used to hold the data for the Shop for the time
+ * beeing. The content of this class will later be stored in a database.
+ * 
+ * @version 0.1
  * @author Janis Wiegräbe
  */
 public class ProduktDaten implements Serializable{
@@ -17,10 +20,19 @@ public class ProduktDaten implements Serializable{
     private List<Kategorie> kategorien;
     private List<Lagerstatus> lagerstatusse;
     
+    /**
+     * Creates new instance of ProduktDaten
+     */
     public ProduktDaten() {
-        
     }
     
+    /**
+     * Initalization of the ProduktDaten, is called directly after the Konstruktor
+     * 
+     * filles the Data which is used as dummy data in this project
+     * Should later be replaced be data from a database
+     * Currently data is created for: kategorie, lagerstatus, abrechnungsarten and produkte
+     */
     @PostConstruct
     public void init() {
         kategorien = new ArrayList<>();
@@ -58,6 +70,13 @@ public class ProduktDaten implements Serializable{
         
     }
     
+    /**
+     * Updates a Produkt in produkte
+     * 
+     * @param id the id of the Produkt which should be updated
+     * @param produkt the Produkt with the new data
+     * @return true if the Produkt is found and updated, otherwise false
+     */
     public boolean updateProdukte(int id, Produkt produkt) {
         if (id >= 0 && id < produkte.size()) {
             return this.produkte.set(id, produkt).equals(produkt);
@@ -65,6 +84,13 @@ public class ProduktDaten implements Serializable{
         return false;
     }
     
+    /**
+     * Updates a Kategorie in kategorien
+     * 
+     * @param id the id of the Kategorie which should be updated
+     * @param kategorie the Kategorie with the new data
+     * @return true if the Kategorie is found an updated, otherwise false
+     */
     public boolean updateKategorien(int id, Kategorie kategorie) {
         if (id >= 0 && id < kategorien.size()) {
             return this.kategorien.set(id, kategorie).equals(kategorie);
@@ -72,13 +98,27 @@ public class ProduktDaten implements Serializable{
         return false;
     }
     
+    /**
+     * Update a Lagerstatus in lagerstatusse
+     * 
+     * @param id the id of the Lagerstatis which should be updated
+     * @param lagerstatus the Lagerstatus with the new data
+     * @return true if the Lagerstatus is found and updated, otherwise false
+     */
     public boolean updateLagerstatus(int id, Lagerstatus lagerstatus) {
         if (id >= 0 && id < this.lagerstatusse.size()) {
             return this.lagerstatusse.set(id, lagerstatus).equals(lagerstatus);
         }
         return false;
     }
-    
+     
+    /**
+     * Update a Abrechnungsart in abrechnungsarten
+     * 
+     * @param id the id of the Abrechnungsart which should be updated
+     * @param abrechnungsart the Abrechnungsart with the new data
+     * @return true if the Abrechnungsart is found and updated, otherwise false
+     */   
     public boolean updateAbrechnungsart(int id, Abrechnungsart abrechnungsart) {
         if (id >= 0 && id < abrechnungsarten.size()) {
             return this.abrechnungsarten.set(id, abrechnungsart).equals(abrechnungsart);
@@ -88,19 +128,39 @@ public class ProduktDaten implements Serializable{
     
 
     // GETTER && SETTER
-    
+
+    /**
+     * Get Value of produkte
+     * 
+     * @return the value of produkte
+     */
     public List<Produkt> getProdukte() {
         return produkte;
     }
 
+    /**
+     * Get Value of kategorien
+     * 
+     * @return the value of kategorien
+     */
     public List<Kategorie> getKategorien() {
         return kategorien;
     }
 
+    /**
+     * Get Value of abrechnungsarten
+     * 
+     * @return the value of abrechnungsarten
+     */
     public List<Abrechnungsart> getAbrechnungsarten() {
         return abrechnungsarten;
     }
 
+    /**
+     * Get Value of lagerstatusse
+     * 
+     * @return the value of lagerstatusse
+     */
     public List<Lagerstatus> getLagerstatusse() {
         return lagerstatusse;
     }

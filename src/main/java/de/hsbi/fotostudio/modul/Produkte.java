@@ -11,7 +11,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- *
+ * The class Produkt is the connecting class between the Backing-Beans and
+ * the data of the shop.
+ * 
+ * @version 0.1
  * @author Janis Wiegräbe
  */
 @Named(value = "produkte")
@@ -20,9 +23,9 @@ public class Produkte {
 
     private static final Logger LOG = Logger.getLogger(Produkte.class.getName());
     
-    private List<Produkt> aktuelle_produkt_liste;
+    private List<Produkt> aktuelleProdukte;
     
-    private Produkt aktuelles_produkt;
+    private Produkt aktuellesProdukt;
     
     @Inject
     private ProduktDaten produktDaten;
@@ -33,45 +36,63 @@ public class Produkte {
     public Produkte() {
     }
     
+    /**
+     * Initalization of the Produkte is called directly after the Konstruktor
+     * Initalizes the variables and sets a default Kategorie
+     */
     @PostConstruct
     public void init() {
-        aktuelle_produkt_liste = new ArrayList<>();
+        aktuelleProdukte = new ArrayList<>();
         selectCategory(0);
-        aktuelles_produkt = new Produkt();
+        aktuellesProdukt = new Produkt();
     }
     
+    /**
+     * This Methode updates the list aktuelleProdukte to only contain 
+     * Produkte, which have the same kategorie as the given kategorieId
+     * 
+     * @param kategorieId new id of the selected kategorie
+     */
     public void selectCategory(int kategorieId) {
         Kategorie kategorie = produktDaten.getKategorien().get(kategorieId);
         LOG.info("[Produkte] Produkte durch Kategorie angepasst, neue Kategorie ist " + kategorie.getName());
         List<Produkt> immutableCopy = List.copyOf(produktDaten.getProdukte());
-        aktuelle_produkt_liste = null;
+        aktuelleProdukte = null;
         switch (kategorieId) {
             case 0:
-                aktuelle_produkt_liste = immutableCopy;
+                aktuelleProdukte = immutableCopy;
                 break;
             case 1:
-                aktuelle_produkt_liste = immutableCopy.stream()
+                aktuelleProdukte = immutableCopy.stream()
                         .filter(produkt -> produkt.inKategorie(kategorie))
                         .collect(Collectors.toList());
                 break;
             case 2:
-                aktuelle_produkt_liste = immutableCopy.stream()
+                aktuelleProdukte = immutableCopy.stream()
                         .filter(produkt -> produkt.inKategorie(kategorie))
                         .collect(Collectors.toList());
                 break;
             case 3:
-                aktuelle_produkt_liste = immutableCopy.stream()
+                aktuelleProdukte = immutableCopy.stream()
                         .filter(produkt -> produkt.inKategorie(kategorie))
                         .collect(Collectors.toList());
                 break;
             default:
                 LOG.info("[Produkte] Keine Kategory gefunden");
-                aktuelle_produkt_liste = new ArrayList<>();
+                aktuelleProdukte = new ArrayList<>();
         }
 //        if (!aktuelle_produkt_liste.isEmpty())
 //            LOG.info("[Produkte] aktuell erstes Produkt nach selektion: " + aktuelle_produkt_liste.get(0).getName());
     }
-    
+        
+    /**
+     * Updates a Produkt in produkte and reselects the kategorie to update
+     * the changes in the ProduktView
+     * 
+     * @param id the id of the Produkt which should be updated
+     * @param produkt the Produkt with the new data
+     * @return true if the Produkt is found and updated, otherwise false
+     */
     public boolean updateProdukt(int id, Produkt produkt) {
         if (id < 0 || id >= produktDaten.getProdukte().size()){
             return false;
@@ -81,11 +102,17 @@ public class Produkte {
         boolean returnValue = produktDaten.updateProdukte(id, produkt);
         
         // Kategorie setzen damit die Produktliste neu geladen wird
-        selectCategory(aktuelles_produkt.getKategorie().getId());
+        selectCategory(aktuellesProdukt.getKategorie().getId());
         
         return returnValue;
     }
     
+    /**
+     * This Methode finds the Kategorie to a given id
+     * 
+     * @param id the id of the Kategorie this Methode searchs for 
+     * @return the kategorie to the given id
+     */
     public Kategorie findKategorieMitId(int id) {
         LOG.info("[Produkte] findKategorieMitId => id: " + id);
         for (Kategorie k : produktDaten.getKategorien()) {
@@ -95,9 +122,15 @@ public class Produkte {
         }
         return null;
     }
-    
-    public Lagerstatus findLagerStatusMitId(int id) {
-        LOG.info("[Produkte] findLagerStatusMitId => id: " + id);
+        
+    /**
+     * This Methode finds the Lagerstatus to a given id
+     * 
+     * @param id the id of the Lagerstatus this Methode searchs for 
+     * @return the Lagerstatus to the given id
+     */
+    public Lagerstatus findLagerstatusMitId(int id) {
+        LOG.info("[Produkte] findLagerstatusMitId => id: " + id);
         for (Lagerstatus l : produktDaten.getLagerstatusse()) {
             if (l.getId() == id) {
                 return l;
@@ -107,18 +140,33 @@ public class Produkte {
     }
     
     // GETTER && SETTER
-    
-    public List<Produkt> getProdukt_liste() {
+
+    /**
+     * Get Value of id
+     * 
+     * @return the value of id
+     */
+    public List<Produkt> getAktuelleProdukte() {
 //        LOG.info("[Produkte] aktuell erstes Produkt: " + aktuelle_produkt_liste.get(0).getName());
-        return aktuelle_produkt_liste;
+        return aktuelleProdukte;
     }
 
-    public Produkt getAktuelles_produkt() {
-        return aktuelles_produkt;
+    /**
+     * Get Value of aktuellesProdukt
+     * 
+     * @return the value of aktuellesProdukt
+     */
+    public Produkt getAktuellesProdukt() {
+        return aktuellesProdukt;
     }
 
-    public void setAktuelles_produkt(Produkt aktuelles_produkt) {
-        LOG.info("[Produkte] Aktuelles Produkt: " + aktuelles_produkt.getName());
-        this.aktuelles_produkt = aktuelles_produkt;
+    /**
+     * Set Value of aktuellesProdukt
+     * 
+     * @param aktuellesProdukt the new value of aktuellesProdukt
+     */
+    public void setAktuellesProdukt(Produkt aktuellesProdukt) {
+        LOG.info("[Produkte] Aktuelles Produkt: " + aktuellesProdukt.getName());
+        this.aktuellesProdukt = aktuellesProdukt;
     }
 }
