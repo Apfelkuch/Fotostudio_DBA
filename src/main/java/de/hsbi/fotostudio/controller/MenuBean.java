@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
-import de.hsbi.fotostudio.modul.Produkte;
-import de.hsbi.fotostudio.util.ProduktDaten;
+import de.hsbi.fotostudio.modul.Products;
+import de.hsbi.fotostudio.util.ProductData;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -21,10 +21,10 @@ import org.primefaces.PrimeFaces;
 public class MenuBean implements Serializable{
 
     @Inject
-    private Produkte produkte;
+    private Products products;
     
     @Inject
-    private ProduktDaten produktDaten;
+    private ProductData productData;
     
     private static final Logger LOG = Logger.getLogger(MenuBean.class.getName());
     
@@ -35,34 +35,34 @@ public class MenuBean implements Serializable{
     }
     
     /**
-     * Methode to change Kategorie to "Alles" and update the ProduktView.
+     * Methode to change Category to "Alles" and update the ProduktView.
      */
-    public void kategorieWechselnZuAlles() {
-        produkte.selectCategory(produktDaten.getKategorien().get(0).getId());
+    public void changeCategoryToAlles() {
+        products.selectCategory(productData.getCategory_list().get(0).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
     
     /**
-     * Methode to change Kategorie to "Innerhaus" and update the ProduktView.
+     * Methode to change Category to "Innerhaus" and update the ProduktView.
      */
-    public void kategorieWechselnZuInnerhaus() {
-        produkte.selectCategory(produktDaten.getKategorien().get(1).getId());
+    public void changeCategoryToInnerhaus() {
+        products.selectCategory(productData.getCategory_list().get(1).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
     
     /**
-     * Methode to change Kategorie to "Ausserhaus" and update the ProduktView.
+     * Methode to change Category to "Ausserhaus" and update the ProduktView.
      */
-    public void kategorieWechselnZuAusserhaus() {
-        produkte.selectCategory(produktDaten.getKategorien().get(2).getId());
+    public void changeCategoryToAusserhaus() {
+        products.selectCategory(productData.getCategory_list().get(2).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
     
     /**
-     * Methode to change Kategorie to "Equipment" and update the ProduktView.
+     * Methode to change Category to "Equipment" and update the ProduktView.
      */
-    public void kategorieWechselnZuEquipment() {
-        produkte.selectCategory(produktDaten.getKategorien().get(3).getId());
+    public void changeCategoryToEquipment() {
+        products.selectCategory(productData.getCategory_list().get(3).getId());
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
 

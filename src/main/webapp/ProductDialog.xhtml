@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <p:dialog 
-        id="produkt-dialog"
+        id="product-dialog"
         header="Informationen" 
         showEffect="fade" 
         modal="true" 
@@ -14,22 +14,22 @@
         appendTo="@(body)" 
         widgetVar="pD"
         responsive="true" >
-        <h:form id="form-produkt-dialog">
+        <h:form id="form-product-dialog">
             <p:growl id="GROWL" showDetail="true" life="4000" />
-            <!--header="#{produktDialogBean.header}"-->
+            <!--header="#{productDialogBean.header}"-->
             <p:panel id="panel"
                      style="width: 650px; margin: 0 auto;">
-                <p:panelGrid id="produkt-dialog-inhalt" 
+                <p:panelGrid id="product-dialog-content" 
                              columns="2"
                              layout="grid" >
                     <h:outputText value="Id:" />
                     <h:outputLabel id="ID" 
-                                   value="#{produktDialogBean.header}"
+                                   value="#{productDialogBean.header}"
                                    style="width: 100%" />
                     <h:outputText value="Name:" />
                     <p:inputText id="NAME" 
-                                 value="#{produktDialogBean.aktuellesProdukt.name}"
-                                 disabled="#{!produktDialogBean.editing}"
+                                 value="#{productDialogBean.currentProduct.name}"
+                                 disabled="#{!productDialogBean.editing}"
                                  style="width: 100%" >
                         <p:ajax event="change"
                                 process="@this" />
@@ -37,87 +37,87 @@
                     <h:outputText value="Beschreibung:" />
                     <p:inputTextarea rows="5"
                                      cols="30"
-                                     id="BESCHREIBUNG" 
-                                     value="#{produktDialogBean.aktuellesProdukt.beschreibung}"
-                                     disabled="#{!produktDialogBean.editing}"
+                                     id="DESCRIPTION" 
+                                     value="#{productDialogBean.currentProduct.description}"
+                                     disabled="#{!productDialogBean.editing}"
                                      style="width: 100%" >
                         <p:ajax event="change"
                                 process="@this" />
                     </p:inputTextarea>
                     <h:outputText value="Kategorie:" />
-                    <p:selectOneMenu id="KATEGORIE"
-                                     value="#{produktDialogBean.aktuellesProdukt.kategorie}" 
-                                     valueChangeListener="#{produktDialogBean.getKategorie}"
-                                     disabled="#{!produktDialogBean.editing}"
-                                     converter="kategorieConverter"
+                    <p:selectOneMenu id="CATEGORY"
+                                     value="#{productDialogBean.currentProduct.category}" 
+                                     valueChangeListener="#{productDialogBean.getCategory}"
+                                     disabled="#{!productDialogBean.editing}"
+                                     converter="categoryConverter"
                                      hideNoSelectionOption="true"
                                      style="width: 100%" >
                         <f:selectItem 
-                            itemLabel="#{produktDialogBean.aktuellesProdukt.kategorie.name}" 
-                            itemValue="#{produktDialogBean.aktuellesProdukt.kategorie}" 
+                            itemLabel="#{productDialogBean.currentProduct.category.name}" 
+                            itemValue="#{productDialogBean.currentProduct.category}" 
                             noSelectionOption="true" />
                         <f:selectItems 
-                            value="#{produktDialogBean.kategorien}" 
-                            var="kategorie" 
-                            itemLabel="#{kategorie.name}" 
-                            itemValue="#{kategorie}"/>
+                            value="#{productDialogBean.category_list}" 
+                            var="category" 
+                            itemLabel="#{category.name}" 
+                            itemValue="#{category}"/>
                         <p:ajax event="change"
                                 process="@this" 
                                 update="GROWL"/>
                     </p:selectOneMenu>
                     <h:outputText value="Abrechnungsart:" />
-                    <p:selectOneMenu id="ABRECHNUNGSART"
-                                     value="#{produktDialogBean.aktuellesProdukt.abrechnungsart.name}" 
-                                     valueChangeListener="#{produktDialogBean.getAbrechnungsart}"
-                                     disabled="#{!produktDialogBean.editing}"
+                    <p:selectOneMenu id="BILLINGTYPE"
+                                     value="#{productDialogBean.currentProduct.billingType.name}" 
+                                     valueChangeListener="#{productDialogBean.getBillingType}"
+                                     disabled="#{!productDialogBean.editing}"
                                      hideNoSelectionOption="true"
                                      style="width: 100%" >
                         <f:selectItem 
-                            itemLabel="#{produktDialogBean.aktuellesProdukt.abrechnungsart.name}" 
-                            itemValue="#{produktDialogBean.aktuellesProdukt.abrechnungsart.name}" 
+                            itemLabel="#{productDialogBean.currentProduct.billingType.name}" 
+                            itemValue="#{productDialogBean.currentProduct.billingType.name}" 
                             noSelectionOption="true"/>
                         <f:selectItems 
-                            value="#{produktDialogBean.abrechnungsarten}" 
-                            var="abrechnungsart" 
-                            itemLabel="#{abrechnungsart.name}" 
-                            itemValue="#{abrechnungsart.name}"/>
+                            value="#{productDialogBean.billingType_list}" 
+                            var="billingType" 
+                            itemLabel="#{billingType.name}" 
+                            itemValue="#{billingType.name}"/>
                         <p:ajax 
                             process="@this" 
                             update="GROWL"/>
                     </p:selectOneMenu>
                     <h:outputText value="Preis:" />
-                    <p:inputText id="Preis" 
-                                 value="#{produktDialogBean.aktuellesProdukt.preis}"
-                                 disabled="#{!produktDialogBean.editing}" 
+                    <p:inputText id="PRICE" 
+                                 value="#{productDialogBean.currentProduct.price}"
+                                 disabled="#{!productDialogBean.editing}" 
                                  style="width: 100%" >
                         <p:ajax event="change"
                                 process="@this" />
                     </p:inputText>
                     <h:outputText value="Menge:" />
-                    <p:inputNumber id="MENGE" 
-                                   value="#{produktDialogBean.aktuellesProdukt.menge}"
-                                   disabled="#{!produktDialogBean.editing}"
+                    <p:inputNumber id="AMOUNT" 
+                                   value="#{productDialogBean.currentProduct.amount}"
+                                   disabled="#{!productDialogBean.editing}"
                                    style="width: 100%" >
                         <p:ajax event="change"
                                 process="@this" />
                     </p:inputNumber>
                     <h:outputText value="Lagerstatus:" />
-                    <p:selectOneMenu id="LAGERSTATUS"
-                                     value="#{produktDialogBean.aktuellesProdukt.lagerstatus}" 
-                                     valueChangeListener="#{produktDialogBean.getLagerstatus}"
-                                     disabled="#{!produktDialogBean.editing}"
-                                     converter="lagerstatusConverter"
+                    <p:selectOneMenu id="STORAGESTATUS"
+                                     value="#{productDialogBean.currentProduct.storageStatus}" 
+                                     valueChangeListener="#{productDialogBean.getStorageStatus}"
+                                     disabled="#{!productDialogBean.editing}"
+                                     converter="storageStatusConverter"
                                      hideNoSelectionOption="true"
                                      style="width: 100%" >
                         <f:selectItem 
-                            itemLabel="#{produktDialogBean.aktuellesProdukt.lagerstatus.name}" 
-                            itemValue="#{produktDialogBean.aktuellesProdukt.lagerstatus}" 
+                            itemLabel="#{productDialogBean.currentProduct.storageStatus.name}" 
+                            itemValue="#{productDialogBean.currentProduct.storageStatus}" 
                             noSelectionOption="true"/>
                         <f:selectItems 
-                            value="#{produktDialogBean.lagerstatusse}" 
-                            var="lagerstatus" 
-                            itemLabel="#{lagerstatus.name}" 
-                            itemValue="#{lagerstatus}"/>
+                            value="#{productDialogBean.storageStatus_list}" 
+                            var="storageStatus" 
+                            itemLabel="#{storageStatus.name}" 
+                            itemValue="#{storageStatus}"/>
                         <p:ajax event="change"
                                 process="@this" 
                                 update="GROWL"/>
@@ -125,11 +125,11 @@
                 </p:panelGrid>
                 <p:panelGrid columns="1">
                     <p:commandButton id="SAVE"
-                                     action="#{produktDialogBean.saveEdits()}"
+                                     action="#{productDialogBean.saveEdits()}"
                                      value="Save"
-                                     update="form-produkt-dialog form-product-view:data-view"
+                                     update="form-product-dialog form-product-view:data-view"
                                      onclick="PF('pD').hide()"
-                                     rendered="#{produktDialogBean.editing}"
+                                     rendered="#{productDialogBean.editing}"
                                      style="float: right;">
                     </p:commandButton>
                 </p:panelGrid>

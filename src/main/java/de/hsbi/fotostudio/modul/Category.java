@@ -1,32 +1,32 @@
 package de.hsbi.fotostudio.modul;
 
 /**
- * This class is model for a Abrechnungsart
+ * This class is model for a Category
  * 
  * @version 0.1
  * @author Janis Wiegräbe
  */
-public class Abrechnungsart {
+public class Category {
     
     private int id;
     private String name;
 
     /**
-     * Creates instance of Abrechnungsart
-     */
-    public Abrechnungsart() {
-        this.id = -1;
-    }
-
-    /**
-     * Creates instance of Abrechnungsart using the id and name parameters
+     * Creates instance of Category using the id and name parameters
      * 
      * @param id the id Parameter for the new instance
      * @param name the name Parameter for the new instance
      */
-    public Abrechnungsart(int id, String name) {
+    public Category(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    /**
+     * Creates instance of Category
+     */
+    public Category() {
+        this.id = -1;
     }
     
     /**
@@ -56,10 +56,10 @@ public class Abrechnungsart {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Abrechnungsart other = (Abrechnungsart) obj;
-        return (this.id == other.id);
+        final Category other = (Category) obj;
+        return this.id == other.id;
     }
-    
+
     // GETTER && SETTER
 
     /**
@@ -97,5 +97,5 @@ public class Abrechnungsart {
     public void setName(String name) {
         this.name = name;
     }
-
+    
 }

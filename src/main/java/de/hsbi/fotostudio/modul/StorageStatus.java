@@ -1,12 +1,12 @@
 package de.hsbi.fotostudio.modul;
 
 /**
- * This class is model for a Lagerstatus
+ * This class is model for a StorageStatus
  * 
  * @version 0.1
  * @author Janis Wiegräbe
  */
-public class Lagerstatus {
+public class StorageStatus {
     
     private int id;
     private String name;
@@ -17,7 +17,7 @@ public class Lagerstatus {
      * @param id the id Parameter for the new instance
      * @param name the name Parameter for the new instance
      */
-    public Lagerstatus(int id, String name) {
+    public StorageStatus(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -25,7 +25,7 @@ public class Lagerstatus {
     /**
      * Creates instance of Lagerstatus
      */
-    public Lagerstatus() {
+    public StorageStatus() {
         this.id = -1;
     }
     
@@ -56,7 +56,7 @@ public class Lagerstatus {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Lagerstatus other = (Lagerstatus) obj;
+        final StorageStatus other = (StorageStatus) obj;
         return this.id == other.id;
     }
 

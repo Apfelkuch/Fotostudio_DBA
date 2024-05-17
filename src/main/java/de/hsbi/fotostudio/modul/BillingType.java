@@ -1,32 +1,32 @@
 package de.hsbi.fotostudio.modul;
 
 /**
- * This class is model for a Kategorie
+ * This class is model for a BillingType
  * 
  * @version 0.1
  * @author Janis Wiegräbe
  */
-public class Kategorie {
+public class BillingType {
     
     private int id;
     private String name;
 
     /**
-     * Creates instance of Kategorie using the id and name parameters
+     * Creates instance of BillingType
+     */
+    public BillingType() {
+        this.id = -1;
+    }
+
+    /**
+     * Creates instance of Abrechnungsart using the id and name parameters
      * 
      * @param id the id Parameter for the new instance
      * @param name the name Parameter for the new instance
      */
-    public Kategorie(int id, String name) {
+    public BillingType(int id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    /**
-     * Creates instance of Kategorie
-     */
-    public Kategorie() {
-        this.id = -1;
     }
     
     /**
@@ -56,10 +56,10 @@ public class Kategorie {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Kategorie other = (Kategorie) obj;
-        return this.id == other.id;
+        final BillingType other = (BillingType) obj;
+        return (this.id == other.id);
     }
-
+    
     // GETTER && SETTER
 
     /**
@@ -97,5 +97,5 @@ public class Kategorie {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

@@ -7,12 +7,12 @@
       xmlns:ui="jakarta.faces.facelets">
     
     <head>
-        <title>Produkt View</title>
+        <title>Product View</title>
     </head>
     
     <ui:composition template="WEB-INF/templates/master.xhtml">
         <ui:define name="content">
-            <ui:include src="ProduktDialog.xhtml"/>
+            <ui:include src="ProductDialog.xhtml"/>
             <div class="card">
                 <h:form id="form-product-view">
                     <p:growl id="growl" showDetail="true" />
@@ -20,12 +20,12 @@
                     <p:messages id="messages"/>
                     
                     <p:commandButton value="Clear multiViewSate"
-                                     action="#{produktViewBean.clearMultiViewState()}"
+                                     action="#{productViewBean.clearMultiViewState()}"
                                      update="growl" />
 
                     <p:dataView id="data-view"
-                                var="produkt"
-                                value="#{produktViewBean.aktuelleProdukte}"
+                                var="product"
+                                value="#{productViewBean.currentProducts}"
                                 multiViewState="true"
                                 rows="12"
                                 paginator="true"
@@ -39,19 +39,19 @@
                                 <div class="product-grid-item-top">
                                     <div class="product-category">
                                         <i class="pi pi-tag product-category-icon"/>
-                                        <span>#{produkt.kategorie.name}</span>
+                                        <span>#{product.category.name}</span>
                                     </div>
                                     <div class="product-grid-badge">
-                                        <span class="product-badge status-#{produkt.lagerstatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerstatus.name}</span>
+                                        <span class="product-badge status-#{product.storageStatus.name.toLowerCase().replace(' ', '')}">#{product.storageStatus.name}</span>
                                     </div>
                                 </div>
                                 <div class="product-grid-item-content">
-                                    <div class="product-name">#{produkt.name}</div>
-                                    <div class="product-description">#{produkt.beschreibung}</div>
+                                    <div class="product-name">#{product.name}</div>
+                                    <div class="product-description">#{product.description}</div>
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <div class="product-grid-item-bottom-parts">
-                                        <h:outputText value="#{produkt.preis}" 
+                                        <h:outputText value="#{product.price}" 
                                                       styleClass="product-price"
                                                       style="justify-content: center">
                                             <f:convertNumber currencySymbol="€" type="currency"/>
@@ -62,13 +62,13 @@
                                                          icon="pi pi-info"
                                                          style="margin-right: 20px"
                                                          styleClass="rounded-button"
-                                                         action="#{produktViewBean.info(produkt)}" >
+                                                         action="#{productViewBean.info(product)}" >
                                             <f:ajax event="click" onevent="PF('pD').show()" />
                                         </p:commandButton>
                                         <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button product-grid-action-buy"
-                                                         disabled="#{produkt.lagerstatus.id == 2}">
+                                                         disabled="#{product.storageStatus.id == 2}">
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -78,34 +78,34 @@
                         <p:dataViewListItem>
                             <div class="product-list-item">
                                 <div class="product-list-detail">
-                                    <div class="product-name">#{produkt.name}</div>
-                                    <div class="product-description">#{produkt.beschreibung}</div>
+                                    <div class="product-name">#{product.name}</div>
+                                    <div class="product-description">#{product.description}</div>
                                     <i class="pi pi-tag product-category-icon"/>
                                     <span class="product-category">
-                                        #{produkt.kategorie.name}
+                                        #{product.category.name}
                                     </span>
                                 </div>
                                 <div class="product-list-action">
                                     <div class="product-list-action-info">
-                                        <h:outputText value="#{produkt.preis}"
+                                        <h:outputText value="#{product.price}"
                                                       styleClass="product-price"
                                                       style="justify-content: end">
                                             <f:convertNumber currencySymbol="€" type="currency"/>
                                         </h:outputText>
-                                        <span class="product-badge status-#{produkt.lagerstatus.name.toLowerCase().replace(' ', '')}">#{produkt.lagerstatus.name}</span>
+                                        <span class="product-badge status-#{product.storageStatus.name.toLowerCase().replace(' ', '')}">#{product.storageStatus.name}</span>
                                     </div>
                                     <div class="product-list-action-buy">
                                         <p:commandButton type="button"
                                                          icon="pi pi-info"
                                                          style="margin-right: 20px"
                                                          styleClass="rounded-button"
-                                                         action="#{produktViewBean.info(produkt)}" >
+                                                         action="#{productViewBean.info(product)}" >
                                             <f:ajax event="click" onevent="PF('pD').show()" />
                                         </p:commandButton>
                                         <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button"
-                                                         disabled="#{produkt.lagerstatus.id == 2}" >
+                                                         disabled="#{product.storageStatus.id == 2}" >
                                         </p:commandButton>
                                     </div>
                                 </div>
