@@ -14,23 +14,23 @@
                 <p:submenu label="Kategorien">
                     <p:menuitem value="Alles"
                                 icon="pi pi-home"
-                                action="#{menuBean.changeCategoryToAlles()}">
+                                action="#{menuBean.changeCategory(0)}">
                                 
                     </p:menuitem>
                     <p:divider />
                     <p:submenu label="Dientsleistungen">
                         <p:menuitem value="Innerhaus"
                                     icon="pi pi-image"
-                                    action="#{menuBean.changeCategoryToInnerhaus()}" />
+                                    action="#{menuBean.changeCategory(1)}" />
                         <p:menuitem value="Außerhaus"
                                     icon="pi pi-star"
-                                    action="#{menuBean.changeCategoryToAusserhaus()}" />
+                                    action="#{menuBean.changeCategory(2)}" />
                     </p:submenu>
                     <p:divider />
                     <p:submenu label="Produkte">
                         <p:menuitem value="Equipment"
                                     icon="pi pi-camera"
-                                    action="#{menuBean.changeCategoryToEquipment()}" />
+                                    action="#{menuBean.changeCategory(3)}" />
                     </p:submenu>
                 </p:submenu>
             </p:menu>

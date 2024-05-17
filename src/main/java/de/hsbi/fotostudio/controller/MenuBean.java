@@ -35,34 +35,13 @@ public class MenuBean implements Serializable{
     }
     
     /**
-     * Methode to change Category to "Alles" and update the ProduktView.
+     * Methode to change Category to the Category with the given
+     * categoryId, after that the ProduktView is updated.
+     * 
+     * @param categoryId 
      */
-    public void changeCategoryToAlles() {
-        products.selectCategory(productData.getCategory_list().get(0).getId());
-        PrimeFaces.current().ajax().update("form-product-view:data-view");
-    }
-    
-    /**
-     * Methode to change Category to "Innerhaus" and update the ProduktView.
-     */
-    public void changeCategoryToInnerhaus() {
-        products.selectCategory(productData.getCategory_list().get(1).getId());
-        PrimeFaces.current().ajax().update("form-product-view:data-view");
-    }
-    
-    /**
-     * Methode to change Category to "Ausserhaus" and update the ProduktView.
-     */
-    public void changeCategoryToAusserhaus() {
-        products.selectCategory(productData.getCategory_list().get(2).getId());
-        PrimeFaces.current().ajax().update("form-product-view:data-view");
-    }
-    
-    /**
-     * Methode to change Category to "Equipment" and update the ProduktView.
-     */
-    public void changeCategoryToEquipment() {
-        products.selectCategory(productData.getCategory_list().get(3).getId());
+    public void changeCategory(int categoryId) {
+        products.selectCategory(categoryId);
         PrimeFaces.current().ajax().update("form-product-view:data-view");
     }
 
