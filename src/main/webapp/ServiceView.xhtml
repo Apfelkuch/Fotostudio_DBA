@@ -5,29 +5,29 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="jakarta.faces.facelets">
-        
+    
     <h:head>
-        <title>Product View</title>
+        <title>Service View</title>
     </h:head>
     
     <ui:composition template="WEB-INF/templates/master.xhtml">
         <ui:define name="content">
             <h:outputStylesheet library="css" name="products.css" />
             <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />
-            <ui:include src="ProductDialog.xhtml"/>
+            <ui:include src="ServiceDialog.xhtml"/>
             <div class="card">
-                <h:form id="form-product-view">
+                <h:form id="form-service-view">
                     <p:growl id="growl" showDetail="true" />
 
                     <p:messages id="messages"/>
                     
                     <p:commandButton value="Clear multiViewSate"
-                                     action="#{productViewBean.clearMultiViewState()}"
+                                     action="#{serviceViewBean.clearMultiViewState()}"
                                      update="growl" />
 
                     <p:dataView id="data-view"
-                                var="product"
-                                value="#{productViewBean.currentProducts}"
+                                var="service"
+                                value="#{serviceViewBean.currentServices}"
                                 multiViewState="true"
                                 rows="12"
                                 paginator="true"
@@ -41,19 +41,19 @@
                                 <div class="product-grid-item-top">
                                     <div class="product-category">
                                         <i class="pi pi-tag product-category-icon"/>
-                                        <span>#{product.category.name}</span>
+                                        <span>#{service.category.name}</span>
                                     </div>
                                     <div class="product-grid-badge">
-                                        <span class="product-badge status-#{product.storageStatus.name.toLowerCase().replace(' ', '')}">#{product.storageStatus.name}</span>
+                                        <span class="product-badge status-#{service.storageStatus.name.toLowerCase().replace(' ', '')}">#{service.storageStatus.name}</span>
                                     </div>
                                 </div>
                                 <div class="product-grid-item-content">
-                                    <div class="product-name">#{product.name}</div>
-                                    <div class="product-description">#{product.description}</div>
+                                    <div class="product-name">#{service.name}</div>
+                                    <div class="product-description">#{service.description}</div>
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <div class="product-grid-item-bottom-parts">
-                                        <h:outputText value="#{product.price}" 
+                                        <h:outputText value="#{service.price}" 
                                                       styleClass="product-price"
                                                       style="justify-content: center">
                                             <f:convertNumber currencySymbol="€" type="currency"/>
@@ -64,13 +64,13 @@
                                                          icon="pi pi-info"
                                                          style="margin-right: 20px"
                                                          styleClass="rounded-button"
-                                                         action="#{productViewBean.info(product)}" >
+                                                         action="#{serviceViewBean.info(service)}" >
                                             <f:ajax event="click" onevent="PF('pD').show()" />
                                         </p:commandButton>
                                         <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button product-grid-action-buy"
-                                                         disabled="#{product.storageStatus.id == 2}">
+                                                         disabled="#{service.storageStatus.id == 2}">
                                         </p:commandButton>
                                     </div>
                                 </div>
@@ -80,34 +80,34 @@
                         <p:dataViewListItem>
                             <div class="product-list-item">
                                 <div class="product-list-detail">
-                                    <div class="product-name">#{product.name}</div>
-                                    <div class="product-description">#{product.description}</div>
+                                    <div class="product-name">#{service.name}</div>
+                                    <div class="product-description">#{service.description}</div>
                                     <i class="pi pi-tag product-category-icon"/>
                                     <span class="product-category">
-                                        #{product.category.name}
+                                        #{service.category.name}
                                     </span>
                                 </div>
-                                <div class="product-list-action" >
+                                <div class="product-list-action">
                                     <div class="product-list-action-info">
-                                        <h:outputText value="#{product.price}"
+                                        <h:outputText value="#{service.price}"
                                                       styleClass="product-price"
                                                       style="justify-content: end">
                                             <f:convertNumber currencySymbol="€" type="currency"/>
                                         </h:outputText>
-                                        <span class="product-badge status-#{product.storageStatus.name.toLowerCase().replace(' ', '')}">#{product.storageStatus.name}</span>
+                                        <span class="product-badge status-#{service.storageStatus.name.toLowerCase().replace(' ', '')}">#{service.storageStatus.name}</span>
                                     </div>
                                     <div class="product-list-action-buy">
                                         <p:commandButton type="button"
                                                          icon="pi pi-info"
                                                          style="margin-right: 20px"
                                                          styleClass="rounded-button"
-                                                         action="#{productViewBean.info(product)}" >
+                                                         action="#{serviceViewBean.info(service)}" >
                                             <f:ajax event="click" onevent="PF('pD').show()" />
                                         </p:commandButton>
                                         <p:commandButton type="button"
                                                          icon="pi pi-shopping-cart"
                                                          styleClass="rounded-button"
-                                                         disabled="#{product.storageStatus.id == 2}" >
+                                                         disabled="#{service.storageStatus.id == 2}" >
                                         </p:commandButton>
                                     </div>
                                 </div>

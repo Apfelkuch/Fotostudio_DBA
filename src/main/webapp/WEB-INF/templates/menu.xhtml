@@ -12,25 +12,36 @@
             <br/>
             <p:menu id="menubar">
                 <p:submenu label="Kategorien">
-                    <p:menuitem value="Alles"
-                                icon="pi pi-home"
-                                action="#{menuBean.changeCategory(0)}">
-                                
-                    </p:menuitem>
-                    <p:divider />
                     <p:submenu label="Dientsleistungen">
+                        <p:menuitem value="Alles"
+                                    icon="pi pi-home"
+                                    ajax="false"
+                                    action="#{menuBean.changeServiceCategory(0)}">
+                            <f:ajax event="click"
+                                    render="form-service-view:data-view"/>
+                                    
+                        </p:menuitem>
                         <p:menuitem value="Innerhaus"
                                     icon="pi pi-image"
-                                    action="#{menuBean.changeCategory(1)}" />
+                                    ajax="false"
+                                    update="form-service-view:data-view"
+                                    action="#{menuBean.changeServiceCategory(1)}" />
                         <p:menuitem value="Außerhaus"
                                     icon="pi pi-star"
-                                    action="#{menuBean.changeCategory(2)}" />
+                                    ajax="false"
+                                    update="form-service-view:data-view"
+                                    action="#{menuBean.changeServiceCategory(2)}" />
                     </p:submenu>
                     <p:divider />
                     <p:submenu label="Produkte">
+                        <p:menuitem value="Alles"
+                                    icon="pi pi-home"
+                                    ajax="false"
+                                    action="#{menuBean.changeProductCategory(0)}" />
                         <p:menuitem value="Equipment"
                                     icon="pi pi-camera"
-                                    action="#{menuBean.changeCategory(3)}" />
+                                    ajax="false"
+                                    action="#{menuBean.changeProductCategory(3)}" />
                     </p:submenu>
                 </p:submenu>
             </p:menu>

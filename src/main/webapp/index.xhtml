@@ -6,7 +6,7 @@
       xmlns:ui="jakarta.faces.facelets">
     
     <h:head>
-        <title>Facelet Title</title>
+        <title>Fotoshop</title>
         <h:outputStylesheet library="css" name="styles.css" />
         <h:outputStylesheet library="css" name="products.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,6 +15,10 @@
             
 <!--    <ui:composition template="WEB-INF/templates/master.xhtml">
         <ui:define name="content" >
+            <h:form>
+                <p:commandButton value="GO"
+                                 action="ProductView.xhtml" />
+            </h:form>
         </ui:define>
     </ui:composition>-->
     <ui:include src="ProductView.xhtml"/>

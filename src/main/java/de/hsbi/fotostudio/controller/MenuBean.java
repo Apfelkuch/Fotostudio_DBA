@@ -1,6 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.Products;
+import de.hsbi.fotostudio.modul.Services;
 import de.hsbi.fotostudio.util.ProductData;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
@@ -24,6 +25,9 @@ public class MenuBean implements Serializable{
     private Products products;
     
     @Inject
+    private Services services;
+    
+    @Inject
     private ProductData productData;
     
     private static final Logger LOG = Logger.getLogger(MenuBean.class.getName());
@@ -38,11 +42,43 @@ public class MenuBean implements Serializable{
      * Methode to change Category to the Category with the given
      * categoryId, after that the ProduktView is updated.
      * 
-     * @param categoryId 
+     * @param categoryId the id of the new Category
+     * @return the path to the product view
      */
-    public void changeCategory(int categoryId) {
-        products.selectCategory(categoryId);
+    public String changeProductCategory(int categoryId) {
+        products.selectProductCategory(categoryId);
         PrimeFaces.current().ajax().update("form-product-view:data-view");
+        return productView();
     }
-
+        
+    /**
+     * Methode to change Category to the Category with the given
+     * categoryId, after that the ServiceView is updated.
+     * 
+     * @param categoryId the id of the new Category
+     * @return the path to the service view
+     */
+    public String changeServiceCategory(int categoryId) {
+        services.selectServiceCategory(categoryId);
+        PrimeFaces.current().ajax().update("form-service-view:data-view");
+        return serviceView();
+    }
+    
+    /**
+     * Methode that returns the path to the ProductView xhtml webpage
+     * 
+     * @return the path to the ProductView xhtml webpage
+     */
+    public String productView() {
+        return "ProductView";
+    }
+    
+    /**
+     * Methode that returns the path to the ServiceView xhtml webpage
+     * 
+     * @return the path to the ServiceView xhtml webpage
+     */
+    public String serviceView() {
+        return "ServiceView";
+    }
 }

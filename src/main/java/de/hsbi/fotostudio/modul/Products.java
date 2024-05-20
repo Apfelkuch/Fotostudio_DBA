@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * The class Product is the connecting class between the Backing-Beans and
- the data of the shop.
+ * The class Products is the connecting class between the Backing-Beans
+ * and the data of the shop.
  * 
  * @version 0.1
  * @author Janis Wiegräbe
@@ -31,7 +31,7 @@ public class Products {
     private ProductData productData;
     
     /**
-     * Creates a new instance of Produkte
+     * Creates a new instance of Products
      */
     public Products() {
     }
@@ -43,7 +43,7 @@ public class Products {
     @PostConstruct
     public void init() {
         currentProducts = new ArrayList<>();
-        selectCategory(0);
+        selectProductCategory(0);
         currentProduct = new Product();
     }
     
@@ -53,40 +53,26 @@ public class Products {
      * 
      * @param categorieId new id of the selected category
      */
-    public void selectCategory(int categorieId) {
-        Category kategorie = productData.getCategory_list().get(categorieId);
-        LOG.info("[Products] category of the currentProducts is updated, new Category is: " + kategorie.getName());
+    public void selectProductCategory(int categorieId) {
+        Category category = productData.getCategory_list().get(categorieId);
+        LOG.info("[Products] category of the currentProducts is updated, new Category is: " + category.getName());
         List<Product> immutableCopy = List.copyOf(productData.getProduct_list());
         currentProducts = null;
-        switch (categorieId) {
-            case 0:
-                currentProducts = immutableCopy;
-                break;
-            case 1:
-                currentProducts = immutableCopy.stream()
-                        .filter(produkt -> produkt.inCategory(kategorie))
-                        .collect(Collectors.toList());
-                break;
-            case 2:
-                currentProducts = immutableCopy.stream()
-                        .filter(produkt -> produkt.inCategory(kategorie))
-                        .collect(Collectors.toList());
-                break;
-            case 3:
-                currentProducts = immutableCopy.stream()
-                        .filter(produkt -> produkt.inCategory(kategorie))
-                        .collect(Collectors.toList());
-                break;
-            default:
-                LOG.info("[Produkte] Keine Kategory gefunden");
-                currentProducts = new ArrayList<>();
+        if (categorieId == 0) {
+            currentProducts = immutableCopy;
+        } else {
+            currentProducts = immutableCopy.stream()
+                    .filter(product -> product.inCategory(category))
+                    .collect(Collectors.toList());
         }
-//        if (!aktuelle_produkt_liste.isEmpty())
-//            LOG.info("[Products] aktuell erstes Product nach selektion: " + aktuelle_produkt_liste.get(0).getName());
+        if (currentProducts.isEmpty()) {
+            LOG.info("[Products] Keine Kategory gefunden");
+            currentProducts = new ArrayList<>();
+        }
     }
         
     /**
-     * Updates a Product in produkte and reselects the category to update
+     * Updates a Product in ProductData and reselects the category to update
      * the changes in the ProductView
      * 
      * @param id the id of the Product which should be updated
@@ -102,7 +88,7 @@ public class Products {
         boolean returnValue = productData.updateProduct_list(id, produkt);
         
         // set Category to reload the product list
-        selectCategory(currentProduct.getCategory().getId());
+        selectProductCategory(currentProduct.getCategory().getId());
         
         return returnValue;
     }

@@ -118,24 +118,21 @@
 .product-grid-item-content {
     height: 7rem;
     width: 100%;
+    padding: 0 1rem;
 }
 
 .product-grid-item-content > div {
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
 .product-grid-item-bottom {
-    /*height: 4rem;*/
     left: 20%;
     width: 60%;
-    /*height: 4rem;*/
     display: flex;
     margin: 20px;
     position: relative;
     top: 50%;
     height: 4em;
-    /*padding-top: -2em;*/
     justify-content: center;
     
 }
