@@ -1,7 +1,6 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.Products;
-import de.hsbi.fotostudio.modul.Services;
 import de.hsbi.fotostudio.util.ProductData;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
@@ -23,9 +22,6 @@ public class MenuBean implements Serializable{
 
     @Inject
     private Products products;
-    
-    @Inject
-    private Services services;
     
     @Inject
     private ProductData productData;
@@ -59,7 +55,7 @@ public class MenuBean implements Serializable{
      * @return the path to the service view
      */
     public String changeServiceCategory(int categoryId) {
-        services.selectServiceCategory(categoryId);
+        products.selectServiceCategory(categoryId);
         PrimeFaces.current().ajax().update("form-service-view:data-view");
         return serviceView();
     }

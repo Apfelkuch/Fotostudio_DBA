@@ -18,7 +18,8 @@ public class ProductData implements Serializable{
     private List<Product> product_list;
     private List<Service> service_list;
     private List<BillingType> billingType_list;
-    private List<Category> category_list;
+    private List<Category> product_category_list;
+    private List<Category> service_category_list;
     private List<StorageStatus> storageStatus_list;
     
     /**
@@ -32,15 +33,19 @@ public class ProductData implements Serializable{
      * Konstruktor and filles the Data which is used as dummy data in
      * this project, should later be replaced be data from a database
      * Currently data is created for:
-     * category_list, storageStatus_list, billingType_list, product_list, service_list
+     * product_category_list, service_category_list, storageStatus_list,
+     * billingType_list, product_list, service_list
      */
     @PostConstruct
     public void init() {
-        category_list = new ArrayList<>();
-        category_list.add(new Category(0, "Alles"));
-        category_list.add(new Category(1, "Innerhaus"));
-        category_list.add(new Category(2, "Außerhaus"));
-        category_list.add(new Category(3, "Equipment"));
+        product_category_list = new ArrayList<>();
+        product_category_list.add(new Category(0, "Alles"));
+        product_category_list.add(new Category(1, "Equipment"));
+        
+        service_category_list = new ArrayList<>();
+        service_category_list.add(new Category(0, "Alles"));
+        service_category_list.add(new Category(1, "Innerhaus"));
+        service_category_list.add(new Category(2, "Außerhaus"));
         
         storageStatus_list = new ArrayList<>();
         storageStatus_list.add(new StorageStatus(0, "In Stock"));
@@ -54,22 +59,22 @@ public class ProductData implements Serializable{
         billingType_list.add(new BillingType(3, "Pro Familie"));
         
         product_list = new ArrayList<>();
-        product_list.add(new Product(0, "Canon EOS 2000D", "Die Canon EOS 2000D Gehäuse ist eine vielseitige und benutzerfreundliche Spiegelreflexkamera, die sich perfekt für den angehenden Fotografen eignet.", category_list.get(3), billingType_list.get(2), 500.0f, 1, storageStatus_list.get(0)));
-        product_list.add(new Product(1, "Objektive 18-55mm DC", "Canon EF-S 18–55 mm DC III ƒ/3,5-5,6:\n - Brennweite 29-88 mm\n - Kreisförmige Blende für gute Hintergrundunschärfe", category_list.get(3), billingType_list.get(2), 150.0f, 3, storageStatus_list.get(0)));
-        product_list.add(new Product(2, "Objektive 75-300mm III", "Canon EF 75–300 mm ƒ/4-5,6 III:\n - Telezoomobjektiv\n - Minimale Blende: 32–45", category_list.get(3), billingType_list.get(2), 150.0f, 2, storageStatus_list.get(0)));
-        product_list.add(new Product(3, "Canon EOS 250D", "Canon EOS 250D:\n - ISO 100-25.600 (erweiterbar auf 51.200)\n - Objektivanschluss: EF / EF-S", category_list.get(3), billingType_list.get(2), 450.0f, 0, storageStatus_list.get(2)));
+        product_list.add(new Product(0, "Canon EOS 2000D", "Die Canon EOS 2000D Gehäuse ist eine vielseitige und benutzerfreundliche Spiegelreflexkamera, die sich perfekt für den angehenden Fotografen eignet.", product_category_list.get(1), billingType_list.get(2), 500.0f, 1, storageStatus_list.get(0)));
+        product_list.add(new Product(1, "Objektive 18-55mm DC", "Canon EF-S 18–55 mm DC III ƒ/3,5-5,6:\n - Brennweite 29-88 mm\n - Kreisförmige Blende für gute Hintergrundunschärfe", product_category_list.get(1), billingType_list.get(2), 150.0f, 3, storageStatus_list.get(0)));
+        product_list.add(new Product(2, "Objektive 75-300mm III", "Canon EF 75–300 mm ƒ/4-5,6 III:\n - Telezoomobjektiv\n - Minimale Blende: 32–45", product_category_list.get(1), billingType_list.get(2), 150.0f, 2, storageStatus_list.get(0)));
+        product_list.add(new Product(3, "Canon EOS 250D", "Canon EOS 250D:\n - ISO 100-25.600 (erweiterbar auf 51.200)\n - Objektivanschluss: EF / EF-S", product_category_list.get(1), billingType_list.get(2), 450.0f, 0, storageStatus_list.get(2)));
      
         service_list = new ArrayList<>();
-        service_list.add(new Service(0, "Analogbilder Drucken", "Drucken von einem eigenen Bildes als Analogbild", category_list.get(1), billingType_list.get(0), 8f, storageStatus_list.get(0)));
-        service_list.add(new Service(1, "Kalender Drucken", "Drucken von einem eigenen Kalender", category_list.get(1), billingType_list.get(2), 12.3f, storageStatus_list.get(0)));
-        service_list.add(new Service(2, "Bilder Drucken", "Drucken von einem einem Bild", category_list.get(1), billingType_list.get(0), 2.5f, storageStatus_list.get(0)));
-        service_list.add(new Service(3, "Poster Drucken", "Drucken von einem einem Poster", category_list.get(1), billingType_list.get(0), 5.5f, storageStatus_list.get(0)));
-        service_list.add(new Service(4, "Passbilder", "Erstellen von 4 Passbildern", category_list.get(1), billingType_list.get(1), 6f, storageStatus_list.get(0)));
-        service_list.add(new Service(5, "Familienbilder", "Familienbilder im eigenen Fotostudio erstellen", category_list.get(1), billingType_list.get(3), 32.5f, storageStatus_list.get(1)));
-        service_list.add(new Service(6, "Hochzeitsbilder", "Hochzeitbilder im eigenen Fotostudio erstellen", category_list.get(1), billingType_list.get(3), 50f, storageStatus_list.get(0)));
-        service_list.add(new Service(7, "Hochzeitsbilder", "Hochzeitbilder erstellen. Der Ort ist frei wählbar", category_list.get(2), billingType_list.get(3), 70, storageStatus_list.get(1)));
-        service_list.add(new Service(8, "Auftragsbilder Ort", "Professionelle Bilder von einem Ort", category_list.get(2), billingType_list.get(2), 60f, storageStatus_list.get(0)));
-        service_list.add(new Service(9, "Auftragsbilder Person", "Professionelle Bilder von einer Person", category_list.get(1), billingType_list.get(1), 60f, storageStatus_list.get(2)));
+        service_list.add(new Service(0, "Analogbilder Drucken", "Drucken von einem eigenen Bildes als Analogbild", service_category_list.get(1), billingType_list.get(0), 8f, storageStatus_list.get(0)));
+        service_list.add(new Service(1, "Kalender Drucken", "Drucken von einem eigenen Kalender", service_category_list.get(1), billingType_list.get(2), 12.3f, storageStatus_list.get(0)));
+        service_list.add(new Service(2, "Bilder Drucken", "Drucken von einem einem Bild", service_category_list.get(1), billingType_list.get(0), 2.5f, storageStatus_list.get(0)));
+        service_list.add(new Service(3, "Poster Drucken", "Drucken von einem einem Poster", service_category_list.get(1), billingType_list.get(0), 5.5f, storageStatus_list.get(0)));
+        service_list.add(new Service(4, "Passbilder", "Erstellen von 4 Passbildern", service_category_list.get(1), billingType_list.get(1), 6f, storageStatus_list.get(0)));
+        service_list.add(new Service(5, "Familienbilder", "Familienbilder im eigenen Fotostudio erstellen", service_category_list.get(1), billingType_list.get(3), 32.5f, storageStatus_list.get(1)));
+        service_list.add(new Service(6, "Hochzeitsbilder", "Hochzeitbilder im eigenen Fotostudio erstellen", service_category_list.get(1), billingType_list.get(3), 50f, storageStatus_list.get(0)));
+        service_list.add(new Service(7, "Hochzeitsbilder", "Hochzeitbilder erstellen. Der Ort ist frei wählbar", service_category_list.get(2), billingType_list.get(3), 70, storageStatus_list.get(1)));
+        service_list.add(new Service(8, "Auftragsbilder Ort", "Professionelle Bilder von einem Ort", service_category_list.get(2), billingType_list.get(2), 60f, storageStatus_list.get(0)));
+        service_list.add(new Service(9, "Auftragsbilder Person", "Professionelle Bilder von einer Person", service_category_list.get(1), billingType_list.get(1), 60f, storageStatus_list.get(2)));
         
     }
     
@@ -102,15 +107,29 @@ public class ProductData implements Serializable{
     }
     
     /**
-     * Updates a Category in category_list
+     * Updates a Category in product_category_list
      * 
      * @param id the id of the Category which should be updated
      * @param category the Category with the new data
      * @return true if the Category is found an updated, otherwise false
      */
-    public boolean updateCategory_list(int id, Category category) {
-        if (id >= 0 && id < category_list.size()) {
-            return this.category_list.set(id, category).equals(category);
+    public boolean updateProduct_Category_list(int id, Category category) {
+        if (id >= 0 && id < product_category_list.size()) {
+            return this.product_category_list.set(id, category).equals(category);
+        }
+        return false;
+    }
+    
+    /**
+     * Updates a Category in service_category_list
+     * 
+     * @param id the id of the Category which should be updated
+     * @param category the Category with the new data
+     * @return true if the Category is found an updated, otherwise false
+     */
+    public boolean updateService_Category_list(int id, Category category) {
+        if (id >= 0 && id < service_category_list.size()) {
+            return this.service_category_list.set(id, category).equals(category);
         }
         return false;
     }
@@ -165,12 +184,22 @@ public class ProductData implements Serializable{
     }
 
     /**
-     * Get Value of category_list
+     * Get Value of product_category_list
      * 
-     * @return the value of category_list
+     * @return the value of product_category_list
      */
-    public List<Category> getCategory_list() {
-        return category_list;
+    public List<Category> getProduct_category_list() {
+        return product_category_list;
+    }
+
+    /**
+     * Get Value of service_category_list
+     * 
+     * @return the value of service_category_list
+     */
+
+    public List<Category> getService_category_list() {
+        return service_category_list;
     }
 
     /**

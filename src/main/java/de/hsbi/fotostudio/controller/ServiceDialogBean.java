@@ -2,11 +2,13 @@ package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.BillingType;
 import de.hsbi.fotostudio.modul.Category;
+import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.modul.StorageStatus;
 import de.hsbi.fotostudio.modul.Service;
-import de.hsbi.fotostudio.modul.Services;
 import de.hsbi.fotostudio.util.ProductData;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ValueChangeEvent;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -14,7 +16,6 @@ import java.io.Serializable;
 import jakarta.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
-import org.primefaces.PrimeFaces;
 
 /**
  * The class ProductDialogBean is the Backing-Bean for the ProductDialog.xhtml page.
@@ -45,7 +46,7 @@ public class ServiceDialogBean implements Serializable {
     private Service currentService;
     
     @Inject
-    private Services services;
+    private Products products;
     
     @Inject
     private ProductData productData;
@@ -62,7 +63,7 @@ public class ServiceDialogBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        category_list = productData.getCategory_list();
+        category_list = productData.getService_category_list();
         billingType_list = productData.getBillingType_list();
         storageStatus_list = productData.getStorageStatus_list();
         currentService = new Service();
@@ -74,10 +75,11 @@ public class ServiceDialogBean implements Serializable {
      * After the saving of the Service the ServiceView is updated.
      */
     public void saveEdits() {
-        currentService.setId(services.getCurrentService().getId());
+        currentService.setId(products.getCurrentService().getId());
         LOG.info("[ServiceDialogBean] save: " + currentService.toString());
-        services.updateService(currentService.getId(), currentService);
-        PrimeFaces.current().ajax().update("form-product-view:data-view");
+        products.updateService(currentService.getId(), currentService);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service gespeichert", "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     /**
@@ -88,6 +90,7 @@ public class ServiceDialogBean implements Serializable {
      */
     public void getCategory(ValueChangeEvent event) {
         LOG.info("[ServiceDialogBean] getKategorie");
+//        Messages.addMessage(FacesMessage.SEVERITY_INFO, "Category", "choce new category");
         Category newCategory = (Category) event.getNewValue();
         
         for (Category k : category_list) {
@@ -158,7 +161,7 @@ public class ServiceDialogBean implements Serializable {
      * @return the id of the "currentService"-Variable
      */
     public int getHeader() {
-        this.currentService = services.getCurrentService();
+        this.currentService = products.getCurrentService();
         LOG.info("[ServiceDialogBean] load: " + currentService.getId());
         
         return currentService.getId();
@@ -185,21 +188,21 @@ public class ServiceDialogBean implements Serializable {
     }
 
     /**
-     * Get Value of services
+     * Get Value of products
      * 
-     * @return the value of services
+     * @return the value of products
      */
-    public Services getServices() {
-        return services;
+    public Products getProducts() {    
+        return products;
     }
-    
+
     /**
-     * Set Value of services
+     * Set Value of products
      * 
-     * @param services the new value of services
+     * @param products the new value of products
      */
-    public void setServices(Services services) {
-        this.services = services;
+    public void setProducts(Products products) {
+        this.products = products;
     }
 
     /**

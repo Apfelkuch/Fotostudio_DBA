@@ -14,10 +14,10 @@ import java.util.logging.Logger;
  * @version 0.1
  * @author Janis Wiegräbe
  */
-@FacesConverter(value = "categoryConverter", forClass = Category.class)
-public class CategoryConverter implements Converter{
+@FacesConverter(value = "serviceCategoryConverter", forClass = Category.class)
+public class ServiceCategoryConverter implements Converter{
 
-    private static final Logger LOG = Logger.getLogger(CategoryConverter.class.getName());
+    private static final Logger LOG = Logger.getLogger(ServiceCategoryConverter.class.getName());
     
     /**
      * Converts a String value into a Object of the Category class.
@@ -38,7 +38,7 @@ public class CategoryConverter implements Converter{
             Products produkte = (Products) facesContext.getApplication()
                     .getELResolver()
                     .getValue(facesContext.getELContext(), null, "products");
-            category = produkte.findCategoryWithId(Integer.parseInt(value));
+            category = produkte.findServiceCategoryWithId(Integer.parseInt(value));
         } catch (NumberFormatException e) {
             LOG.info("[ERROR:CategoryConverter] " + e.getMessage());
         }

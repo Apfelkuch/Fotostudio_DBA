@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.Service;
-import de.hsbi.fotostudio.modul.Services;
+import de.hsbi.fotostudio.modul.Products;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
@@ -24,7 +24,7 @@ import org.primefaces.PrimeFaces;
 public class ServiceViewBean implements Serializable{
     
     @Inject
-    private Services services;
+    private Products products;
     
     private Service currentService;
     
@@ -66,7 +66,7 @@ public class ServiceViewBean implements Serializable{
      */
     public void info(Service service) {
         LOG.info("[ServiceViewBean] info: " + service.getName());
-        services.setCurrentService(service);
+        products.setCurrentService(service);
         PrimeFaces.current().ajax().update(":form-service-dialog");
     }
 
@@ -78,7 +78,7 @@ public class ServiceViewBean implements Serializable{
      * @return the value of products.getCurrentProducts
      */
     public List<Service> getCurrentServices() {
-        return services.getCurrentServices();
+        return products.getCurrentServices();
     }
 
     /**
@@ -87,7 +87,7 @@ public class ServiceViewBean implements Serializable{
      * @return the value of products.getCurrentProduct
      */
     public Service getCurrentService() {
-        return this.services.getCurrentService();
+        return this.products.getCurrentService();
     }
 
     /**
@@ -96,7 +96,7 @@ public class ServiceViewBean implements Serializable{
      * @param currentService the new value of the current Service
      */
     public void setCurrentService(Service currentService) {
-        this.services.setCurrentService(currentService);
+        this.products.setCurrentService(currentService);
     }
     
 }

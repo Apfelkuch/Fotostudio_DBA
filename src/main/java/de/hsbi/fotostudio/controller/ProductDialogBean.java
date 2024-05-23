@@ -7,6 +7,8 @@ import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.util.ProductData;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ValueChangeEvent;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -14,7 +16,6 @@ import java.io.Serializable;
 import jakarta.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
-import org.primefaces.PrimeFaces;
 
 /**
  * The class ProductDialogBean is the Backing-Bean for the ProductDialog.xhtml page.
@@ -62,7 +63,7 @@ public class ProductDialogBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        category_list = productData.getCategory_list();
+        category_list = productData.getProduct_category_list();
         billingType_list = productData.getBillingType_list();
         storageStatus_list = productData.getStorageStatus_list();
         currentProduct = new Product();
@@ -77,7 +78,8 @@ public class ProductDialogBean implements Serializable {
         currentProduct.setId(products.getCurrentProduct().getId());
         LOG.info("[ProductDialogBean] save: " + currentProduct.toString());
         products.updateProdukt(currentProduct.getId(), currentProduct);
-        PrimeFaces.current().ajax().update("form-product-view:data-view");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt gespeichert", "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     /**
