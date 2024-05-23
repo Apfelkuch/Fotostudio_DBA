@@ -2,9 +2,11 @@ package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.util.ProductData;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.logging.Logger;
 import org.primefaces.PrimeFaces;
@@ -20,6 +22,8 @@ import org.primefaces.PrimeFaces;
 @ViewScoped
 public class MenuBean implements Serializable{
 
+    private String searchContent;
+    
     @Inject
     private Products products;
     
@@ -44,7 +48,7 @@ public class MenuBean implements Serializable{
     public String changeProductCategory(int categoryId) {
         products.selectProductCategory(categoryId);
         PrimeFaces.current().ajax().update("form-product-view:data-view");
-        return productView();
+        return "ProductView?faces-redirect=true";
     }
         
     /**
@@ -57,24 +61,47 @@ public class MenuBean implements Serializable{
     public String changeServiceCategory(int categoryId) {
         products.selectServiceCategory(categoryId);
         PrimeFaces.current().ajax().update("form-service-view:data-view");
-        return serviceView();
+        return "ServiceView?faces-redirect=true";
+    }
+
+    public void search() {
+        LOG.info("[MenuBean] search");
+        
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String url = request.getRequestURL().toString();
+        LOG.info("[MenuBean] page" + url);
+        
+        if (searchContent == null || searchContent.isBlank())
+            return;
+        
+        boolean result = false;
+        if (url.contains("ProductView.xhtml")) {
+            result = products.findProductWithNamefragment(searchContent);
+        } else if (url.contains("ServiceView.xhtml")) {
+            result = products.findServiceWithNamefragment(searchContent);
+        }
+        LOG.info("[MenuBean] search: " + (result ? "Items found" : "No Items found"));
     }
     
+    // GETTER && SETTER
+
     /**
-     * Methode that returns the path to the ProductView xhtml webpage
+     * Get Value of searchContent
      * 
-     * @return the path to the ProductView xhtml webpage
+     * @return the value of searchContent
      */
-    public String productView() {
-        return "ProductView";
+    public String getSearchContent() {
+        return searchContent;
+    }
+
+    /**
+     * Set Value of searchContent
+     * 
+     * @param searchContent the new value of searchContent
+     */
+    public void setSearchContent(String searchContent) {
+        this.searchContent = searchContent;
     }
     
-    /**
-     * Methode that returns the path to the ServiceView xhtml webpage
-     * 
-     * @return the path to the ServiceView xhtml webpage
-     */
-    public String serviceView() {
-        return "ServiceView";
-    }
+    
 }

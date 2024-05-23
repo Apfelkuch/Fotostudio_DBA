@@ -8,7 +8,9 @@
         <h:form>
             <p:inputText id="suche_katagorie"
                          placeholder="Suche"
-                         style="width: 100%; margin-bottom: 1.5rem; margin-top: 1.5rem;"/>
+                         style="width: 100%; margin-bottom: 1.5rem; margin-top: 1.5rem;"
+                         value="#{menuBean.searchContent}"
+                         onsearch="#{menuBean.search()}"/>
             <br/>
             <p:menu id="menubar">
                 <p:submenu label="Kategorien">

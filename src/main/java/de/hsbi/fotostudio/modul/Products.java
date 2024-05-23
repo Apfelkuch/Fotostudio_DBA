@@ -81,7 +81,7 @@ public class Products {
     
     /**
      * This Methode updates the list currentServices to only contain 
-     * Serices, which have the same category as the given categorieId
+     * Services, which have the same category as the given categorieId
      * 
      * @param categorieId new id of the selected category
      */
@@ -98,7 +98,7 @@ public class Products {
                     .collect(Collectors.toList());
         }
         if (currentServices.isEmpty()) {
-            LOG.info("[Services]  No Elements in Category or Category does not exist");
+            LOG.info("[Products]  No Elements in Category or Category does not exist");
             currentServices = new ArrayList<>();
         }
     }
@@ -108,16 +108,16 @@ public class Products {
      * the changes in the ProductView
      * 
      * @param id the id of the Product which should be updated
-     * @param produkt the Product with the new data
+     * @param product the Product with the new data
      * @return true if the Product is found and updated, otherwise false
      */
-    public boolean updateProdukt(int id, Product produkt) {
+    public boolean updateProdukt(int id, Product product) {
         if (id < 0 || id >= productData.getProduct_list().size()){
             return false;
         }
         
         // update Product daten in list (database)
-        boolean returnValue = productData.updateProduct_list(id, produkt);
+        boolean returnValue = productData.updateProduct_list(id, product);
         
         // set Category to reload the product list
         selectProductCategory(currentProduct.getCategory().getId());
@@ -195,6 +195,50 @@ public class Products {
         return null;
     }
     
+    /**
+     * This method searches the product list for all products
+     * that have the searched part in the name
+     * 
+     * @param namefragment the searched part of name
+     */
+    public boolean findProductWithNamefragment(String namefragment) {
+        currentCategory = null;
+        LOG.info("[Products] current Products contain in their title: " + namefragment);
+        List<Product> immutableCopy = List.copyOf(productData.getProduct_list());
+        currentProducts = null;
+        currentProducts = immutableCopy.stream()
+                .filter(product -> product.getName().contains(namefragment))
+                .collect(Collectors.toList());
+        if (currentProducts.isEmpty()) {
+            LOG.info("[Products]  No Elements with the given titlepart");
+            currentProducts = new ArrayList<>();
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * This method searches the service list for all services
+     * that have the searched part in the name
+     * 
+     * @param namefragment the searched part of name
+     */
+    public boolean findServiceWithNamefragment(String namefragment) {
+        currentCategory = null;
+        LOG.info("[Products] current Services contain in their title: " + namefragment);
+        List<Service> immutableCopy = List.copyOf(productData.getService_list());
+        currentServices = null;
+        currentServices = immutableCopy.stream()
+                .filter(service -> service.getName().contains(namefragment))
+                .collect(Collectors.toList());
+        if (currentServices.isEmpty()) {
+            LOG.info("[Products]  No Elements with the given titlepart");
+            currentServices = new ArrayList<>();
+            return false;
+        }
+        return true;
+    }
+    
     // GETTER && SETTER
 
     /**
@@ -249,7 +293,7 @@ public class Products {
      * @param currentService the new value of currentService
      */
     public void setCurrentService(Service currentService) {
-        LOG.info("[Services] current Product: " + currentService.getName());
+        LOG.info("[Products] current Product: " + currentService.getName());
         this.currentService = currentService;
     }
 
