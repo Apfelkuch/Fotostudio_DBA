@@ -1,0 +1,159 @@
+/* 
+    Created on : 09.05.2024
+    Author     : Janis Wiegräbe
+*/
+
+.product-list-item {
+    height: auto;
+    display: flex;
+}
+
+.product-list-detail {
+    margin: 20px;
+    width: 100%;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.product-description {
+    margin: 1rem 0;
+}
+
+.product-category-icon {
+    
+}
+
+.product-category {
+    /*margin: 20px;*/
+    width: 40%;
+    display: inline;
+    align-content: center;
+}
+
+.product-list-action {
+    width: auto;
+    float: right;
+    margin: 20px;
+    position: relative;
+    display: flex;
+}
+
+.product-list-action-info {
+    width: max-content;
+    float: left;
+    margin: 20px;
+}
+
+.product-list-action-buy {
+    margin: 20px;
+    position: relative;
+    top: 50%;
+    height:2em;
+    margin-top:-1em;
+    display: flex;
+}
+
+.product-price {
+    font-size: 2rem;
+    display: flex;
+    width: 150px;
+    position: relative; /* */
+}
+
+.product-badge {
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    float: right;
+    height: max-content;
+}
+
+.status-instock {
+    color: green;
+    background-color: #74e34f;
+}
+.status-lowstock {
+    color: #999900;
+    background-color: #f6f608;
+    
+}
+.status-outofstock {
+    color: #a41313;
+    background-color: #ff6666;
+}
+
+.card {
+    border-radius: 25px;
+}
+
+.product-grid-item {
+}
+
+.product-grid-item-top {
+    /*height: 4rem;*/
+    display: flex;
+    margin: 20px;
+    position: relative;
+    top: 50%;
+    height: 3em;
+    padding-top: -1.5em;
+}
+
+.product-grid-badge {
+    right: 0;
+    position: absolute;
+    height: 2em;
+    display: inline;
+    align-content: center;
+    margin-top: -1em;
+    top: 50%;
+}
+
+.product-grid-item-content {
+    height: 7rem;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.product-grid-item-content > div {
+    text-align: center;
+}
+
+.product-grid-item-bottom {
+    left: 20%;
+    width: 60%;
+    display: flex;
+    margin: 20px;
+    position: relative;
+    top: 50%;
+    height: 4em;
+    justify-content: center;
+    
+}
+
+.product-grid-item-bottom-parts {
+    justify-content: center;
+    width: 50%;
+    display: flex;
+}
+
+.product-grid-action-buy {
+    right: 0;
+    margin: 20px;
+    position: relative !important;
+    height:2em;
+    margin-top:-1em;
+}
+
+
+
+
+
+
+
