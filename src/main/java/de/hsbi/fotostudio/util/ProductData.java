@@ -79,31 +79,15 @@ public class ProductData implements Serializable{
     }
     
     /**
-     * Updates a Product in product_list
+     * Adds new category to the product categories
      * 
-     * @param id the id of the Product which should be updated
-     * @param product the Product with the new data
-     * @return true if the Product is found and updated, otherwise false
+     * @param category the new category which is added, the id will be overwritten
+     * @return the added category with the new id
      */
-    public boolean updateProduct_list(int id, Product product) {
-        if (id >= 0 && id < product_list.size()) {
-            return this.product_list.set(id, product).equals(product);
-        }
-        return false;
-    }
-    
-    /**
-     * Updates a Service in service_list
-     * 
-     * @param id the id of the Service which should be updated
-     * @param service the Service with the new data
-     * @return true if the service is found and updated, otherwise false
-     */
-    public boolean updateService_list(int id, Service service) {
-        if (id >= 0 && id < service_list.size()) {
-            return this.service_list.set(id, service).equals(service);
-        }
-        return false;
+    public Category addProduct_Category_list(Category category) {
+        category.setId(product_category_list.size());
+        product_category_list.add(category);
+        return category;
     }
     
     /**
@@ -121,6 +105,31 @@ public class ProductData implements Serializable{
     }
     
     /**
+     * Finds a category in the product categories and returns the found category.
+     * If no category is found null is returned.
+     * 
+     * @param id the category which is search for
+     * @return the searches category if the search was successfull overwise null
+     */
+    public Category findProduct_Category_list(int id) {
+        if (id < 0 || id >= product_category_list.size())
+            return null;
+        return product_category_list.get(id);
+    }
+    
+    /**
+     * Adds new category to the service categories
+     * 
+     * @param category the new category which is added, the id will be overwritten
+     * @return the added category with the new id
+     */
+    public Category addService_Category_list(Category category) {
+        category.setId(service_category_list.size());
+        service_category_list.add(category);
+        return category;
+    }
+    
+    /**
      * Updates a Category in service_category_list
      * 
      * @param id the id of the Category which should be updated
@@ -132,6 +141,33 @@ public class ProductData implements Serializable{
             return this.service_category_list.set(id, category).equals(category);
         }
         return false;
+    }
+    
+    /**
+     * Finds a category in the service categories and returns
+     * the found category.
+     * If no category is found null is returned.
+     * 
+     * @param id the category which is search for
+     * @return the searches category if the search was successfull
+     * overwise null
+     */
+    public Category findService_Category_list(int id) {
+        if (id < 0 || id >= service_category_list.size())
+            return null;
+        return service_category_list.get(id);
+    }
+    
+    /**
+     * Adds new storage status to the storage statsus list
+     * 
+     * @param storageStatus the new storage status which is added, the id will be overwritten
+     * @return the added storage status with the new id
+     */
+    public StorageStatus addStorageStatus_list(StorageStatus storageStatus) {
+        storageStatus.setId(storageStatus_list.size());
+        storageStatus_list.add(storageStatus);
+        return storageStatus;
     }
     
     /**
@@ -147,6 +183,32 @@ public class ProductData implements Serializable{
         }
         return false;
     }
+    
+    /**
+     * Finds a storage status in the storage status list and returns
+     * the found storage status.
+     * If no category is found null is returned.
+     * 
+     * @param id the storage status which is search for
+     * @return the searches storage status if the search was successfull overwise null
+     */
+    public StorageStatus findStorageStatus_list(int id) {
+        if (id < 0 || id >= storageStatus_list.size())
+            return null;
+        return storageStatus_list.get(id);
+    }
+    
+    /**
+     * Adds new billing type to the billing type list
+     * 
+     * @param billingType the new billing type which is added, the id will be overwritten
+     * @return the added billing type with the new id
+     */
+    public BillingType addBillingType_list(BillingType billingType) {
+        billingType.setId(billingType_list.size());
+        billingType_list.add(billingType);
+        return billingType;
+    }
      
     /**
      * Update a BillingType in billingType_list
@@ -160,6 +222,98 @@ public class ProductData implements Serializable{
             return this.billingType_list.set(id, billingType).equals(billingType);
         }
         return false;
+    }
+    
+    /**
+     * Finds a billing type in the billing type list
+     * and returns the found billing type.
+     * If no billing type is found null is returned.
+     * 
+     * @param id the billing type which is search for
+     * @return the searches billing type if the search was successfull overwise null
+     */
+    public BillingType findBillingType_list(int id) {
+        if (id < 0 || id >= billingType_list.size())
+            return null;
+        return billingType_list.get(id);
+    }
+    
+    /**
+     * Adds new product to the product list
+     * 
+     * @param product the new product which is added, the id will be overwritten
+     * @return the added product with the new id
+     */
+    public Product addProduct_list(Product product) {
+        product.setId(product_list.size());
+        product_list.add(product);
+        return product;
+    }
+    
+    /**
+     * Updates a Product in product list
+     * 
+     * @param id the id of the Product which should be updated
+     * @param product the Product with the new data
+     * @return true if the Product is found and updated, otherwise false
+     */
+    public boolean updateProduct_list(int id, Product product) {
+        if (id >= 0 && id < product_list.size()) {
+            return this.product_list.set(id, product).equals(product);
+        }
+        return false;
+    }
+    
+    /**
+     * Finds a product in the product list and returns the found product.
+     * If no product is found null is returned.
+     * 
+     * @param id the product which is search for
+     * @return the searches product if the search was successfull overwise null
+     */
+    public Product findProduct_list(int id) {
+        if (id < 0 || id >= product_list.size())
+            return null;
+        return product_list.get(id);
+    }
+    
+    /**
+     * Adds new service to the service list
+     * 
+     * @param service the new service which is added, the id will be overwritten
+     * @return the added service with the new id
+     */
+    public Service addService_list(Service service) {
+        service.setId(service_list.size());
+        service_list.add(service);
+        return service;
+    }
+    
+    /**
+     * Updates a Service in service list
+     * 
+     * @param id the id of the Service which should be updated
+     * @param service the Service with the new data
+     * @return true if the service is found and updated, otherwise false
+     */
+    public boolean updateService_list(int id, Service service) {
+        if (id >= 0 && id < service_list.size()) {
+            return this.service_list.set(id, service).equals(service);
+        }
+        return false;
+    }
+    
+    /**
+     * Finds a service in the service list and returns the found service.
+     * If no service is found null is returned.
+     * 
+     * @param id the service which is search for
+     * @return the searches service if the search was successfull overwise null
+     */
+    public Service findService_list(int id) {
+        if (id < 0 || id >= service_list.size())
+            return null;
+        return service_list.get(id);
     }
     
 
