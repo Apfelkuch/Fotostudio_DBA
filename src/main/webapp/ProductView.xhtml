@@ -9,12 +9,21 @@
         <div class="card">
             <h:form id="form-product-view">
                 <p:growl id="growl" showDetail="true" />
-
-                <p:messages id="messages"/>
-
-                <p:commandButton value="Clear multiViewSate"
-                                 action="#{productViewBean.clearMultiViewState()}"
-                                 update="growl" />
+                
+                <p:toolbar rendered="#{productViewBean.admin}">
+                    <p:toolbarGroup>
+                        <p:commandLink value="Clear_multiViewState"
+                                       action="#{productViewBean.clearMultiViewState()}"
+                                       update="growl"
+                                       style="margin: 0 20px" />
+                        <p:commandLink value="Neues Produkt"
+                                       action="#{productViewBean.addProduct()}"
+                                       update="@form"
+                                       type="button"
+                                       onclick="PF('pD').show()"
+                                       style="margin: 0 20px" />
+                    </p:toolbarGroup>
+                </p:toolbar>
 
                 <p:dataView id="data-view"
                             var="product"

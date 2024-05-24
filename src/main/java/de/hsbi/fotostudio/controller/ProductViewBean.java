@@ -28,6 +28,8 @@ public class ProductViewBean implements Serializable{
     
     private Product currentProduct;
     
+    private boolean admin = true;
+    
     private static final Logger LOG = Logger.getLogger(ProductViewBean.class.getName());
     
     /**
@@ -66,8 +68,20 @@ public class ProductViewBean implements Serializable{
      */
     public void info(Product product) {
         LOG.info("[ProductViewBean] info: " + product.getName());
+        products.setAddNewItem(false);
         products.setCurrentProduct(product);
         PrimeFaces.current().ajax().update(":form-product-dialog");
+    }
+    
+    /**
+     * Methode to add a new Product
+     */
+    public void addProduct() {
+        LOG.info("[ProductViewBean] add Product");
+        products.setAddNewItem(true);
+        products.setCurrentProduct(new Product());
+//        PrimeFaces.current().ajax().update(":form-product-dialog");
+        LOG.info("[ProductViewBean] add Product : " + products.getCurrentProduct().toString());
     }
 
     // GETTER && SETTER
@@ -97,6 +111,24 @@ public class ProductViewBean implements Serializable{
      */
     public void setCurrentProduct(Product currentProduct) {
         products.setCurrentProduct(currentProduct);
+    }
+    
+    /**
+     * Get Value of admin
+     * 
+     * @return the value of admin
+     */
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    /**
+     * Set Value of admin
+     * 
+     * @param admin the new value of admin
+     */
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
     
 }

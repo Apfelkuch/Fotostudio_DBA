@@ -16,6 +16,7 @@ import java.io.Serializable;
 import jakarta.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
+import org.primefaces.PrimeFaces;
 
 /**
  * The class ProductDialogBean is the Backing-Bean for the ProductDialog.xhtml page.
@@ -75,10 +76,19 @@ public class ServiceDialogBean implements Serializable {
      * After the saving of the Service the ServiceView is updated.
      */
     public void saveEdits() {
-        currentService.setId(products.getCurrentService().getId());
         LOG.info("[ServiceDialogBean] save: " + currentService.toString());
-        products.updateService(currentService.getId(), currentService);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service gespeichert", "");
+        FacesMessage message;
+        if (!products.isAddNewItem()) {
+            currentService.setId(products.getCurrentService().getId());
+            products.updateService(currentService.getId(), currentService);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service gespeichert", "");
+            PrimeFaces.current().ajax().update("form-service-view:data-view");
+        } else {
+            Service s = productData.addService_list(currentService);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service hinzugefügt", s.toString());
+        }
+        PrimeFaces.current().ajax().update("form-service-dialog");
+        PrimeFaces.current().executeScript("PF('sD').hide()");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
@@ -163,6 +173,7 @@ public class ServiceDialogBean implements Serializable {
     public int getHeader() {
         this.currentService = products.getCurrentService();
         LOG.info("[ServiceDialogBean] load: " + currentService.getId());
+        LOG.info("[ServiceDialogBean] load: " + currentService.toString());
         
         return currentService.getId();
     }

@@ -8,7 +8,7 @@
           modal="true" 
           resizable="false" 
           appendTo="@(body)" 
-          widgetVar="pD"
+          widgetVar="sD"
           responsive="true" >
     <h:form id="form-service-dialog">
         <p:growl id="GROWL" showDetail="true" life="4000" />
@@ -25,9 +25,12 @@
                 <p:inputText id="NAME" 
                              value="#{serviceDialogBean.currentService.name}"
                              disabled="#{!serviceDialogBean.editing}"
-                             style="width: 100%" >
+                             style="width: 100%"
+                             placeholder="Servicename"
+                             required="true" >
                     <p:ajax event="change"
-                            process="@this" />
+                            process="@this" 
+                            update="GROWL"/>
                 </p:inputText>
                 <h:outputText value="Beschreibung:" />
                 <p:inputTextarea rows="5"
@@ -35,9 +38,11 @@
                                  id="DESCRIPTION" 
                                  value="#{serviceDialogBean.currentService.description}"
                                  disabled="#{!serviceDialogBean.editing}"
-                                 style="width: 100%" >
+                                 style="width: 100%"
+                                 placeholder="Servicebeschreibung" >
                     <p:ajax event="change"
-                            process="@this" />
+                            process="@this" 
+                            update="GROWL"/>
                 </p:inputTextarea>
                 <h:outputText value="Kategorie:" />
                 <p:selectOneMenu id="CATEGORY"
@@ -76,18 +81,21 @@
                         var="billingType" 
                         itemLabel="#{billingType.name}" 
                         itemValue="#{billingType.name}"/>
-                    <p:ajax 
-                        process="@this" 
-                        update="GROWL"/>
+                    <p:ajax event="change"
+                            process="@this" 
+                            update="GROWL"/>
                 </p:selectOneMenu>
                 <h:outputText value="Preis:" />
-                <p:inputText id="PRICE" 
+                <p:inputNumber id="PRICE" 
                              value="#{serviceDialogBean.currentService.price}"
                              disabled="#{!serviceDialogBean.editing}" 
-                             style="width: 100%" >
+                             style="width: 100%"
+                             placeholder="0,0" 
+                             required="true">
                     <p:ajax event="change"
-                            process="@this" />
-                </p:inputText>
+                            process="@this" 
+                            update="GROWL"/>
+                </p:inputNumber>
                 <h:outputText value="Lagerstatus:" />
                 <p:selectOneMenu id="STORAGESTATUS"
                                  value="#{serviceDialogBean.currentService.storageStatus}" 
@@ -110,12 +118,11 @@
                             update="GROWL"/>
                 </p:selectOneMenu>
             </p:panelGrid>
-            <p:panelGrid columns="1">
+        <p:panelGrid columns="1">
                 <p:commandButton id="SAVE"
                                  action="#{serviceDialogBean.saveEdits()}"
                                  value="Speichern"
-                                 update="form-service-dialog form-service-view:data-view"
-                                 onclick="PF('pD').hide()"
+                                 update="@form"
                                  rendered="#{serviceDialogBean.editing}"
                                  style="float: right;">
                 </p:commandButton>

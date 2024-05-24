@@ -16,6 +16,7 @@ import java.io.Serializable;
 import jakarta.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
+import org.primefaces.PrimeFaces;
 
 /**
  * The class ProductDialogBean is the Backing-Bean for the ProductDialog.xhtml page.
@@ -75,10 +76,19 @@ public class ProductDialogBean implements Serializable {
      * After the saving of the Product the ProductView is updated.
      */
     public void saveEdits() {
-        currentProduct.setId(products.getCurrentProduct().getId());
         LOG.info("[ProductDialogBean] save: " + currentProduct.toString());
-        products.updateProdukt(currentProduct.getId(), currentProduct);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt gespeichert", "");
+        FacesMessage message;
+        if (!products.isAddNewItem()) {
+            currentProduct.setId(products.getCurrentProduct().getId());
+            products.updateProduct(currentProduct.getId(), currentProduct);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt gespeichert", "");
+            PrimeFaces.current().ajax().update("form-service-view:data-view");
+        } else {
+            Product p = productData.addProduct_list(currentProduct);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt hinzugefügt", p.toString());
+        }
+        PrimeFaces.current().ajax().update("form-service-dialog");
+        PrimeFaces.current().executeScript("PF('pD').hide()");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     

@@ -9,10 +9,21 @@
         <div class="card">
             <h:form id="form-service-view">
                 <p:growl id="growl" showDetail="true" showSummary="true" />
-
-                <p:commandButton value="Clear multiViewSate"
-                                 action="#{serviceViewBean.clearMultiViewState()}"
-                                 update="growl" />
+                
+                <p:toolbar rendered="#{serviceViewBean.admin}">
+                    <p:toolbarGroup>
+                        <p:commandLink value="Clear_multiViewState"
+                                       action="#{serviceViewBean.clearMultiViewState()}"
+                                       update="growl"
+                                       style="margin: 0 20px" />
+                        <p:commandLink value="Neuer Service"
+                                       action="#{serviceViewBean.addService()}"
+                                       update="@form"
+                                       type="button"
+                                       onclick="PF('sD').show()"
+                                       style="margin: 0 20px" />
+                    </p:toolbarGroup>
+                </p:toolbar>
 
                 <p:dataView id="data-view"
                             var="service"
@@ -91,7 +102,7 @@
                                                      style="margin-right: 20px"
                                                      styleClass="rounded-button"
                                                      action="#{serviceViewBean.info(service)}" >
-                                        <f:ajax event="click" onevent="PF('pD').show()" />
+                                        <f:ajax event="click" onevent="PF('sD').show()" />
                                     </p:commandButton>
                                     <p:commandButton type="button"
                                                      icon="pi pi-shopping-cart"

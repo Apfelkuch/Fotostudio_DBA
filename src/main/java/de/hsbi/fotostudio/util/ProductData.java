@@ -3,6 +3,7 @@ package de.hsbi.fotostudio.util;
 import de.hsbi.fotostudio.modul.*;
 import java.util.List;
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
  * @version 0.1
  * @author Janis Wiegräbe
  */
+@ApplicationScoped
 public class ProductData implements Serializable{
     
     private List<Product> product_list;

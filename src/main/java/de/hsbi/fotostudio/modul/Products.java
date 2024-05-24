@@ -25,6 +25,7 @@ public class Products {
     
     private List<Product> currentProducts;
     private Product currentProduct;
+    private boolean addNewItem = false;
     
     private List<Service> currentServices;
     private Service currentService;
@@ -102,7 +103,7 @@ public class Products {
             currentServices = new ArrayList<>();
         }
     }
-        
+
     /**
      * Updates a Product in ProductData and reselects the category to update
      * the changes in the ProductView
@@ -111,7 +112,7 @@ public class Products {
      * @param product the Product with the new data
      * @return true if the Product is found and updated, otherwise false
      */
-    public boolean updateProdukt(int id, Product product) {
+    public boolean updateProduct(int id, Product product) {
         if (id < 0 || id >= productData.getProduct_list().size()){
             return false;
         }
@@ -200,6 +201,7 @@ public class Products {
      * that have the searched part in the name
      * 
      * @param namefragment the searched part of name
+     * @return true if products where found, otherwise false
      */
     public boolean findProductWithNamefragment(String namefragment) {
         currentCategory = null;
@@ -210,7 +212,7 @@ public class Products {
                 .filter(product -> product.getName().contains(namefragment))
                 .collect(Collectors.toList());
         if (currentProducts.isEmpty()) {
-            LOG.info("[Products]  No Elements with the given titlepart");
+            LOG.info("[Products] No Elements with the given titlepart");
             currentProducts = new ArrayList<>();
             return false;
         }
@@ -222,6 +224,7 @@ public class Products {
      * that have the searched part in the name
      * 
      * @param namefragment the searched part of name
+     * @return true if products where found, otherwise false
      */
     public boolean findServiceWithNamefragment(String namefragment) {
         currentCategory = null;
@@ -232,7 +235,7 @@ public class Products {
                 .filter(service -> service.getName().contains(namefragment))
                 .collect(Collectors.toList());
         if (currentServices.isEmpty()) {
-            LOG.info("[Products]  No Elements with the given titlepart");
+            LOG.info("[Products] No Elements with the given titlepart");
             currentServices = new ArrayList<>();
             return false;
         }
@@ -293,7 +296,7 @@ public class Products {
      * @param currentService the new value of currentService
      */
     public void setCurrentService(Service currentService) {
-        LOG.info("[Products] current Product: " + currentService.getName());
+        LOG.info("[Products] current Service: " + currentService.getName());
         this.currentService = currentService;
     }
 
@@ -305,4 +308,24 @@ public class Products {
     public Category getCurrentCategory() {
         return currentCategory;
     }
+
+    /**
+     * Get Value of addNewItem
+     * 
+     * @return the value of addNewItem
+     */
+    public boolean isAddNewItem() {
+        return addNewItem;
+    }
+
+    /**
+     * Get Value of addNewItem
+     * 
+     * @param addNewItem the new value of addNewItem
+     */
+    public void setAddNewItem(boolean addNewItem) {
+        this.addNewItem = addNewItem;
+    }
+    
+    
 }

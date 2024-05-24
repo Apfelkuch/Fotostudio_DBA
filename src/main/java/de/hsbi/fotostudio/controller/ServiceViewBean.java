@@ -28,6 +28,8 @@ public class ServiceViewBean implements Serializable{
     
     private Service currentService;
     
+    private boolean admin = true;
+    
     private static final Logger LOG = Logger.getLogger(ServiceViewBean.class.getName());
     
     /**
@@ -66,9 +68,21 @@ public class ServiceViewBean implements Serializable{
      */
     public void info(Service service) {
         LOG.info("[ServiceViewBean] info: " + service.getName());
+        products.setAddNewItem(false);
         products.setCurrentService(service);
         PrimeFaces.current().ajax().update(":form-service-dialog");
     }
+    
+    /**
+     * Method to add a new Servies
+     */
+    public void addService() {
+        LOG.info("[ServiceViewBean] add Service");
+        products.setAddNewItem(true);
+        products.setCurrentService(new Service());
+//        PrimeFaces.current().ajax().update(":form-service-dialog");
+        LOG.info("[ServiceViewBean] add Service : " + products.getCurrentService().toString());
+    }    
 
     // GETTER && SETTER
 
@@ -97,6 +111,24 @@ public class ServiceViewBean implements Serializable{
      */
     public void setCurrentService(Service currentService) {
         this.products.setCurrentService(currentService);
+    }
+    
+    /**
+     * Get Value of admin
+     * 
+     * @return the value of admin
+     */
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    /**
+     * Set Value of admin
+     * 
+     * @param admin the new value of admin
+     */
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
     
 }
