@@ -205,11 +205,11 @@ public class Products {
      */
     public boolean findProductWithNamefragment(String namefragment) {
         currentCategory = null;
-        LOG.info("[Products] current Products contain in their title: " + namefragment);
+        LOG.info("[Products] current Products contain in their title: " + namefragment.toLowerCase());
         List<Product> immutableCopy = List.copyOf(productData.getProduct_list());
         currentProducts = null;
         currentProducts = immutableCopy.stream()
-                .filter(product -> product.getName().contains(namefragment))
+                .filter(product -> product.getName().toLowerCase().contains(namefragment.toLowerCase()))
                 .collect(Collectors.toList());
         if (currentProducts.isEmpty()) {
             LOG.info("[Products] No Elements with the given titlepart");
@@ -228,11 +228,11 @@ public class Products {
      */
     public boolean findServiceWithNamefragment(String namefragment) {
         currentCategory = null;
-        LOG.info("[Products] current Services contain in their title: " + namefragment);
+        LOG.info("[Products] current Services contain in their title: " + namefragment.toLowerCase());
         List<Service> immutableCopy = List.copyOf(productData.getService_list());
         currentServices = null;
         currentServices = immutableCopy.stream()
-                .filter(service -> service.getName().contains(namefragment))
+                .filter(service -> service.getName().toLowerCase().contains(namefragment.toLowerCase()))
                 .collect(Collectors.toList());
         if (currentServices.isEmpty()) {
             LOG.info("[Products] No Elements with the given titlepart");
