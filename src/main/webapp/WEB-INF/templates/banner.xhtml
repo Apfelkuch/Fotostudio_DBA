@@ -8,13 +8,22 @@
     </h:head>
 
     <div class="banner_items">
-        <h:form>
-            <p:commandButton type="button" icon="pi pi-shopping-cart Fs23" 
-                             style="margin: 20px; width: 64px; height: 64px;" />
+        <ui:include src="../loginDialog.xhtml"/> 
+        <h:form
+            id="FORMBAR">
+            <p:commandButton icon="pi pi-shopping-cart Fs23" 
+                             style="margin: 20px; width: 64px; height: 64px;"/>
             <p:commandButton type="button" icon="pi pi-user Fs23 "
                              style="margin: 20px; width: 64px; height: 64px;"
-                             onclick="PF('dlglog').show()"/>
-            <ui:include src="../loginDialog.xhtml"/>
+                             onclick="PF('dlglog').show()"
+                             action="#{loginCdiBean.reset}"
+                             update="@all"
+                             rendered='#{!loginCdiBean.login}'/>           
+            <p:commandButton icon="pi  pi-sign-out"
+                             style="margin: 20px; width: 64px; height: 64px;"
+                             action="#{loginCdiBean.logoutMSG}"
+                             update="@all"
+                             rendered='#{loginCdiBean.login}'/>           
         </h:form>
     </div>
 </ui:composition>
