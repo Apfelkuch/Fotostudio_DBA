@@ -81,11 +81,17 @@ public class ProductDialogBean implements Serializable {
         if (!products.isAddNewItem()) {
             currentProduct.setId(products.getCurrentProduct().getId());
             products.updateProduct(currentProduct.getId(), currentProduct);
+            // set Category to reload the product list
+            products.selectProductCategory(currentProduct.getCategory().getId());
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt gespeichert", "");
             PrimeFaces.current().ajax().update("form-service-view:data-view");
         } else {
-            Product p = productData.addProduct_list(currentProduct);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt hinzugefügt", p.toString());
+            if(!currentProduct.getName().isBlank()) {
+                Product p = productData.addProduct_list(currentProduct);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt hinzugefügt", p.toString());
+            } else {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Kein Produkt hinzugefügt", "Ein Produkt braucht mindestens einen Namen");
+            }
         }
         PrimeFaces.current().ajax().update("form-service-dialog");
         PrimeFaces.current().executeScript("PF('pD').hide()");

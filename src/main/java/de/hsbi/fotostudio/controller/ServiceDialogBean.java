@@ -81,11 +81,17 @@ public class ServiceDialogBean implements Serializable {
         if (!products.isAddNewItem()) {
             currentService.setId(products.getCurrentService().getId());
             products.updateService(currentService.getId(), currentService);
+            // set Category to reload the product list
+            products.selectServiceCategory(currentService.getCategory().getId());
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service gespeichert", "");
             PrimeFaces.current().ajax().update("form-service-view:data-view");
         } else {
-            Service s = productData.addService_list(currentService);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service hinzugefügt", s.toString());
+            if (!currentService.getName().isBlank()) {
+                Service s = productData.addService_list(currentService);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service hinzugefügt", s.toString());
+            } else {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Kein Service hinzugefügt", "Ein Service braucht mindestens einen Namen");
+            }
         }
         PrimeFaces.current().ajax().update("form-service-dialog");
         PrimeFaces.current().executeScript("PF('sD').hide()");

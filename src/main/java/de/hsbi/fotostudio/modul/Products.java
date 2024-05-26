@@ -120,9 +120,6 @@ public class Products {
         // update Product daten in list (database)
         boolean returnValue = productData.updateProduct_list(id, product);
         
-        // set Category to reload the product list
-        selectProductCategory(currentProduct.getCategory().getId());
-        
         return returnValue;
     }
     
@@ -141,9 +138,6 @@ public class Products {
         
         // update Service daten in list (database)
         boolean returnValue = productData.updateService_list(id, service);
-        
-        // set Category to reload the product list
-        selectServiceCategory(currentService.getCategory().getId());
         
         return returnValue;
     }

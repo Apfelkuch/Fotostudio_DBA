@@ -1,5 +1,6 @@
 package de.hsbi.fotostudio.controller;
 
+import de.hsbi.fotostudio.modul.Basket;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
 import jakarta.faces.application.FacesMessage;
@@ -26,6 +27,9 @@ public class ProductViewBean implements Serializable{
     @Inject
     private Products products;
     
+    @Inject
+    private Basket basket;
+    
     private Product currentProduct;
     
     private boolean admin = true;
@@ -46,15 +50,15 @@ public class ProductViewBean implements Serializable{
         LOG.info("clearMultiViewState");
         FacesContext context = FacesContext.getCurrentInstance();
         String viewId = context.getViewRoot().getViewId();
-        PrimeFaces.current().multiViewState().clearAll(viewId, true, this::showMessage);
+        PrimeFaces.current().multiViewState().clearAll(viewId, true, this::showViewStateMessage);
     }
 
     /**
-     * This Methode adds a Message to visualize that the Multiviewstate has been cleared.
+     * This Methode adds a growl to visualize that the Multiviewstate has been cleared.
      * 
      * @param id the id of the user, where the multistate View has been cleared.
      */
-    private void showMessage(String id) {
+    private void showViewStateMessage(String id) {
         FacesContext.getCurrentInstance()
                 .addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, id 
@@ -76,12 +80,34 @@ public class ProductViewBean implements Serializable{
     /**
      * Methode to add a new Product
      */
-    public void addProduct() {
+    public void createProduct() {
         LOG.info("[ProductViewBean] add Product");
         products.setAddNewItem(true);
         products.setCurrentProduct(new Product());
-//        PrimeFaces.current().ajax().update(":form-product-dialog");
-        LOG.info("[ProductViewBean] add Product : " + products.getCurrentProduct().toString());
+        PrimeFaces.current().ajax().update(":form-product-dialog");
+        LOG.info("[ProductViewBean] add Product : "
+                + products.getCurrentProduct().toString());
+    }
+    
+    public void addProductToBasket(Product product) {
+        LOG.info("[ProductViewBean] add Product to basket");
+        int count = basket.incrementBasketItem(product);
+        showMassage(new FacesMessage(
+                FacesMessage.SEVERITY_INFO,
+                "Produkt in Warenkorb hinzugefügt",
+                product.getName() + " ist " + count + " mal im Warenkorb"
+        ));
+        LOG.info("[ProductViewBean] Product (" + product.getName() + ") is "
+                + count + " times in the basket");
+    }
+    
+    /**
+     * This Methode adds a growl with a given message
+     * 
+     * @param message the message which is displayed
+     */
+    private void showMassage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     // GETTER && SETTER

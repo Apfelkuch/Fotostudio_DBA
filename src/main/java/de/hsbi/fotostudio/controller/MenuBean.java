@@ -1,15 +1,18 @@
 package de.hsbi.fotostudio.controller;
 
+import de.hsbi.fotostudio.modul.Basket;
+import de.hsbi.fotostudio.modul.BasketItem;
+import de.hsbi.fotostudio.modul.Item;
+import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
-import de.hsbi.fotostudio.util.ProductData;
+import de.hsbi.fotostudio.modul.Service;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.logging.Logger;
-import org.primefaces.PrimeFaces;
 
 /**
  * The class MenuBean is the Backing-Bean for the menu.xhtml page.
@@ -21,14 +24,12 @@ import org.primefaces.PrimeFaces;
 @Named(value = "menuBean")
 @ViewScoped
 public class MenuBean implements Serializable{
-
-    private String searchContent;
     
     @Inject
     private Products products;
     
     @Inject
-    private ProductData productData;
+    private Basket basket;
     
     private static final Logger LOG = Logger.getLogger(MenuBean.class.getName());
     
@@ -47,7 +48,7 @@ public class MenuBean implements Serializable{
      */
     public String changeProductCategory(int categoryId) {
         products.selectProductCategory(categoryId);
-        PrimeFaces.current().ajax().update("form-product-view:data-view");
+//        PrimeFaces.current().ajax().update("form-product-view:data-view");
         return "ProductView?faces-redirect=true";
     }
         
@@ -60,48 +61,65 @@ public class MenuBean implements Serializable{
      */
     public String changeServiceCategory(int categoryId) {
         products.selectServiceCategory(categoryId);
-        PrimeFaces.current().ajax().update("form-service-view:data-view");
+//        PrimeFaces.current().ajax().update("form-service-view:data-view");
         return "ServiceView?faces-redirect=true";
     }
-
-    public void search() {
-        LOG.info("[MenuBean] search");
-        
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String url = request.getRequestURL().toString();
-        LOG.info("[MenuBean] page" + url);
-        
-        if (searchContent == null || searchContent.isBlank())
-            return;
-        
-        boolean result = false;
-        if (url.contains("ProductView.xhtml")) {
-            result = products.findProductWithNamefragment(searchContent);
-        } else if (url.contains("ServiceView.xhtml")) {
-            result = products.findServiceWithNamefragment(searchContent);
+    
+    /**
+     * Checks if a user is logged in
+     * 
+     * @return true if user is logged in, otherwise false
+     */
+    public boolean isLoggedIn() {
+        return true;
+    }
+    
+    /**
+     * This Methode does the checkout and
+     * returns the path to go to the checkout view (contract)
+     * 
+     * @return the path to the contract view
+     */
+    public String checkout() {
+        LOG.info("[MenuBean] checkout of basket");
+        showMassage(new FacesMessage(
+                FacesMessage.SEVERITY_INFO,
+                "Bestellung ist eingegangen",
+                "Bestellung bearbeitet, gesamtpreis " + getBasketPrice() + "€"
+        ));
+        for (BasketItem basketItem : basket.getBasket()) {
+            Item item = basketItem.getItem();
+            if (item instanceof Service) { // edit service on checkout
+            } else if (item instanceof Product) { // edit product on checkout
+                Product product = (Product) item;
+                product.setAmount(product.getAmount() - basketItem.getCount());
+                LOG.info("[MenuBean] current: " + products.getCurrentProduct().toString());
+                LOG.info("[MenuBean] current^1: " + product.toString());
+                if(!products.updateProduct(product.getId(), product)) {
+                    LOG.info("[MenuBean] product could not be updated");
+                }
+            } else {
+                LOG.info("[MenuBean] invalid item in basket");
+            }
         }
-        LOG.info("[MenuBean] search: " + (result ? "Items found" : "No Items found"));
+        basket.clearBasket();
+        
+        return "contract?faces-redirect=true";
+    }
+    
+    public float getBasketPrice() {
+        LOG.info("[MenuBean] total basket price: " + basket.getTotalPrice());
+        return basket.getTotalPrice();
+    }
+    
+    /**
+     * This Methode adds a growl with a given message
+     * 
+     * @param message the message which is displayed
+     */
+    private void showMassage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     // GETTER && SETTER
-
-    /**
-     * Get Value of searchContent
-     * 
-     * @return the value of searchContent
-     */
-    public String getSearchContent() {
-        return searchContent;
-    }
-
-    /**
-     * Set Value of searchContent
-     * 
-     * @param searchContent the new value of searchContent
-     */
-    public void setSearchContent(String searchContent) {
-        this.searchContent = searchContent;
-    }
-    
-    
 }

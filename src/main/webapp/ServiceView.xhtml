@@ -17,7 +17,7 @@
                                        update="growl"
                                        style="margin: 0 20px" />
                         <p:commandLink value="Neuer Service"
-                                       action="#{serviceViewBean.addService()}"
+                                       action="#{serviceViewBean.createService()}"
                                        update="@form"
                                        type="button"
                                        onclick="PF('sD').show()"
@@ -67,8 +67,9 @@
                                                      action="#{serviceViewBean.info(service)}" >
                                         <f:ajax event="click" onevent="PF('pD').show()" />
                                     </p:commandButton>
-                                    <p:commandButton type="button"
-                                                     icon="pi pi-shopping-cart"
+                                    <p:commandButton icon="pi pi-shopping-cart"
+                                                     update="@all"
+                                                     action="#{serviceViewBean.addServiceToBasket(service)}"
                                                      styleClass="rounded-button product-grid-action-buy"
                                                      disabled="#{service.storageStatus.id == 2}">
                                     </p:commandButton>
@@ -104,9 +105,10 @@
                                                      action="#{serviceViewBean.info(service)}" >
                                         <f:ajax event="click" onevent="PF('sD').show()" />
                                     </p:commandButton>
-                                    <p:commandButton type="button"
-                                                     icon="pi pi-shopping-cart"
+                                    <p:commandButton icon="pi pi-shopping-cart"
                                                      styleClass="rounded-button"
+                                                     update="@all"
+                                                     action="#{serviceViewBean.addServiceToBasket(service)}"
                                                      disabled="#{service.storageStatus.id == 2}" >
                                     </p:commandButton>
                                 </div>

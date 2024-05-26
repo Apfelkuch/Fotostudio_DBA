@@ -8,14 +8,12 @@ import java.util.logging.Logger;
  * @version 0.1
  * @author Janis Wiegräbe
  */
-public class Service {
+public class Service extends Item {
     
     private int id;
-    private String name;
     private String description;
     private Category category;
     private BillingType billingType;
-    private float price;
     private StorageStatus storageStatus;
     
     private static final Logger LOG = Logger.getLogger(Service.class.getName());
@@ -24,6 +22,7 @@ public class Service {
      * Creates instance of Product
      */
     public Service() {
+        super("" ,0f ,-1);
         this.id = -1;
         category = new Category();
         billingType = new BillingType();
@@ -42,6 +41,7 @@ public class Service {
      * @param storageStatus the storageStatus parameter for the new instance
      */
     public Service(int id, String name, String description, Category category, BillingType billingType, float price, StorageStatus storageStatus) {
+        super(name, price, -1);
         this.id = id;
         this.name = name;
         this.description = description;
@@ -69,6 +69,7 @@ public class Service {
      */
     @Override
     public boolean equals(Object obj) {
+        LOG.info("[Service] equals method called");
         if (this == obj)
             return true;
         if (obj == null)
@@ -89,6 +90,16 @@ public class Service {
         return "[" + id + ", " + name + ", " + description 
                 + ", " + category.getName() + ", " + billingType.getName()
                 + ", " + price + ", " + storageStatus.getName()+ "]";
+    }
+    
+    /**
+     * Returns a identification String for this class
+     * 
+     * @return the identifikation String
+     */
+    @Override
+    public String getType() {
+        return "Service";
     }
     
     /**
@@ -119,24 +130,6 @@ public class Service {
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * Get Value of name
-     * 
-     * @return the value of name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set Value of name
-     * 
-     * @param name the new value of name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -191,24 +184,6 @@ public class Service {
      */
     public void setBillingType(BillingType billingType) {
         this.billingType = billingType;
-    }
-
-    /**
-     * Get Value of price
-     * 
-     * @return the value of price
-     */
-    public float getPrice() {
-        return price;
-    }
-
-    /**
-     * Set Value of price
-     * 
-     * @param price the new value of price
-     */
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     /**
