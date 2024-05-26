@@ -129,7 +129,6 @@ public class ServiceDialogBean implements Serializable {
      * @param event the ValueChangeEvent contains Information about the state
      * befor and after the ValueChange
      */
-
     public void getBillingType(ValueChangeEvent event) {
         currentBillingTypeName = (String) event.getNewValue();
         for (BillingType abrechnungsart : billingType_list) {

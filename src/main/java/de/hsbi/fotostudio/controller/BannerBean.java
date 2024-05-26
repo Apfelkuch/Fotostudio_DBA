@@ -11,7 +11,10 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
+ * The class BannerBean is the Backing-Bean for the banner.xhtml page.
+ * This class links the xhtml page and the underlying logic.
  *
+ * @version 0.1
  * @author Janis Wiegräbe
  */
 @Named(value = "bannerBean")
@@ -34,6 +37,9 @@ public class BannerBean implements Serializable {
     public BannerBean() {
     }
 
+    /**
+     * Search in the list of products or services, according to the current page
+     */
     public void search() {
         LOG.info("[BannerBean] search");
         
@@ -53,10 +59,20 @@ public class BannerBean implements Serializable {
         LOG.info("[BannerBean] search: " + (result ? "Items found" : "No Items found"));
     }
     
+    /**
+     * Returns the path to the basket view
+     * @return the path to the basket view
+     */
     public String openBasket() {
         return "Basket?faces-redirect=true";
     }
     
+    /**
+     * Returns the current amount of items in the basket,
+     * only the amount of different items is counted
+     * 
+     * @return the amount of different items in the basket
+     */
     public int getBasketSize() {
         return this.basket.getBasketSize();
     }

@@ -78,7 +78,7 @@ public class ServiceViewBean implements Serializable{
     }
     
     /**
-     * Method to add a new Servies
+     * Method to create a new Servies
      */
     public void createService() {
         LOG.info("[ServiceViewBean] add Service");
@@ -89,6 +89,11 @@ public class ServiceViewBean implements Serializable{
                 + products.getCurrentService().toString());
     }
     
+    /**
+     * Methode to add a service to the basket
+     * 
+     * @param service the service to be added 
+     */
     public void addServiceToBasket(Service service) {
         LOG.info("[ServiceViewBean] add Service to basket");
         int count = basket.incrementBasketItem(service);

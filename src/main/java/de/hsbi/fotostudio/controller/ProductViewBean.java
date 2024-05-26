@@ -78,7 +78,7 @@ public class ProductViewBean implements Serializable{
     }
     
     /**
-     * Methode to add a new Product
+     * Methode to create a new Product
      */
     public void createProduct() {
         LOG.info("[ProductViewBean] add Product");
@@ -89,6 +89,11 @@ public class ProductViewBean implements Serializable{
                 + products.getCurrentProduct().toString());
     }
     
+    /**
+     * Methode to add a product to the basket
+     * 
+     * @param product the product to be added 
+     */
     public void addProductToBasket(Product product) {
         LOG.info("[ProductViewBean] add Product to basket");
         int count = basket.incrementBasketItem(product);

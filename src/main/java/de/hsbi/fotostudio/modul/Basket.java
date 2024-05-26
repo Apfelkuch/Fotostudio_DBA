@@ -89,6 +89,14 @@ public class Basket {
         return 0;
     }
     
+    /**
+     * Set the count of the basketItem to the given count
+     * and returns the new count
+     * 
+     * @param basketItem the basketItem which is modified
+     * @param count the new count for the basktItem
+     * @return the new count of the basketItem
+     */
     public int setCountOnBasketItem(BasketItem basketItem, int count) {
         basketItem.setCount(count);
         return basketItem.getCount();

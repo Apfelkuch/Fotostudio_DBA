@@ -93,8 +93,6 @@ public class MenuBean implements Serializable{
             } else if (item instanceof Product) { // edit product on checkout
                 Product product = (Product) item;
                 product.setAmount(product.getAmount() - basketItem.getCount());
-                LOG.info("[MenuBean] current: " + products.getCurrentProduct().toString());
-                LOG.info("[MenuBean] current^1: " + product.toString());
                 if(!products.updateProduct(product.getId(), product)) {
                     LOG.info("[MenuBean] product could not be updated");
                 }

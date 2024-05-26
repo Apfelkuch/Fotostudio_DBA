@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
+ * The class BasketBean is the Backing-Bean for the Basket.xhtml page.
+ * This class links the xhtml page and the underlying logic.
  *
+ * @version 0.1
  * @author Janis Wiegräbe
  */
 @Named(value = "basketBean")
