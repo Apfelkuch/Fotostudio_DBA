@@ -1,75 +1,131 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package de.hsbi.fotostudio.modul;
 
 /**
- *
- * @author Frederick
+ * Represents a User in the photo studio system.
+ * Each user has a username, password, email, birthday, and role.
+ * The role determines the level of access the user has within the system.
+ * Roles: 0 = nobody, 1 = admin, 2 = janis
  */
 public class User {
 
-    private String username;
-    private String password;
-    private String emai;
-    private Birthday bday;
-    private int role; // 0 = nobody, 1 = admin, 2 = janis
+    // Attributes
+    private String username; // User's username
+    private String password; // User's password
+    private String email;    // User's email
+    private Birthday bday; // User's birthday
+    private int role;        // User's role (0 = nobody, 1 = admin, 2 = janis)
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getRole() {
-        return role; 
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmai() {
-        return emai;
-    }
-
-    public void setEmai(String emai) {
-        this.emai = emai;
-    }
-
-    public Birthday getBday() {
-        return bday;
-    }
-
-    public void setBday(Birthday bday) {
-        this.bday = bday;
-    }
-
+    // Constructor
+    /**
+     * Default constructor initializes user with default values.
+     * Username: "INVALID"
+     * Password: "0000"
+     * Email: "INVALID@INVALID.com"
+     * Birthday: default Birthday object
+     * Role: nobody (0)
+     */
     public User() {
         username = "INVALID";
         password = "0000";
-        emai = "INVALID@INVALID.com";
+        email = "INVALID@INVALID.com";
         bday = new Birthday();
         role = 0;
     }
 
-    public User(String pUsername, String pPassword, String pEmai, Birthday pBday, int pRole) {
+    /**
+     * Constructor to create a user with specified attributes.
+     * @param pUsername The username of the user
+     * @param pPassword The password of the user
+     * @param pEmail The email of the user
+     * @param pBirthday The birthday of the user
+     * @param pRole The role of the user (0 = nobody, 1 = admin, 2 = janis)
+     */
+    public User(String pUsername, String pPassword, String pEmail, Birthday pBirthday, int pRole) {
         username = pUsername;
         password = pPassword;
-        emai = pEmai;
-        bday = pBday;
+        email = pEmail;
+        bday = pBirthday;
         role = pRole;
     }
 
+    // Getter and Setter Methods
+    /**
+     * Get the username of the user.
+     * @return The username of the user
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Set the username of the user.
+     * @param username The username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Get the role of the user.
+     * @return The role of the user
+     */
+    public int getRole() {
+        return role; 
+    }
+
+    /**
+     * Set the role of the user.
+     * @param role The role to set
+     */
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    /**
+     * Get the password of the user.
+     * @return The password of the user
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Set the password of the user.
+     * @param password The password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Get the email of the user.
+     * @return The email of the user
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Set the email of the user.
+     * @param email The email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Get the birthday of the user.
+     * @return The birthday of the user
+     */
+    public Birthday getBday() {
+        return bday;
+    }
+
+    /**
+     * Set the birthday of the user.
+     * @param bday The birthday to set
+     */
+    public void setBday(Birthday bday) {
+        this.bday = bday;
+    }
 }
