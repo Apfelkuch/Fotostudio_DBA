@@ -106,7 +106,6 @@ public class MenuBean implements Serializable{
     }
     
     public float getBasketPrice() {
-        LOG.info("[MenuBean] total basket price: " + basket.getTotalPrice());
         return basket.getTotalPrice();
     }
     

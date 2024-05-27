@@ -90,7 +90,6 @@ public abstract class Item {
      * @return the value of amount
      */
     public int getAmount() {
-        LOG.info("[Item] amount: " + amount);
         return amount;
     }
 

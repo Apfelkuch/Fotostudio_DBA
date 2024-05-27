@@ -156,7 +156,7 @@ public class ServiceDialogBean implements Serializable {
         StorageStatus newStorageStatus = (StorageStatus) event.getNewValue();
         
         for (StorageStatus l : storageStatus_list) {
-            if (l.equals(currentStorageStatusName)) {
+            if (l.getName().equals(currentStorageStatusName)) {
                 currentService.setStorageStatus(l);
                 break;
             }
