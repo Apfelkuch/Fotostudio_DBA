@@ -5,6 +5,7 @@
       xmlns:ui="jakarta.faces.facelets">
     
     <div class="banner_items">
+        <ui:include src="../loginDialog.xhtml"/> 
         <h:form id="bannerform" style="display: ruby">
             <!--<p:focus for="bannerform:suche_katagorie" />-->
             <div style="margin: 20px; margin-right: 40px">
@@ -28,7 +29,16 @@
                                  disabled="#{bannerBean.basketSize == 0}"/>
             </p:badge>
             <p:commandButton type="button" icon="pi pi-user Fs23 "
-                             style="margin: 20px; margin-left: 40px; width: 64px; height: 64px;" />
+                             style="margin: 20px; width: 64px; height: 64px;"
+                             onclick="PF('dlglog').show()"
+                             action="#{loginCdiBean.reset}"
+                             update="@all"
+                             rendered='#{!loginCdiBean.login}'/>           
+            <p:commandButton icon="pi  pi-sign-out"
+                             style="margin: 20px; width: 64px; height: 64px;"
+                             action="#{loginCdiBean.logoutMSG}"
+                             update="@all"
+                             rendered='#{loginCdiBean.login}'/>           
         </h:form>
     </div>
 </ui:composition>
