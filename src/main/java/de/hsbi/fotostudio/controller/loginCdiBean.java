@@ -38,7 +38,7 @@ public class loginCdiBean implements Serializable {
         // Attempt to authenticate the user
         User currentUser = loginHandler.login(uname, password);
         // Check if authentication was successful and data is valid
-        if (currentUser != null & nameDataOk == true & pwdDataOk == true) {
+        if (currentUser != null && nameDataOk == true && pwdDataOk == true) {
 
             // Get Http Session and store user details
             HttpSession session = Util.getSession();
