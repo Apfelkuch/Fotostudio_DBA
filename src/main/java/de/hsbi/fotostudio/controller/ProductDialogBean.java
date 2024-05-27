@@ -6,6 +6,7 @@ import de.hsbi.fotostudio.modul.StorageStatus;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.util.ProductData;
+import de.hsbi.fotostudio.util.Util;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -28,8 +29,6 @@ import org.primefaces.PrimeFaces;
 @Named(value = "productDialogBean")
 @ViewScoped
 public class ProductDialogBean implements Serializable {
-    
-    private boolean editing = true;
     
     private static final Logger LOG = Logger.getLogger(ProductDialogBean.class.getName());
     
@@ -180,26 +179,17 @@ public class ProductDialogBean implements Serializable {
         
         return currentProduct.getId();
     }
-        
-    // GETTER && SETTER
-
+    
     /**
-     * Get Value of editing
+     * Returns true if the logged in user is admin or developer
      * 
-     * @return the value of editing
+     * @return true if logged in user is admin or developer
      */
     public boolean isEditing() {
-        return editing;
+        return Util.getUserRole() >= 1;
     }
-
-    /**
-     * Set Value of editing
-     * 
-     * @param editing the new value of editing
-     */
-    public void setEditing(boolean editing) {
-        this.editing = editing;
-    }
+        
+    // GETTER && SETTER
 
     /**
      * Get Value of products

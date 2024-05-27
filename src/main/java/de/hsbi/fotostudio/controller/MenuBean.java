@@ -6,6 +6,7 @@ import de.hsbi.fotostudio.modul.Item;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.modul.Service;
+import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
@@ -71,7 +72,7 @@ public class MenuBean implements Serializable{
      * @return true if user is logged in, otherwise false
      */
     public boolean isLoggedIn() {
-        return true;
+        return Util.isLoggedin();
     }
     
     /**

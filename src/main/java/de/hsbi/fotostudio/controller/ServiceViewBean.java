@@ -3,6 +3,7 @@ package de.hsbi.fotostudio.controller;
 import de.hsbi.fotostudio.modul.Basket;
 import de.hsbi.fotostudio.modul.Service;
 import de.hsbi.fotostudio.modul.Products;
+import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
@@ -31,8 +32,6 @@ public class ServiceViewBean implements Serializable{
     private Basket basket;
     
     private Service currentService;
-    
-    private boolean admin = true;
     
     private static final Logger LOG = Logger.getLogger(ServiceViewBean.class.getName());
     
@@ -115,6 +114,24 @@ public class ServiceViewBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    /**
+     * Returns true if the logged in user is admin or developer
+     * 
+     * @return true if logged in user is admin or developer
+     */
+    public boolean isAdmin() {
+        return Util.getUserRole() >= 1;
+    }
+
+    /**
+     * Returns true if the logged in user is developer
+     * 
+     * @return true if logged in user is admin or developer
+     */
+    public boolean isDeveloper() {
+        return Util.getUserRole() >= 2;
+    }
+
     // GETTER && SETTER
 
     /**
@@ -142,24 +159,6 @@ public class ServiceViewBean implements Serializable{
      */
     public void setCurrentService(Service currentService) {
         this.products.setCurrentService(currentService);
-    }
-    
-    /**
-     * Get Value of admin
-     * 
-     * @return the value of admin
-     */
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    /**
-     * Set Value of admin
-     * 
-     * @param admin the new value of admin
-     */
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
     }
     
 }

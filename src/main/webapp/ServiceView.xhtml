@@ -14,6 +14,7 @@
                     <p:toolbarGroup>
                         <p:commandLink value="Clear_multiViewState"
                                        action="#{serviceViewBean.clearMultiViewState()}"
+                                       rendered="#{serviceViewBean.developer}"
                                        update="growl"
                                        style="margin: 0 20px" />
                         <p:commandLink value="Neuer Service"
