@@ -11,7 +11,6 @@
           widgetVar="sD"
           responsive="true" >
     <h:form id="form-service-dialog">
-        <p:growl id="GROWL" showDetail="true" life="4000" />
         <p:panel id="panel"
                  style="width: 650px; margin: 0 auto;">
             <p:panelGrid id="product-dialog-content" 
@@ -24,30 +23,30 @@
                 <h:outputText value="Name:" />
                 <p:inputText id="NAME" 
                              value="#{serviceDialogBean.currentService.name}"
-                             disabled="#{!serviceDialogBean.editing}"
+                             readonly="#{!serviceDialogBean.editing}"
                              style="width: 100%"
                              placeholder="Servicename" >
                     <p:ajax event="change"
                             process="@this" 
-                            update="GROWL"/>
+                            update="growl"/>
                 </p:inputText>
                 <h:outputText value="Beschreibung:" />
                 <p:inputTextarea rows="5"
                                  cols="30"
                                  id="DESCRIPTION" 
                                  value="#{serviceDialogBean.currentService.description}"
-                                 disabled="#{!serviceDialogBean.editing}"
+                                 readonly="#{!serviceDialogBean.editing}"
                                  style="width: 100%"
                                  placeholder="Servicebeschreibung" >
                     <p:ajax event="change"
                             process="@this" 
-                            update="GROWL"/>
+                            update="growl"/>
                 </p:inputTextarea>
                 <h:outputText value="Kategorie:" />
                 <p:selectOneMenu id="CATEGORY"
                                  value="#{serviceDialogBean.currentService.category}" 
                                  valueChangeListener="#{serviceDialogBean.getCategory}"
-                                 disabled="#{!serviceDialogBean.editing}"
+                                 editable="#{serviceDialogBean.editing}"
                                  converter="serviceCategoryConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
@@ -57,18 +56,19 @@
                         noSelectionOption="true" />
                     <f:selectItems 
                         value="#{serviceDialogBean.category_list}" 
+                        itemDisabled="#{!productDialogBean.editing}"
                         var="category" 
                         itemLabel="#{category.name}" 
                         itemValue="#{category}"/>
                     <p:ajax event="change"
                             process="@this" 
-                            update="GROWL"/>
+                            update="growl"/>
                 </p:selectOneMenu>
                 <h:outputText value="Abrechnungsart:" />
                 <p:selectOneMenu id="BILLINGTYPE"
                                  value="#{serviceDialogBean.currentService.billingType.name}" 
                                  valueChangeListener="#{serviceDialogBean.getBillingType}"
-                                 disabled="#{!serviceDialogBean.editing}"
+                                 editable="#{serviceDialogBean.editing}"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
@@ -77,29 +77,30 @@
                         noSelectionOption="true"/>
                     <f:selectItems 
                         value="#{serviceDialogBean.billingType_list}" 
+                        itemDisabled="#{!productDialogBean.editing}"
                         var="billingType" 
                         itemLabel="#{billingType.name}" 
                         itemValue="#{billingType.name}"/>
                     <p:ajax event="change"
                             process="@this" 
-                            update="GROWL"/>
+                            update="growl"/>
                 </p:selectOneMenu>
                 <h:outputText value="Preis:" />
                 <p:inputNumber id="PRICE" 
                              value="#{serviceDialogBean.currentService.price}"
-                             disabled="#{!serviceDialogBean.editing}" 
+                             readonly="#{!serviceDialogBean.editing}" 
                              style="width: 100%"
                              placeholder="0,0" 
                              required="true">
                     <p:ajax event="change"
                             process="@this" 
-                            update="GROWL"/>
+                            update="growl"/>
                 </p:inputNumber>
                 <h:outputText value="Lagerstatus:" />
                 <p:selectOneMenu id="STORAGESTATUS"
                                  value="#{serviceDialogBean.currentService.storageStatus}" 
                                  valueChangeListener="#{serviceDialogBean.getStorageStatus}"
-                                 disabled="#{!serviceDialogBean.editing}"
+                                 editable="#{serviceDialogBean.editing}"
                                  converter="storageStatusConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
@@ -109,12 +110,13 @@
                         noSelectionOption="true"/>
                     <f:selectItems 
                         value="#{serviceDialogBean.storageStatus_list}" 
+                        itemDisabled="#{!productDialogBean.editing}"
                         var="storageStatus" 
                         itemLabel="#{storageStatus.name}" 
                         itemValue="#{storageStatus}"/>
                     <p:ajax event="change"
                             process="@this" 
-                            update="GROWL"/>
+                            update="growl"/>
                 </p:selectOneMenu>
             </p:panelGrid>
         <p:panelGrid columns="1">
