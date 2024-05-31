@@ -6,6 +6,7 @@ import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.modul.StorageStatus;
 import de.hsbi.fotostudio.modul.Service;
 import de.hsbi.fotostudio.util.ProductData;
+import de.hsbi.fotostudio.util.Util;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -28,8 +29,6 @@ import org.primefaces.PrimeFaces;
 @Named(value = "serviceDialogBean")
 @ViewScoped
 public class ServiceDialogBean implements Serializable {
-    
-    private boolean editing = true;
     
     private static final Logger LOG = Logger.getLogger(ServiceDialogBean.class.getName());
     
@@ -81,11 +80,17 @@ public class ServiceDialogBean implements Serializable {
         if (!products.isAddNewItem()) {
             currentService.setId(products.getCurrentService().getId());
             products.updateService(currentService.getId(), currentService);
+            // set Category to reload the product list
+            products.selectServiceCategory(currentService.getCategory().getId());
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service gespeichert", "");
             PrimeFaces.current().ajax().update("form-service-view:data-view");
         } else {
-            Service s = productData.addService_list(currentService);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service hinzugefügt", s.toString());
+            if (!currentService.getName().isBlank()) {
+                Service s = productData.addService_list(currentService);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service hinzugefügt", s.toString());
+            } else {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Kein Service hinzugefügt", "Ein Service braucht mindestens einen Namen");
+            }
         }
         PrimeFaces.current().ajax().update("form-service-dialog");
         PrimeFaces.current().executeScript("PF('sD').hide()");
@@ -123,7 +128,6 @@ public class ServiceDialogBean implements Serializable {
      * @param event the ValueChangeEvent contains Information about the state
      * befor and after the ValueChange
      */
-
     public void getBillingType(ValueChangeEvent event) {
         currentBillingTypeName = (String) event.getNewValue();
         for (BillingType abrechnungsart : billingType_list) {
@@ -151,7 +155,7 @@ public class ServiceDialogBean implements Serializable {
         StorageStatus newStorageStatus = (StorageStatus) event.getNewValue();
         
         for (StorageStatus l : storageStatus_list) {
-            if (l.equals(currentStorageStatusName)) {
+            if (l.getName().equals(currentStorageStatusName)) {
                 currentService.setStorageStatus(l);
                 break;
             }
@@ -177,27 +181,18 @@ public class ServiceDialogBean implements Serializable {
         
         return currentService.getId();
     }
-        
-    // GETTER && SETTER
 
     /**
-     * Get Value of editing
+     * Returns true if the logged in user is admin or developer
      * 
-     * @return the value of editing
+     * @return true if logged in user is admin or developer
      */
     public boolean isEditing() {
-        return editing;
+        return Util.getUserRole() >= 1;
     }
 
-    /**
-     * Set Value of editing
-     * 
-     * @param editing the new value of editing
-     */
-    public void setEditing(boolean editing) {
-        this.editing = editing;
-    }
-
+        
+    // GETTER && SETTER
     /**
      * Get Value of products
      * 

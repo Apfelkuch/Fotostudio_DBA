@@ -8,16 +8,16 @@
         <ui:include src="ProductDialog.xhtml"/>
         <div class="card">
             <h:form id="form-product-view">
-                <p:growl id="growl" showDetail="true" />
                 
                 <p:toolbar rendered="#{productViewBean.admin}">
                     <p:toolbarGroup>
                         <p:commandLink value="Clear_multiViewState"
                                        action="#{productViewBean.clearMultiViewState()}"
+                                       rendered="#{serviceViewBean.developer}"
                                        update="growl"
                                        style="margin: 0 20px" />
                         <p:commandLink value="Neues Produkt"
-                                       action="#{productViewBean.addProduct()}"
+                                       action="#{productViewBean.createProduct()}"
                                        update="@form"
                                        type="button"
                                        onclick="PF('pD').show()"
@@ -67,10 +67,11 @@
                                                      action="#{productViewBean.info(product)}" >
                                         <f:ajax event="click" onevent="PF('pD').show()" />
                                     </p:commandButton>
-                                    <p:commandButton type="button"
-                                                     icon="pi pi-shopping-cart"
+                                    <p:commandButton icon="pi pi-shopping-cart"
                                                      styleClass="rounded-button product-grid-action-buy"
-                                                     disabled="#{product.storageStatus.id == 2}">
+                                                     update="@all"
+                                                     action="#{productViewBean.addProductToBasket(product)}"
+                                                     disabled="#{!(product.amount > 0) or (product.storageStatus.id == 2)}">
                                     </p:commandButton>
                                 </div>
                             </div>
@@ -104,10 +105,11 @@
                                                      action="#{productViewBean.info(product)}" >
                                         <f:ajax event="click" onevent="PF('pD').show()" />
                                     </p:commandButton>
-                                    <p:commandButton type="button"
-                                                     icon="pi pi-shopping-cart"
+                                    <p:commandButton icon="pi pi-shopping-cart"
                                                      styleClass="rounded-button"
-                                                     disabled="#{product.storageStatus.id == 2}" >
+                                                     update="@all"
+                                                     action="#{productViewBean.addProductToBasket(product)}"
+                                                     disabled="#{!(product.amount > 0) or (product.storageStatus.id == 2)}">
                                     </p:commandButton>
                                 </div>
                             </div>

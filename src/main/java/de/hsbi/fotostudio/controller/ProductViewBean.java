@@ -1,7 +1,9 @@
 package de.hsbi.fotostudio.controller;
 
+import de.hsbi.fotostudio.modul.Basket;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
+import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
@@ -26,9 +28,10 @@ public class ProductViewBean implements Serializable{
     @Inject
     private Products products;
     
-    private Product currentProduct;
+    @Inject
+    private Basket basket;
     
-    private boolean admin = true;
+    private Product currentProduct;
     
     private static final Logger LOG = Logger.getLogger(ProductViewBean.class.getName());
     
@@ -46,15 +49,15 @@ public class ProductViewBean implements Serializable{
         LOG.info("clearMultiViewState");
         FacesContext context = FacesContext.getCurrentInstance();
         String viewId = context.getViewRoot().getViewId();
-        PrimeFaces.current().multiViewState().clearAll(viewId, true, this::showMessage);
+        PrimeFaces.current().multiViewState().clearAll(viewId, true, this::showViewStateMessage);
     }
 
     /**
-     * This Methode adds a Message to visualize that the Multiviewstate has been cleared.
+     * This Methode adds a growl to visualize that the Multiviewstate has been cleared.
      * 
      * @param id the id of the user, where the multistate View has been cleared.
      */
-    private void showMessage(String id) {
+    private void showViewStateMessage(String id) {
         FacesContext.getCurrentInstance()
                 .addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, id 
@@ -74,14 +77,59 @@ public class ProductViewBean implements Serializable{
     }
     
     /**
-     * Methode to add a new Product
+     * Methode to create a new Product
      */
-    public void addProduct() {
+    public void createProduct() {
         LOG.info("[ProductViewBean] add Product");
         products.setAddNewItem(true);
         products.setCurrentProduct(new Product());
-//        PrimeFaces.current().ajax().update(":form-product-dialog");
-        LOG.info("[ProductViewBean] add Product : " + products.getCurrentProduct().toString());
+        PrimeFaces.current().ajax().update(":form-product-dialog");
+        LOG.info("[ProductViewBean] add Product : "
+                + products.getCurrentProduct().toString());
+    }
+    
+    /**
+     * Methode to add a product to the basket
+     * 
+     * @param product the product to be added 
+     */
+    public void addProductToBasket(Product product) {
+        LOG.info("[ProductViewBean] add Product to basket");
+        int count = basket.incrementBasketItem(product);
+        showMassage(new FacesMessage(
+                FacesMessage.SEVERITY_INFO,
+                "Produkt in Warenkorb hinzugefügt",
+                product.getName() + " ist " + count + " mal im Warenkorb"
+        ));
+        LOG.info("[ProductViewBean] Product (" + product.getName() + ") is "
+                + count + " times in the basket");
+    }
+    
+    /**
+     * This Methode adds a growl with a given message
+     * 
+     * @param message the message which is displayed
+     */
+    private void showMassage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    /**
+     * Returns true if the logged in user is admin or developer
+     * 
+     * @return true if logged in user is admin or developer
+     */
+    public boolean isAdmin() {
+        return Util.getUserRole() >= 1;
+    }
+
+    /**
+     * Returns true if the logged in user is developer
+     * 
+     * @return true if logged in user is admin or developer
+     */
+    public boolean isDeveloper() {
+        return Util.getUserRole() >= 2;
     }
 
     // GETTER && SETTER
@@ -111,24 +159,6 @@ public class ProductViewBean implements Serializable{
      */
     public void setCurrentProduct(Product currentProduct) {
         products.setCurrentProduct(currentProduct);
-    }
-    
-    /**
-     * Get Value of admin
-     * 
-     * @return the value of admin
-     */
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    /**
-     * Set Value of admin
-     * 
-     * @param admin the new value of admin
-     */
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
     }
     
 }

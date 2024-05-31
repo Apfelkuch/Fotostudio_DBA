@@ -4,49 +4,60 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="jakarta.faces.facelets">
 
-    <div>
-        <h:form>
-            <p:inputText id="suche_katagorie"
-                         placeholder="Suche"
-                         style="width: 100%; margin-bottom: 1.5rem; margin-top: 1.5rem;"
-                         value="#{menuBean.searchContent}"
-                         onsearch="#{menuBean.search()}"/>
-            <br/>
-            <p:menu id="menubar">
-                <p:submenu label="Kategorien">
-                    <p:submenu label="Dientsleistungen">
-                        <p:menuitem value="Alles"
-                                    icon="pi pi-home"
-                                    ajax="false"
-                                    action="#{menuBean.changeServiceCategory(0)}">
-                            <f:ajax event="click"
-                                    render="form-service-view:data-view"/>
-                                    
-                        </p:menuitem>
-                        <p:menuitem value="Innerhaus"
-                                    icon="pi pi-image"
-                                    ajax="false"
-                                    update="form-service-view:data-view"
-                                    action="#{menuBean.changeServiceCategory(1)}" />
-                        <p:menuitem value="Außerhaus"
-                                    icon="pi pi-star"
-                                    ajax="false"
-                                    update="form-service-view:data-view"
-                                    action="#{menuBean.changeServiceCategory(2)}" />
-                    </p:submenu>
-                    <p:divider />
-                    <p:submenu label="Produkte">
-                        <p:menuitem value="Alles"
-                                    icon="pi pi-home"
-                                    ajax="false"
-                                    action="#{menuBean.changeProductCategory(0)}" />
-                        <p:menuitem value="Equipment"
-                                    icon="pi pi-camera"
-                                    ajax="false"
-                                    action="#{menuBean.changeProductCategory(1)}" />
-                    </p:submenu>
+    <h:form>
+        <p:menu id="menubar">
+            <p:submenu label="Kategorien">
+                <p:divider />
+                <p:submenu label="Dientsleistungen">
+                    <p:menuitem value="Alles"
+                                icon="pi pi-home"
+                                ajax="false"
+                                action="#{menuBean.changeServiceCategory(0)}" />
+                    <p:menuitem value="Innerhaus"
+                                icon="pi pi-image"
+                                ajax="false"
+                                action="#{menuBean.changeServiceCategory(1)}" />
+                    <p:menuitem value="Außerhaus"
+                                icon="pi pi-star"
+                                ajax="false"
+                                action="#{menuBean.changeServiceCategory(2)}" />
                 </p:submenu>
-            </p:menu>
-        </h:form>
-    </div>
+                <p:divider />
+                <p:submenu label="Produkte">
+                    <p:menuitem value="Alles"
+                                icon="pi pi-home"
+                                ajax="false"
+                                action="#{menuBean.changeProductCategory(0)}" />
+                    <p:menuitem value="Equipment"
+                                icon="pi pi-camera"
+                                ajax="false"
+                                action="#{menuBean.changeProductCategory(1)}" />
+                </p:submenu>
+            </p:submenu>
+        </p:menu>
+    </h:form>
+    <h:form id="FORM-CHECKOUT" rendered="#{menuBean.basketPrice > 0}">
+        <div style="margin: 5px; margin-top: 3rem; border-width: 1px; border-color: black; background-color: white" >
+            <p:divider />
+            <div style="margin: 20px; display: flex">
+                <i class="pi pi-wallet" style="margin-right: 20px" />
+                <p:commandLink id="CHECKOUT"
+                               value="Kasse"
+                               disabled="#{!menuBean.loggedIn}"
+                               update="@all"
+                               action="#{menuBean.checkout()}"/>
+            </div>
+            <p:divider />
+            <p:outputLabel value="Einkaufspreis" style="margin: 20px; display: flex; justify-content: center"/>
+            <p:divider />
+            <p:outputLabel value="#{menuBean.basketPrice}" style="margin: 20px; display: flex; justify-content: center">
+                <f:convertNumber type="currency" currencySymbol="€" maxFractionDigits="2" />
+            </p:outputLabel>
+            <p:divider />
+            <p:outputLabel value="Bitte anmelden, um zur Kasse gehen zu können!"
+                           rendered="#{!menuBean.loggedIn}"
+                           style="margin: 20px; display: flex; justify-content: center; text-align: center" />
+            <p:divider />
+        </div>
+    </h:form>
 </ui:composition>

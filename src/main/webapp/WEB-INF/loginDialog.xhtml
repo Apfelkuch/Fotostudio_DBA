@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets">
+    <p:dialog 
+        header="Login-Dialog" 
+        showEffect="fade" 
+        modal="true" 
+        resizable="false" 
+        appendTo="@(body)" 
+        widgetVar="dlglog"
+        responsive="true">
+        <h:form id="FORMLOG">
+            <p:panel id="PANLOG" header="Login"
+                     style="width: 600px; margin: 0 auto;">
+                <h:panelGrid 
+                    id="PANGRIDLOG" 
+                    columns="3" 
+                    cellpadding="5">
+
+                    <h:outputText value="Benutzername" />
+                    <p:inputText 
+                        id="USERNAME" 
+                        value="#{loginCdiBean.uname}"
+                        placeholder="Name (min. 5 Zeichen !)"
+                        validator='#{loginCdiBean.checkName}'
+                        required="true"
+                        requiredMessage="Eingabe erforderlich!">
+                        <p:ajax 
+                            event="blur"
+                            update="USERNAME_MSG"
+                            process="@this"/>
+                    </p:inputText>
+                    <p:message for="USERNAME" id="USERNAME_MSG"/>
+
+                    <h:outputText value="Passwort" />
+                    <p:password 
+                        id="PWD" 
+                        value="#{loginCdiBean.password}"
+                        feedback="false"
+                        placeholder="Mindestens 5 Zeichen !"
+                        validator='#{loginCdiBean.checkPwd}'
+                        required="true"
+                        requiredMessage="Eingabe erforderlich!">                      
+                        <p:ajax 
+                            event="blur"                            
+                            update="PWD_MSG"
+                            process="@this"/>
+                    </p:password>
+                    <p:message for="PWD" id="PWD_MSG"/>
+                </h:panelGrid>
+
+                <p:commandButton 
+                    id="BTNLOGIN" 
+                    action="#{loginCdiBean.loginProject()}"
+                    value="Login" 
+                    update="@all"                    
+                    style="float: right">
+                </p:commandButton> 
+
+                <p:divider align="left">
+                    <b>ODER</b>
+                </p:divider>  
+                <h:panelGrid
+                    id="PANGRIDREG" 
+                    columns="2" 
+                    cellpadding="5">
+                    <h:outputText value="Noch nicht registriert?" />
+                    <p:commandButton 
+                        id="BTNREGISTER"
+                        value="Registrieren"                     
+                        update="FORMLOG"  
+                        onclick="PF('dlgreg').show(), PF('dlglog').hide()"
+                        style="float: right;background-color: green; border-color: green; text">
+                    </p:commandButton>                   
+                </h:panelGrid>
+            </p:panel>            
+        </h:form>
+        <ui:include src="registerDialog.xhtml"/>
+    </p:dialog>
+</html>

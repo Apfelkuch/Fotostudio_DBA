@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <p:dialog 
+        header="Registrierung" 
+        showEffect="fade" 
+        modal="true" 
+        resizable="false" 
+        appendTo="@(body)" 
+        widgetVar="dlgreg"
+        responsive="true"
+        onHide="PF('dlglog').show()">
+        <h:form id="FORMREG">
+            <p:panel id="PANREG" header="Benutzerdaten"
+                     style="width: 700px; margin: 0 auto;">
+                <h:panelGrid 
+                    id="PANGRIDUNAME" 
+                    columns="3" 
+                    cellpadding="5"
+                    style="border-spacing: 15px">
+                    <h:outputText value="Benutzername: *" />
+                    <p:inputText 
+                        id="USERNAMEREG" 
+                        value="#{registerCdiBean.username}"
+                        placeholder="login (min. 5 Zeichen !)"
+                        validator='#{registerCdiBean.checkName}'
+                        required="true"
+                        requiredMessage="Eingabe erforderlich!">
+                        <p:ajax 
+                            event="blur" 
+                            update="USERNAMEREG_MSG" 
+                            process="@this"/>
+                    </p:inputText>
+                    <p:message for="USERNAMEREG" id="USERNAMEREG_MSG"/>
+
+                    <h:outputText value="Passwort: *" />
+                    <p:password 
+                        id="PWDREG" 
+                        value="#{registerCdiBean.password}"
+                        feedback="false"
+                        placeholder="Mindestens 5 Zeichen !"
+                        validator="#{registerCdiBean.checkPwd}"
+                        required="true"
+                        requiredMessage="Eingabe erforderlich!">
+                        <p:ajax 
+                            event="blur" 
+                            update="PWDREG_MSG" 
+                            process="@this"/>
+                    </p:password>
+                    <p:message for="PWDREG" id="PWDREG_MSG"/>
+
+                    <h:outputText value="E-Mail: *" />
+                    <p:inputText 
+                        id="EMAIL" 
+                        value="#{registerCdiBean.email}"
+                        placeholder="user@domain.de"
+                        validator="#{registerCdiBean.checkEmail}"
+                        required="true"
+                        requiredMessage="Eingabe erforderlich!">
+                        <p:ajax 
+                            event="blur" 
+                            update="EMAIL_MSG" 
+                            process="@this"/>
+                    </p:inputText>
+                    <p:message for="EMAIL" id="EMAIL_MSG"/>
+
+                    <h:outputText value="Geburtstag: *" />   
+                    <p:inputText 
+                        id="BDAY" 
+                        value="#{registerCdiBean.date}"
+                        placeholder="tt.mm.jjjj"
+                        validator="#{registerCdiBean.checkBday}"
+                        required="true"
+                        requiredMessage="Eingabe erforderlich!">
+                        <p:ajax 
+                            event="blur" 
+                            update="BDAY_MSG" 
+                            process="@this"/>
+                    </p:inputText>
+                    <p:message for="BDAY" id="BDAY_MSG"/>
+                </h:panelGrid>
+                <p:divider align="left">
+                    <b>* Pflichtfelder</b>
+                </p:divider>
+                <h:panelGrid 
+                    columns="1" 
+                    cellpadding="10" 
+                    width="100%">
+                    <p:commandButton 
+                        id="BTNREGBEST" 
+                        action="#{registerCdiBean.insertNewUser()}"
+                        value="Regestrieren" 
+                        update="@form"                      
+                        style="float: right;">                        
+                    </p:commandButton>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</html>

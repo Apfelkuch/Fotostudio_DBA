@@ -8,20 +8,12 @@ import java.util.logging.Logger;
  * @version 0.1
  * @author Janis Wiegräbe
  */
-public class Product {
+public class Product extends Item {
     
     private int id;
-    private String name;
     private String description;
     private Category category;
     private BillingType billingType;
-    private float price;
-    
-    /**
-     * <= 0 : amount available
-     *  -1  : amount unlimited
-     */
-    private int amount;
     private StorageStatus storageStatus;
     
     private static final Logger LOG = Logger.getLogger(Product.class.getName());
@@ -30,6 +22,7 @@ public class Product {
      * Creates instance of Product
      */
     public Product() {
+        super();
         this.id = -1;
         category = new Category();
         billingType = new BillingType();
@@ -49,13 +42,11 @@ public class Product {
      * @param storageStatus the storageStatus parameter for the new instance
      */
     public Product(int id, String name, String description, Category category, BillingType billingType, float price, int amount, StorageStatus storageStatus) {
+        super(name, price, amount);
         this.id = id;
-        this.name = name;
         this.description = description;
         this.category = category;
         this.billingType = billingType;
-        this.price = price;
-        this.amount = amount;
         this.storageStatus = storageStatus;
     }
     
@@ -77,6 +68,7 @@ public class Product {
      */
     @Override
     public boolean equals(Object obj) {
+        LOG.info("[Product] equals method called");
         if (this == obj)
             return true;
         if (obj == null)
@@ -97,6 +89,16 @@ public class Product {
         return "[" + id + ", " + name + ", " + description 
                 + ", " + category.getName() + ", " + billingType.getName() + ", " 
                 + amount + ", " + price + ", " + storageStatus.getName()+ "]";
+    }
+    
+    /**
+     * Returns a identification String for this class
+     * 
+     * @return the identifikation String
+     */
+    @Override
+    public String getType() {
+        return "Service";
     }
     
     /**
@@ -127,24 +129,6 @@ public class Product {
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * Get Value of name
-     * 
-     * @return the value of name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set Value of name
-     * 
-     * @param name the new value of name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -199,42 +183,6 @@ public class Product {
      */
     public void setBillingType(BillingType billingType) {
         this.billingType = billingType;
-    }
-
-    /**
-     * Get Value of price
-     * 
-     * @return the value of price
-     */
-    public float getPrice() {
-        return price;
-    }
-
-    /**
-     * Set Value of price
-     * 
-     * @param price the new value of price
-     */
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    /**
-     * Get Value of amount
-     * 
-     * @return the value of amount
-     */
-    public int getAmount() {
-        return amount;
-    }
-
-    /**
-     * Set Value of amount
-     * 
-     * @param amount the new value of amount
-     */
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     /**
