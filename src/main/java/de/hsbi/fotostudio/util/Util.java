@@ -58,12 +58,16 @@ public class Util {
      * Retrieves the role of the current user from the session.
      * @return The role of the current user
      */
-    public static String getUserRole() {
+    public static int getUserRole() {
         HttpSession session = getSession();
-        if (session != null)
-            return (String) session.getAttribute("userrole");
-        else
-            return null;
+        Object o;
+        if (session != null) {
+            o = session.getAttribute("userrole");
+            if (o != null) {
+                return (int) o;
+            }
+        }
+        return -1;
     }
     
     /**
@@ -72,10 +76,14 @@ public class Util {
      */
     public static boolean isLoggedin() {
         HttpSession session = getSession();
-        if (session != null)
-            return (boolean) session.getAttribute("loggedin");
-        else
-            return false;
+        Object o;
+        if (session != null) {
+            o = session.getAttribute("loggedin");
+            if (o != null) {
+                return (boolean) o;
+            }
+        }
+        return false;
     }
     
     /**
