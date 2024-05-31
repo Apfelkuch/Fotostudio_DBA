@@ -111,6 +111,24 @@ public class MenuBean implements Serializable{
     }
     
     /**
+     * Returns the path to the Customer view
+     * 
+     * @return the path to the Customer view
+     */
+    public String selectCustomerView() {
+        return "CustomerView?faces-redirect=true";
+    }
+    
+    /**
+     * Returns true if the logged in user is admin or developer
+     * 
+     * @return true if logged in user is admin or developer
+     */
+    public boolean isAdmin() {
+        return Util.getUserRole() >= 1;
+    }
+    
+    /**
      * This Methode adds a growl with a given message
      * 
      * @param message the message which is displayed

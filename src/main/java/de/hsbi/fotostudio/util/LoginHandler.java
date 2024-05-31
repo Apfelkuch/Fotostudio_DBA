@@ -78,4 +78,25 @@ public class LoginHandler implements Serializable {
         }
         return false;
     }
+    
+    /**
+     * Returns a List of all Users which purchased something in the last
+     * 3 months. The Users are sorted in descending order of their purchases.
+     * 
+     * @return list of top seller users
+     */
+    public List<User> selectTopSeller() {
+        return loginListDAO;
+    }
+    
+    /**
+     * Returns a List of all Users which have not purchased something
+     * this year.
+     * 
+     * @return list of the shop keeper users
+     */
+    public List<User> selectShopKeeper() {
+        return loginListDAO;
+    }
+    
 }

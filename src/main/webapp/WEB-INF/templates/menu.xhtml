@@ -6,6 +6,11 @@
 
     <h:form>
         <p:menu id="menubar">
+            <p:menuitem value="Kundenansicht"
+                        icon="pi pi-users"
+                        action="#{menuBean.selectCustomerView()}"
+                        rendered="#{menuBean.admin}" />
+            <p:divider rendered="#{menuBean.admin}" />
             <p:submenu label="Kategorien">
                 <p:divider />
                 <p:submenu label="Dientsleistungen">
