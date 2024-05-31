@@ -116,7 +116,7 @@
 }
 
 .product-grid-item-content {
-    height: 7rem;
+    height: auto;
     width: 100%;
     padding: 0 1rem;
 }
@@ -151,9 +151,17 @@
     margin-top:-1em;
 }
 
+.image-list {
+    margin: 10px;
+    width: 150px;
+    object-fit: contain;
+}
 
-
-
-
-
-
+.image-grid {
+    margin: 10px;
+    object-fit: contain;
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
