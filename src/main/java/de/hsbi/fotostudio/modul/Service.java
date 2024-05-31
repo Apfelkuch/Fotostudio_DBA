@@ -15,6 +15,7 @@ public class Service extends Item {
     private Category category;
     private BillingType billingType;
     private StorageStatus storageStatus;
+    private String image;
     
     private static final Logger LOG = Logger.getLogger(Service.class.getName());
     
@@ -30,7 +31,7 @@ public class Service extends Item {
     }
 
     /**
-     * Creates instance of Product using the id, name, beschriebung, category, abrechnungart, price, amount und storageStatus parameters
+     * Creates instance of Product using the id, name, beschriebung, category, abrechnungart, price, amount, storageStatus and image parameters
      * 
      * @param id the id parameter for the new instance
      * @param name the name parameter for the new instance
@@ -39,8 +40,9 @@ public class Service extends Item {
      * @param billingType the billingType parameter for the new instance
      * @param price the price parameter for the new instance
      * @param storageStatus the storageStatus parameter for the new instance
+     * @param image the image path parameter for the new instance
      */
-    public Service(int id, String name, String description, Category category, BillingType billingType, float price, StorageStatus storageStatus) {
+    public Service(int id, String name, String description, Category category, BillingType billingType, float price, StorageStatus storageStatus, String image) {
         super(name, price, -1);
         this.id = id;
         this.name = name;
@@ -49,6 +51,7 @@ public class Service extends Item {
         this.billingType = billingType;
         this.price = price;
         this.storageStatus = storageStatus;
+        this.image = image;
     }
     
     /**
@@ -89,7 +92,8 @@ public class Service extends Item {
     public String toString() {
         return "[" + id + ", " + name + ", " + description 
                 + ", " + category.getName() + ", " + billingType.getName()
-                + ", " + price + ", " + storageStatus.getName()+ "]";
+                + ", " + price + ", " + storageStatus.getName()
+                + ", " + image + "]";
     }
     
     /**
@@ -202,6 +206,24 @@ public class Service extends Item {
      */
     public void setStorageStatus(StorageStatus storageStatus) {
         this.storageStatus = storageStatus;
+    }
+
+    /**
+     * Get Value of image
+     * 
+     * @return the value of image
+     */
+    public String getImage() {
+        return image;
+    }
+    /**
+     * Set Value of image
+     * 
+     * @param image the new value of image
+     */
+
+    public void setImage(String image) {
+        this.image = image;
     }
     
 }

@@ -15,6 +15,7 @@ public class Product extends Item {
     private Category category;
     private BillingType billingType;
     private StorageStatus storageStatus;
+    private String image;
     
     private static final Logger LOG = Logger.getLogger(Product.class.getName());
     
@@ -30,7 +31,7 @@ public class Product extends Item {
     }
 
     /**
-     * Creates instance of Product using the id, name, beschriebung, category, abrechnungart, price, amount und storageStatus parameters
+     * Creates instance of Product using the id, name, beschriebung, category, abrechnungart, price, amount, storageStatus and image parameters
      * 
      * @param id the id parameter for the new instance
      * @param name the name parameter for the new instance
@@ -40,14 +41,16 @@ public class Product extends Item {
      * @param price the price parameter for the new instance
      * @param amount the amount parameter for the new instance
      * @param storageStatus the storageStatus parameter for the new instance
+     * @param image the image path parameter for the new instance
      */
-    public Product(int id, String name, String description, Category category, BillingType billingType, float price, int amount, StorageStatus storageStatus) {
+    public Product(int id, String name, String description, Category category, BillingType billingType, float price, int amount, StorageStatus storageStatus, String image) {
         super(name, price, amount);
         this.id = id;
         this.description = description;
         this.category = category;
         this.billingType = billingType;
         this.storageStatus = storageStatus;
+        this.image = image;
     }
     
     /**
@@ -88,7 +91,8 @@ public class Product extends Item {
     public String toString() {
         return "[" + id + ", " + name + ", " + description 
                 + ", " + category.getName() + ", " + billingType.getName() + ", " 
-                + amount + ", " + price + ", " + storageStatus.getName()+ "]";
+                + amount + ", " + price + ", " + storageStatus.getName()
+                + ", " + image + "]";
     }
     
     /**
@@ -201,6 +205,24 @@ public class Product extends Item {
      */
     public void setStorageStatus(StorageStatus storageStatus) {
         this.storageStatus = storageStatus;
+    }
+
+    /**
+     * Get Value of image
+     * 
+     * @return the value of image
+     */
+    public String getImage() {
+        return image;
+    }
+    /**
+     * Set Value of image
+     * 
+     * @param image the new value of image
+     */
+
+    public void setImage(String image) {
+        this.image = image;
     }
     
 }

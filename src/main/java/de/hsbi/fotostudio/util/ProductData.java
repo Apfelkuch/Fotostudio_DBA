@@ -61,22 +61,22 @@ public class ProductData implements Serializable{
         billingType_list.add(new BillingType(3, "Pro Familie"));
         
         product_list = new ArrayList<>();
-        product_list.add(new Product(0, "Canon EOS 2000D", "Die Canon EOS 2000D Gehäuse ist eine vielseitige und benutzerfreundliche Spiegelreflexkamera, die sich perfekt für den angehenden Fotografen eignet.", product_category_list.get(1), billingType_list.get(2), 500.0f, 1, storageStatus_list.get(0)));
-        product_list.add(new Product(1, "Objektive 18-55mm DC", "Canon EF-S 18–55 mm DC III ƒ/3,5-5,6:\n - Brennweite 29-88 mm\n - Kreisförmige Blende für gute Hintergrundunschärfe", product_category_list.get(1), billingType_list.get(2), 150.0f, 3, storageStatus_list.get(0)));
-        product_list.add(new Product(2, "Objektive 75-300mm III", "Canon EF 75–300 mm ƒ/4-5,6 III:\n - Telezoomobjektiv\n - Minimale Blende: 32–45", product_category_list.get(1), billingType_list.get(2), 150.0f, 2, storageStatus_list.get(0)));
-        product_list.add(new Product(3, "Canon EOS 250D", "Canon EOS 250D:\n - ISO 100-25.600 (erweiterbar auf 51.200)\n - Objektivanschluss: EF / EF-S", product_category_list.get(1), billingType_list.get(2), 450.0f, 0, storageStatus_list.get(2)));
+        product_list.add(new Product(0, "Canon EOS 2000D", "Die Canon EOS 2000D Gehäuse ist eine vielseitige und benutzerfreundliche Spiegelreflexkamera, die sich perfekt für den angehenden Fotografen eignet.", product_category_list.get(1), billingType_list.get(2), 500.0f, 1, storageStatus_list.get(0), "camera.jpg"));
+        product_list.add(new Product(1, "Objektive 18-55mm DC", "Canon EF-S 18–55 mm DC III ƒ/3,5-5,6:\n - Brennweite 29-88 mm\n - Kreisförmige Blende für gute Hintergrundunschärfe", product_category_list.get(1), billingType_list.get(2), 150.0f, 3, storageStatus_list.get(0), "camera.jpg"));
+        product_list.add(new Product(2, "Objektive 75-300mm III", "Canon EF 75–300 mm ƒ/4-5,6 III:\n - Telezoomobjektiv\n - Minimale Blende: 32–45", product_category_list.get(1), billingType_list.get(2), 150.0f, 2, storageStatus_list.get(0), "camera.jpg"));
+        product_list.add(new Product(3, "Canon EOS 250D", "Canon EOS 250D:\n - ISO 100-25.600 (erweiterbar auf 51.200)\n - Objektivanschluss: EF / EF-S", product_category_list.get(1), billingType_list.get(2), 450.0f, 0, storageStatus_list.get(2), "camera.jpg"));
      
         service_list = new ArrayList<>();
-        service_list.add(new Service(0, "Analogbilder Drucken", "Drucken von einem eigenen Bildes als Analogbild", service_category_list.get(1), billingType_list.get(0), 8f, storageStatus_list.get(0)));
-        service_list.add(new Service(1, "Kalender Drucken", "Drucken von einem eigenen Kalender", service_category_list.get(1), billingType_list.get(2), 12.3f, storageStatus_list.get(0)));
-        service_list.add(new Service(2, "Bilder Drucken", "Drucken von einem einem Bild", service_category_list.get(1), billingType_list.get(0), 2.5f, storageStatus_list.get(0)));
-        service_list.add(new Service(3, "Poster Drucken", "Drucken von einem einem Poster", service_category_list.get(1), billingType_list.get(0), 5.5f, storageStatus_list.get(0)));
-        service_list.add(new Service(4, "Passbilder", "Erstellen von 4 Passbildern", service_category_list.get(1), billingType_list.get(1), 6f, storageStatus_list.get(0)));
-        service_list.add(new Service(5, "Familienbilder", "Familienbilder im eigenen Fotostudio erstellen", service_category_list.get(1), billingType_list.get(3), 32.5f, storageStatus_list.get(1)));
-        service_list.add(new Service(6, "Hochzeitsbilder", "Hochzeitbilder im eigenen Fotostudio erstellen", service_category_list.get(1), billingType_list.get(3), 50f, storageStatus_list.get(0)));
-        service_list.add(new Service(7, "Hochzeitsbilder", "Hochzeitbilder erstellen. Der Ort ist frei wählbar", service_category_list.get(2), billingType_list.get(3), 70, storageStatus_list.get(1)));
-        service_list.add(new Service(8, "Auftragsbilder Ort", "Professionelle Bilder von einem Ort", service_category_list.get(2), billingType_list.get(2), 60f, storageStatus_list.get(0)));
-        service_list.add(new Service(9, "Auftragsbilder Person", "Professionelle Bilder von einer Person", service_category_list.get(1), billingType_list.get(1), 60f, storageStatus_list.get(2)));
+        service_list.add(new Service(0, "Analogbilder Drucken", "Drucken von einem eigenen Bildes als Analogbild", service_category_list.get(1), billingType_list.get(0), 8f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(1, "Kalender Drucken", "Drucken von einem eigenen Kalender", service_category_list.get(1), billingType_list.get(2), 12.3f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(2, "Bilder Drucken", "Drucken von einem einem Bild", service_category_list.get(1), billingType_list.get(0), 2.5f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(3, "Poster Drucken", "Drucken von einem einem Poster", service_category_list.get(1), billingType_list.get(0), 5.5f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(4, "Passbilder", "Erstellen von 4 Passbildern", service_category_list.get(1), billingType_list.get(1), 6f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(5, "Familienbilder", "Familienbilder im eigenen Fotostudio erstellen", service_category_list.get(1), billingType_list.get(3), 32.5f, storageStatus_list.get(1), "hsbi.jpg"));
+        service_list.add(new Service(6, "Hochzeitsbilder", "Hochzeitbilder im eigenen Fotostudio erstellen", service_category_list.get(1), billingType_list.get(3), 50f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(7, "Hochzeitsbilder", "Hochzeitbilder erstellen. Der Ort ist frei wählbar", service_category_list.get(2), billingType_list.get(3), 70, storageStatus_list.get(1), "hsbi.jpg"));
+        service_list.add(new Service(8, "Auftragsbilder Ort", "Professionelle Bilder von einem Ort", service_category_list.get(2), billingType_list.get(2), 60f, storageStatus_list.get(0), "hsbi.jpg"));
+        service_list.add(new Service(9, "Auftragsbilder Person", "Professionelle Bilder von einer Person", service_category_list.get(1), billingType_list.get(1), 60f, storageStatus_list.get(2), "hsbi.jpg"));
         
     }
     
