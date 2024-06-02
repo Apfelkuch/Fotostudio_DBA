@@ -1,0 +1,18 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 01.06.2024, 21:06:53
+    Author     : Frederick
+*/
+
+body .ui-growl {
+    top: auto !important;
+    bottom: 20px !important; /* Anpassen nach Bedarf */
+    right: 20px !important;  /* Anpassen nach Bedarf */
+}
+
+.ui-growl-item-container {
+    opacity: 1;
+}
