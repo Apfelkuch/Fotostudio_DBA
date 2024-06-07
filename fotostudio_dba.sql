@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 06. Jun 2024 um 18:52
+-- Erstellungszeit: 07. Jun 2024 um 16:36
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -69,6 +69,20 @@ CREATE TABLE `customer` (
   `ISTMITARBEITER` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
+--
+-- Daten für Tabelle `customer`
+--
+
+INSERT INTO `customer` (`C_ID`, `BENUTZERNAME`, `PASSWORT`, `EMAIL`, `ROLLE`, `FK_U_ID`, `ZEITSTEMPEL`, `ISTMITARBEITER`) VALUES
+(1, 'developer', '12345', 'developer@dev.de', 2, 16, '2024-06-07 13:36:40', 1),
+(2, 'admin', '12345', 'admin@dev.de', 1, 16, '2024-06-07 13:37:52', 1),
+(4, 'nobody', '12345', 'nobody@dev.de', 0, 8, '2024-06-07 13:38:38', 0),
+(6, 'ShutterStar', '12345', 'shutter@example.com', 0, 1, '2024-06-07 13:49:24', 0),
+(7, 'LensLover', '67890', 'lenslover@example.com', 0, 2, '2024-06-07 13:49:24', 0),
+(8, 'PixelPainter', '54321', 'pixel@example.com', 0, 3, '2024-06-07 13:49:24', 0),
+(9, 'FlashFocus', '09876', 'flash@example.com', 0, 4, '2024-06-07 13:49:24', 0),
+(10, 'ApertureArtist', '543210', 'aperture@example.com', 0, 5, '2024-06-07 13:49:24', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -81,6 +95,22 @@ CREATE TABLE `lieferumfang` (
   `FK_Z_ID` int(11) NOT NULL,
   `FK_P_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
+
+--
+-- Daten für Tabelle `lieferumfang`
+--
+
+INSERT INTO `lieferumfang` (`L_ID`, `MENGE`, `FK_Z_ID`, `FK_P_ID`) VALUES
+(1, 0000002, 6, 4),
+(2, 0000005, 3, 8),
+(3, 0000010, 7, 2),
+(4, 0000001, 10, 4),
+(5, 0000033, 1, 1),
+(6, 0000002, 6, 4),
+(7, 0000005, 3, 8),
+(8, 0000010, 7, 2),
+(9, 0000001, 10, 4),
+(10, 0000033, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -95,6 +125,33 @@ CREATE TABLE `orders` (
   `LIEFERDATUM` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
+--
+-- Daten für Tabelle `orders`
+--
+
+INSERT INTO `orders` (`O_ID`, `FK_C_ID`, `ZEITSTEMPEL`, `LIEFERDATUM`) VALUES
+(1, 9, '2020-02-04 23:00:00', '2020-02-18'),
+(2, 10, '2020-05-21 22:00:00', '2020-06-03'),
+(3, 8, '2020-08-19 22:00:00', '2020-08-31'),
+(4, 4, '2021-02-04 23:00:00', '2021-02-18'),
+(5, 6, '2021-05-21 22:00:00', '2021-06-03'),
+(6, 7, '2021-08-13 22:00:00', '2021-08-27'),
+(7, 9, '2022-01-29 23:00:00', '2022-02-12'),
+(8, 10, '2022-04-08 22:00:00', '2022-04-22'),
+(9, 4, '2023-02-04 23:00:00', '2023-02-18'),
+(10, 6, '2023-05-21 22:00:00', '2023-06-03'),
+(11, 7, '2023-08-13 22:00:00', '2023-08-27'),
+(12, 9, '2024-01-04 23:00:00', '2024-01-17'),
+(13, 8, '2024-01-09 23:00:00', '2024-01-22'),
+(14, 10, '2024-02-13 23:00:00', '2024-02-26'),
+(15, 9, '2024-02-17 23:00:00', '2024-03-02'),
+(16, 4, '2024-03-21 23:00:00', '2024-04-03'),
+(17, 10, '2024-03-24 23:00:00', '2024-04-06'),
+(18, 6, '2024-04-04 22:00:00', '2024-04-17'),
+(19, 4, '2024-04-27 22:00:00', '2024-05-10'),
+(20, 7, '2024-05-17 22:00:00', '2024-05-31'),
+(21, 6, '2024-05-29 22:00:00', '2024-06-11');
+
 -- --------------------------------------------------------
 
 --
@@ -106,6 +163,22 @@ CREATE TABLE `personal` (
   `FK_U_ID` int(11) NOT NULL,
   `AUFGABE` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
+
+--
+-- Daten für Tabelle `personal`
+--
+
+INSERT INTO `personal` (`PSN_ID`, `FK_U_ID`, `AUFGABE`) VALUES
+(1, 3, 'Entwicklung von Color-Kleinbildfilmen'),
+(2, 7, 'Entwicklung von Schwarz/Weiß-Kleinbildfilmen'),
+(3, 1, 'Bearbeitung und Digitalisierung von Diafilmen'),
+(4, 5, 'Bearbeitung und Schnitt von Drohnenaufnahmen'),
+(5, 4, 'Erstellung und Bearbeitung von Videografieprojekten'),
+(6, 8, 'Durchführung von 30 Minuten Fotoshootings'),
+(7, 4, 'Organisation und Planung und Durchführung von 60 Minuten Fotoshootings'),
+(8, 2, 'Durchführung von Familienfotografie-Sessions'),
+(9, 2, 'Kundenbetreuung und Unterstützung bei der Filmentwicklung'),
+(10, 5, 'Verwaltung und Bearbeitung von Videoprojekten und Fotoshootings');
 
 -- --------------------------------------------------------
 
@@ -155,6 +228,22 @@ CREATE TABLE `produktdetail` (
   `MENGE` int(7) UNSIGNED ZEROFILL NOT NULL DEFAULT 0000000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
+--
+-- Daten für Tabelle `produktdetail`
+--
+
+INSERT INTO `produktdetail` (`PD_ID`, `FK_O_ID`, `FK_P_ID`, `MENGE`) VALUES
+(1, 3, 5, 0000002),
+(2, 8, 2, 0000003),
+(3, 15, 9, 0000001),
+(4, 4, 7, 0000004),
+(5, 12, 3, 0000002),
+(6, 20, 6, 0000001),
+(7, 1, 10, 0000003),
+(8, 17, 4, 0000002),
+(9, 6, 1, 0000001),
+(10, 19, 8, 0000004);
+
 -- --------------------------------------------------------
 
 --
@@ -202,6 +291,22 @@ CREATE TABLE `servicedetail` (
   `MENGE` int(7) UNSIGNED ZEROFILL NOT NULL DEFAULT 0000000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
+--
+-- Daten für Tabelle `servicedetail`
+--
+
+INSERT INTO `servicedetail` (`SD_ID`, `FK_O_ID`, `FK_S_ID`, `MENGE`) VALUES
+(1, 7, 9, 0000005),
+(2, 15, 4, 0000008),
+(3, 3, 6, 0000003),
+(4, 18, 2, 0000006),
+(5, 12, 8, 0000007),
+(6, 10, 5, 0000009),
+(7, 5, 1, 0000002),
+(8, 20, 7, 0000004),
+(9, 1, 3, 0000010),
+(10, 17, 10, 0000001);
+
 -- --------------------------------------------------------
 
 --
@@ -210,9 +315,20 @@ CREATE TABLE `servicedetail` (
 
 CREATE TABLE `servicepersonal` (
   `SP_ID` int(11) NOT NULL,
-  `FK_P_ID` int(11) NOT NULL,
+  `FK_PSN_ID` int(11) NOT NULL,
   `FK_S_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
+
+--
+-- Daten für Tabelle `servicepersonal`
+--
+
+INSERT INTO `servicepersonal` (`SP_ID`, `FK_PSN_ID`, `FK_S_ID`) VALUES
+(1, 1, 3),
+(2, 3, 5),
+(3, 8, 10),
+(4, 4, 6),
+(5, 5, 7);
 
 -- --------------------------------------------------------
 
@@ -227,6 +343,22 @@ CREATE TABLE `user` (
   `Geburtsdatum` date NOT NULL DEFAULT current_timestamp(),
   `FK_A_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
+
+--
+-- Daten für Tabelle `user`
+--
+
+INSERT INTO `user` (`U_ID`, `NAME`, `VORNAME`, `Geburtsdatum`, `FK_A_ID`) VALUES
+(1, 'Schlaubi', 'Max', '1992-04-15', 3),
+(2, 'Wunderlich', 'Paula', '1986-11-08', 7),
+(3, 'Klugkopf', 'Bert', '1979-02-22', 1),
+(4, 'Schnellschuss', 'Ina', '1990-07-12', 5),
+(5, 'Gagamel', 'Otto', '1983-10-19', 10),
+(6, 'Chaos', 'Lara', '1991-05-30', 2),
+(7, 'Witzbold', 'Tom', '1987-03-25', 9),
+(8, 'Flitzpiepe', 'Nina', '1995-12-04', 6),
+(9, 'Blitzmerker', 'Kai', '1982-01-16', 4),
+(16, 'NONE', 'NONE', '1899-12-12', 2);
 
 -- --------------------------------------------------------
 
@@ -327,8 +459,8 @@ ALTER TABLE `servicedetail`
 --
 ALTER TABLE `servicepersonal`
   ADD PRIMARY KEY (`SP_ID`),
-  ADD KEY `SPFK_P_ID` (`FK_P_ID`),
-  ADD KEY `SPFK_S_ID` (`FK_S_ID`);
+  ADD KEY `SPFK_S_ID` (`FK_S_ID`),
+  ADD KEY `SPFK_PSN_ID` (`FK_PSN_ID`);
 
 --
 -- Indizes für die Tabelle `user`
@@ -358,25 +490,25 @@ ALTER TABLE `adresse`
 -- AUTO_INCREMENT für Tabelle `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `lieferumfang`
 --
 ALTER TABLE `lieferumfang`
-  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT für Tabelle `personal`
 --
 ALTER TABLE `personal`
-  MODIFY `PSN_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PSN_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `produkt`
@@ -388,7 +520,7 @@ ALTER TABLE `produkt`
 -- AUTO_INCREMENT für Tabelle `produktdetail`
 --
 ALTER TABLE `produktdetail`
-  MODIFY `PD_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `service`
@@ -400,19 +532,19 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT für Tabelle `servicedetail`
 --
 ALTER TABLE `servicedetail`
-  MODIFY `SD_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT für Tabelle `servicepersonal`
 --
 ALTER TABLE `servicepersonal`
-  MODIFY `SP_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SP_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT für Tabelle `zubehör`
@@ -461,7 +593,7 @@ ALTER TABLE `servicedetail`
 -- Constraints der Tabelle `servicepersonal`
 --
 ALTER TABLE `servicepersonal`
-  ADD CONSTRAINT `SPFK_P_ID` FOREIGN KEY (`FK_P_ID`) REFERENCES `produkt` (`P_ID`),
+  ADD CONSTRAINT `SPFK_PSN_ID` FOREIGN KEY (`FK_PSN_ID`) REFERENCES `personal` (`PSN_ID`),
   ADD CONSTRAINT `SPFK_S_ID` FOREIGN KEY (`FK_S_ID`) REFERENCES `service` (`S_ID`);
 
 --
