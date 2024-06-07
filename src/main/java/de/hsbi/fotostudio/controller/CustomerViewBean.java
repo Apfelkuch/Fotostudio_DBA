@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.User;
-import de.hsbi.fotostudio.util.LoginHandler;
+import de.hsbi.fotostudio.util.DataBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.faces.event.ValueChangeEvent;
@@ -24,7 +24,7 @@ public class CustomerViewBean implements Serializable {
     private List<User> userList;
     
     @Inject
-    private LoginHandler loginHandler;
+    private DataBean dataBean;
 
     /**
      * Creates a new instance of CustomerViewBean
@@ -67,11 +67,11 @@ public class CustomerViewBean implements Serializable {
     }
     
     public void selectTopSeller() {
-        userList = loginHandler.selectTopSeller();
+        userList = dataBean.selectTopSeller();
     }
     
     public void selectShopKeeper() {
-        userList = loginHandler.selectShopKeeper();
+        userList = dataBean.selectShopKeeper();
     }
     
     // GETTER && SETTER

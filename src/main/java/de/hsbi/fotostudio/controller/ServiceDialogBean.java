@@ -5,7 +5,7 @@ import de.hsbi.fotostudio.modul.Category;
 import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.modul.StorageStatus;
 import de.hsbi.fotostudio.modul.Service;
-import de.hsbi.fotostudio.util.ProductData;
+import de.hsbi.fotostudio.util.DataBean;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -49,7 +49,7 @@ public class ServiceDialogBean implements Serializable {
     private Products products;
     
     @Inject
-    private ProductData productData;
+    private DataBean dataBean;
     
     /**
      * Creates new instance of ProduktDialogBean
@@ -63,9 +63,9 @@ public class ServiceDialogBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        category_list = productData.getService_category_list();
-        billingType_list = productData.getBillingType_list();
-        storageStatus_list = productData.getStorageStatus_list();
+        category_list = dataBean.getService_category_list();
+        billingType_list = dataBean.getBillingType_list();
+        storageStatus_list = dataBean.getStorageStatus_list();
         currentService = new Service();
     }
 
@@ -86,7 +86,7 @@ public class ServiceDialogBean implements Serializable {
             PrimeFaces.current().ajax().update("form-service-view:data-view");
         } else {
             if (!currentService.getName().isBlank()) {
-                Service s = productData.addService_list(currentService);
+                Service s = dataBean.addService_list(currentService);
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service hinzugefügt", s.toString());
             } else {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Kein Service hinzugefügt", "Ein Service braucht mindestens einen Namen");

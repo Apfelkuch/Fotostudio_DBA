@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.User;
-import de.hsbi.fotostudio.util.LoginHandler;
+import de.hsbi.fotostudio.util.DataBean;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -28,7 +28,7 @@ public class loginCdiBean implements Serializable {
     private boolean nameDataOk = false, pwdDataOk = false, login = false; // Flags for data validation and login status
 
     @Inject
-    private LoginHandler loginHandler; // LoginHandler instance for managing authentication
+    private DataBean dataBean; // LoginHandler instance for managing authentication
 
     /**
      * Handles the login process. Authenticates the user and manages the
@@ -36,7 +36,7 @@ public class loginCdiBean implements Serializable {
      */
     public void loginProject() {
         // Attempt to authenticate the user
-        User currentUser = loginHandler.login(uname, password);
+        User currentUser = dataBean.login(uname, password);
         // Check if authentication was successful and data is valid
         if (currentUser != null && nameDataOk == true && pwdDataOk == true) {
 
