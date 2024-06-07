@@ -4,10 +4,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="jakarta.faces.facelets"
                 template="WEB-INF/templates/master.xhtml">
-    <ui:define name="content">
-        <p:outputLabel style="display: flex; margin: 2rem; justify-content: center"
-                       value="Vielen dank für Ihre Bestellung!"
-                       class="text-4xl"/>
-                       
+    <ui:define name="content"> 
+        <h:form id="form-contract"
+                style="display: flex; flex-direction: column; align-items: center; text-align: center;">            
+            <p:outputLabel value="Vielen Dank für Ihre Bestellung!"
+                           class="text-4xl"
+                           style="margin: 2rem;"/>
+            <p:graphicImage library="images" 
+                            name="basket.jpg" 
+                            width="auto" 
+                            height="auto" 
+                            style="margin-top: 5rem;"/>
+        </h:form>
     </ui:define>
 </ui:composition>
