@@ -95,6 +95,7 @@ public class DataBean implements Serializable {
      * @param pRole The role of the new user
      */
     public void addUser(String pName, String pPasword, String pEmail, Birthday pBday, int pRole) {
+        // TODO
         loginListDAO.add(new User(pName, pPasword, pEmail, pBday, pRole));
     }
 
@@ -105,6 +106,7 @@ public class DataBean implements Serializable {
      * @return The authenticated user if successful, otherwise null
      */
     public User login(String user, String password) {
+        // TODO
         for (int i = 0; i < loginListDAO.size(); i++) {
             if (user.equals(loginListDAO.get(i).getUsername())
                     && password.equals(loginListDAO.get(i).getPassword())) {
@@ -131,7 +133,7 @@ public class DataBean implements Serializable {
         }
         
         try {
-            String sql = "SELECT COUNT(U_ID) AS ANZAHL FROM Benutzer WHERE NAME = ?";
+            String sql = "SELECT COUNT(C_ID) FROM customer WHERE BENUTZERNAME = ?";
             
             PreparedStatement preStmt = conn.prepareStatement(sql);
             
@@ -177,9 +179,38 @@ public class DataBean implements Serializable {
      * @return the added product with the new id
      */
     public Product addProduct_list(Product product) {
-        product.setId(product_list.size());
-        product_list.add(product);
-        return product;
+        if (conn == null) {
+            openConnection();
+        }
+        
+        try {
+            String sql = "INSERT INTO service(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, MENGE, LAGERSTATUS, DATEIPFAD) "
+                    + "VALUES (?,?,?,?,?,?,?,?)";
+            
+            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preStmt.setString(1, product.getName());
+            preStmt.setString(2, product.getDescription());
+            preStmt.setString(3, product.getCategory().getName());
+            preStmt.setString(4, product.getBillingType().getName());
+            preStmt.setDouble(5, product.getPrice());
+            preStmt.setString(6, product.getStorageStatus().getName());
+            preStmt.setInt(7, product.getAmount());
+            preStmt.setString(8, product.getImage());
+            
+            preStmt.executeUpdate();
+            
+            int autoincremntId = -1;
+            ResultSet key = preStmt.getGeneratedKeys();
+            if (key.next())
+                autoincremntId = key.getInt(1);
+            
+            product.setId(autoincremntId);
+            
+            return product;
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
     }
     
     /**
@@ -190,8 +221,30 @@ public class DataBean implements Serializable {
      * @return true if the Product is found and updated, otherwise false
      */
     public boolean updateProduct_list(int id, Product product) {
-        if (id >= 0 && id < product_list.size()) {
-            return this.product_list.set(id, product).equals(product);
+        if (conn == null) {
+            openConnection();
+        }
+            
+        try {
+            String sql = "UPDATE produkt SET "
+                    + "NAME='?',BESCHREIBUNG='?',KATEGORIE='?',ABRECHNUNGSART='?',PREIS='?',LAGERSTATUS='?',MENGE='?',DATEINAME='?' "
+                    + "WHERE S_ID = ?";
+            
+            PreparedStatement preStmt = conn.prepareStatement(sql);
+            preStmt.setString(1, product.getName());
+            preStmt.setString(2, product.getDescription());
+            preStmt.setString(3, product.getCategory().getName());
+            preStmt.setString(4, product.getBillingType().getName());
+            preStmt.setDouble(5, product.getPrice());
+            preStmt.setString(6, product.getStorageStatus().getName());
+            preStmt.setInt(7, product.getAmount());
+            preStmt.setString(8, product.getImage());
+            preStmt.setInt(9, id);
+            
+            preStmt.executeUpdate();
+            
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
         }
         return false;
     }
@@ -204,9 +257,35 @@ public class DataBean implements Serializable {
      * @return the searches product if the search was successfull overwise null
      */
     public Product findProduct_list(int id) {
-        if (id < 0 || id >= product_list.size())
-            return null;
-        return product_list.get(id);
+        if (conn == null) {
+            openConnection();
+        }
+        
+        try {
+            String sql = "SELECT * FROM produkt WHERE P_ID = ?";
+            
+            PreparedStatement preStmt = conn.prepareStatement(sql);
+            preStmt.setInt(1, id);
+            
+            ResultSet rs = preStmt.executeQuery();
+            
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt("P_ID"),
+                        rs.getString("NAME"),
+                        rs.getString("BESCHREIBUNG"),
+                        findProductCategory(rs.getString("KATEGORIE")),
+                        findBillingType(rs.getString("ABRECHNUNGART")),
+                        rs.getFloat("PREIS"),
+                        rs.getInt("MENGE"),
+                        findStorageStatus(rs.getString("LAGERSTATUS")),
+                        rs.getString("DATEIPFAD")
+                );
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
     }
     
     /**
@@ -221,16 +300,16 @@ public class DataBean implements Serializable {
         }
         
         try {
-            String sql = "INSERT INTO Service(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, LAGERSTATUS, DATEINAME) "
+            String sql = "INSERT INTO service(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, LAGERSTATUS, DATEIPFAD) "
                     + "VALUES (?,?,?,?,?,?,?)";
             
             PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preStmt.setString(1, service.getName());
             preStmt.setString(2, service.getDescription());
-            preStmt.setInt(3, service.getCategory().getId());
-            preStmt.setInt(4, service.getBillingType().getId());
+            preStmt.setString(3, service.getCategory().getName());
+            preStmt.setString(4, service.getBillingType().getName());
             preStmt.setDouble(5, service.getPrice());
-            preStmt.setInt(6, service.getStorageStatus().getId());
+            preStmt.setString(6, service.getStorageStatus().getName());
             preStmt.setString(7, service.getImage());
             
             preStmt.executeUpdate();
@@ -263,17 +342,17 @@ public class DataBean implements Serializable {
             
         try {
 
-            String sql = "UPDATE Service SET "
-                    + "NAME='?',BESCHREIBUNG='?',KATEGORIE='?',ABRECHNUNGSART='?',PREIS='?',LAGERSTATUS='?',DATEINAME='?'"
+            String sql = "UPDATE service SET "
+                    + "NAME='?',BESCHREIBUNG='?',KATEGORIE='?',ABRECHNUNGSART='?',PREIS='?',LAGERSTATUS='?',DATEINAME='?' "
                     + "WHERE S_ID = ?";
             
             PreparedStatement preStmt = conn.prepareStatement(sql);
             preStmt.setString(1, service.getName());
             preStmt.setString(2, service.getDescription());
-            preStmt.setInt(3, service.getCategory().getId());
-            preStmt.setInt(4, service.getBillingType().getId());
+            preStmt.setString(3, service.getCategory().getName());
+            preStmt.setString(4, service.getBillingType().getName());
             preStmt.setDouble(5, service.getPrice());
-            preStmt.setInt(6, service.getStorageStatus().getId());
+            preStmt.setString(6, service.getStorageStatus().getName());
             preStmt.setString(7, service.getImage());
             preStmt.setInt(8, id);
             
@@ -298,7 +377,7 @@ public class DataBean implements Serializable {
         }
         
         try {
-            String sql = "SELECT * FROM Service WHERE P_ID = ?";
+            String sql = "SELECT * FROM service WHERE S_ID = ?";
             
             PreparedStatement preStmt = conn.prepareStatement(sql);
             preStmt.setInt(1, id);
@@ -310,11 +389,11 @@ public class DataBean implements Serializable {
                         rs.getInt("S_ID"),
                         rs.getString("NAME"),
                         rs.getString("BESCHREIBUNG"),
-                        (Category) rs.getObject("CATEGORY"),
-                        (BillingType) rs.getObject("ABRECHNUNGSART"),
+                        findServiceCategory(rs.getString("KATEGORIE")),
+                        findBillingType(rs.getString("ABRECHNUNGSART")),
                         rs.getFloat("PREIS"),
-                        (StorageStatus) rs.getObject("LAGERSTATUS"),
-                        rs.getString("DATEINAME")
+                        findStorageStatus(rs.getString("LAGERSTATUS")),
+                        rs.getString("DATEIPFAD")
                 );
             }
         } catch (SQLException exception) {
@@ -347,7 +426,7 @@ public class DataBean implements Serializable {
                         findBillingType(rs.getString("ABRECHNUNGSART")),
                         rs.getFloat("PREIS"),
                         rs.getInt("MENGE"),
-                        fingStorageStatus(rs.getString("LAGERSTATUS")),
+                        findStorageStatus(rs.getString("LAGERSTATUS")),
                         rs.getString("DATEIPFAD")
                 ));
             }
@@ -371,18 +450,18 @@ public class DataBean implements Serializable {
         service_list = new ArrayList<>();
         
         try {
-            String sql = "SELECT * FROM Service";
+            String sql = "SELECT * FROM service";
             ResultSet rs = conn.createStatement().executeQuery(sql);
             while (rs.next()) {
                 service_list.add(new Service(
-                        rs.getInt("P_ID"),
+                        rs.getInt("S_ID"),
                         rs.getString("NAME"),
                         rs.getString("BESCHREIBUNG"),
-                        (Category) rs.getObject("CATEGORY"),
-                        (BillingType) rs.getObject("ABRECHNUNGSART"),
+                        findServiceCategory(rs.getString("KATEGORIE")),
+                        findBillingType(rs.getString("ABRECHNUNGSART")),
                         rs.getFloat("PREIS"),
-                        (StorageStatus) rs.getObject("LAGERSTATUS"),
-                        rs.getString("DATEINAME")
+                        findStorageStatus(rs.getString("LAGERSTATUS")),
+                        rs.getString("DATEIPFAD")
                 ));
             }
             return service_list;
@@ -425,7 +504,7 @@ public class DataBean implements Serializable {
         return billingType;
     }
     
-    public StorageStatus fingStorageStatus(String storageStatusString) {
+    public StorageStatus findStorageStatus(String storageStatusString) {
         StorageStatus storageStatus = storageStatus_list.get(0);
         for (StorageStatus s : storageStatus_list) {
             if (s.getName().equals(storageStatusString)) {
