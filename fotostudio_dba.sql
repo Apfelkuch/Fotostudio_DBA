@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 07. Jun 2024 um 16:36
+-- Erstellungszeit: 09. Jun 2024 um 13:36
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -81,7 +81,9 @@ INSERT INTO `customer` (`C_ID`, `BENUTZERNAME`, `PASSWORT`, `EMAIL`, `ROLLE`, `F
 (7, 'LensLover', '67890', 'lenslover@example.com', 0, 2, '2024-06-07 13:49:24', 0),
 (8, 'PixelPainter', '54321', 'pixel@example.com', 0, 3, '2024-06-07 13:49:24', 0),
 (9, 'FlashFocus', '09876', 'flash@example.com', 0, 4, '2024-06-07 13:49:24', 0),
-(10, 'ApertureArtist', '543210', 'aperture@example.com', 0, 5, '2024-06-07 13:49:24', 0);
+(10, 'ApertureArtist', '543210', 'aperture@example.com', 0, 5, '2024-06-07 13:49:24', 0),
+(11, 'FotoMaster', '33445', 'fotomaster@domain.com', 0, 18, '2024-06-09 10:33:25', 0),
+(12, 'CamExpert', '77654', 'camexpert@domain.com', 0, 19, '2024-06-09 10:33:25', 0);
 
 -- --------------------------------------------------------
 
@@ -150,7 +152,15 @@ INSERT INTO `orders` (`O_ID`, `FK_C_ID`, `ZEITSTEMPEL`, `LIEFERDATUM`) VALUES
 (18, 6, '2024-04-04 22:00:00', '2024-04-17'),
 (19, 4, '2024-04-27 22:00:00', '2024-05-10'),
 (20, 7, '2024-05-17 22:00:00', '2024-05-31'),
-(21, 6, '2024-05-29 22:00:00', '2024-06-11');
+(21, 6, '2024-05-29 22:00:00', '2024-06-11'),
+(62, 11, '2018-03-15 09:30:00', '2018-03-19'),
+(63, 12, '2018-07-22 09:45:00', '2018-08-02'),
+(64, 11, '2019-01-10 07:15:00', '2019-01-21'),
+(65, 12, '2019-06-20 13:30:00', '2019-06-28'),
+(66, 11, '2020-04-05 07:45:00', '2020-04-16'),
+(67, 12, '2020-11-05 12:00:00', '2020-11-16'),
+(68, 11, '2021-08-10 12:20:00', '2021-08-23'),
+(69, 12, '2022-01-12 16:10:00', '2022-01-25');
 
 -- --------------------------------------------------------
 
@@ -340,7 +350,7 @@ CREATE TABLE `user` (
   `U_ID` int(11) NOT NULL,
   `NAME` varchar(255) NOT NULL,
   `VORNAME` varchar(255) NOT NULL,
-  `Geburtsdatum` date NOT NULL DEFAULT current_timestamp(),
+  `GEBURTSDATUM` date NOT NULL DEFAULT current_timestamp(),
   `FK_A_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
@@ -348,7 +358,7 @@ CREATE TABLE `user` (
 -- Daten für Tabelle `user`
 --
 
-INSERT INTO `user` (`U_ID`, `NAME`, `VORNAME`, `Geburtsdatum`, `FK_A_ID`) VALUES
+INSERT INTO `user` (`U_ID`, `NAME`, `VORNAME`, `GEBURTSDATUM`, `FK_A_ID`) VALUES
 (1, 'Schlaubi', 'Max', '1992-04-15', 3),
 (2, 'Wunderlich', 'Paula', '1986-11-08', 7),
 (3, 'Klugkopf', 'Bert', '1979-02-22', 1),
@@ -358,7 +368,9 @@ INSERT INTO `user` (`U_ID`, `NAME`, `VORNAME`, `Geburtsdatum`, `FK_A_ID`) VALUES
 (7, 'Witzbold', 'Tom', '1987-03-25', 9),
 (8, 'Flitzpiepe', 'Nina', '1995-12-04', 6),
 (9, 'Blitzmerker', 'Kai', '1982-01-16', 4),
-(16, 'NONE', 'NONE', '1899-12-12', 2);
+(16, 'NONE', 'NONE', '1899-12-12', 2),
+(18, 'Streber', 'Tina', '1994-10-26', 5),
+(19, 'Kicherer', 'Fritz', '1993-02-14', 2);
 
 -- --------------------------------------------------------
 
@@ -468,7 +480,7 @@ ALTER TABLE `servicepersonal`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`U_ID`),
   ADD KEY `UFK_A_ID` (`FK_A_ID`),
-  ADD KEY `UFK_G_ID` (`Geburtsdatum`);
+  ADD KEY `UFK_G_ID` (`GEBURTSDATUM`);
 
 --
 -- Indizes für die Tabelle `zubehör`
@@ -490,7 +502,7 @@ ALTER TABLE `adresse`
 -- AUTO_INCREMENT für Tabelle `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT für Tabelle `lieferumfang`
@@ -502,7 +514,7 @@ ALTER TABLE `lieferumfang`
 -- AUTO_INCREMENT für Tabelle `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT für Tabelle `personal`
@@ -544,7 +556,7 @@ ALTER TABLE `servicepersonal`
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT für Tabelle `zubehör`
