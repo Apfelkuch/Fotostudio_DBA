@@ -42,6 +42,7 @@ public class loginCdiBean implements Serializable {
 
             // Get Http Session and store user details
             HttpSession session = Util.getSession();
+            session.setAttribute("customerId", currentUser.getId());
             session.setAttribute("username", uname);
             session.setAttribute("userid", session.getId());
             session.setAttribute("userrole", currentUser.getRole());

@@ -1,10 +1,13 @@
 package de.hsbi.fotostudio.util;
 
+import de.hsbi.fotostudio.modul.BasketItem;
 import de.hsbi.fotostudio.modul.BillingType;
 import de.hsbi.fotostudio.modul.Birthday;
 import de.hsbi.fotostudio.modul.Category;
+import de.hsbi.fotostudio.modul.Item;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Service;
+import de.hsbi.fotostudio.modul.ShowUser;
 import de.hsbi.fotostudio.modul.StorageStatus;
 import de.hsbi.fotostudio.modul.User;
 import jakarta.annotation.PostConstruct;
@@ -18,6 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,8 +39,6 @@ public class DataBean implements Serializable {
     
     Connection conn;
     
-    
-    private List<User> loginListDAO;
     private List<Product> product_list;
     private List<Service> service_list;
     private List<BillingType> billingType_list;
@@ -85,6 +88,62 @@ public class DataBean implements Serializable {
             LOG.log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void addOrder(List<BasketItem> basket) {
+        if (conn == null) {
+            openConnection();
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+            
+            String sql = "INSERT INTO orders(FK_C_ID,LIEFERDATUM) VALUES (?,?)";
+            
+            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            
+            preStmt.setInt(1, Util.getCustomerId());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DAY_OF_MONTH, 14);
+            preStmt.setDate(2, new java.sql.Date(calendar.getTime().getTime()));
+            
+            preStmt.executeUpdate();
+            
+            int autoincremntId = -1;
+            ResultSet key = preStmt.getGeneratedKeys();
+            if (key.next())
+                autoincremntId = key.getInt(1);
+            
+            for (BasketItem basketItem : basket) {
+                Item item = basketItem.getItem();
+                if (item instanceof Service) { // edit service on checkout
+                    sql = "INSERT INTO servicedetail(FK_O_ID, FK_S_ID, MENGE) VALUES (?,?,?)";
+            
+                    preStmt = conn.prepareStatement(sql);
+                    preStmt.setInt(1, autoincremntId);
+                    preStmt.setInt(2, ((Service) item).getId());
+                    preStmt.setInt(3, item.getAmount());
+
+                    preStmt.executeUpdate();
+                } else if (item instanceof Product) { // edit product on checkout
+                    sql = "INSERT INTO produktdetail(FK_O_ID, FK_P_ID, MENGE) VALUES (?,?,?)";
+            
+                    preStmt = conn.prepareStatement(sql);
+                    preStmt.setInt(1, autoincremntId);
+                    preStmt.setInt(2, ((Product) item).getId());
+                    preStmt.setInt(3, item.getAmount());
+
+                    preStmt.executeUpdate();
+                } else {
+                    LOG.info("[Basket] invalid item in basket");
+                }
+            }
+            
+            conn.commit();
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+        }
+    }
 
     /**
      * Adds a new user to the login data.
@@ -95,8 +154,48 @@ public class DataBean implements Serializable {
      * @param pRole The role of the new user
      */
     public void addUser(String pName, String pPasword, String pEmail, Birthday pBday, int pRole) {
-        // TODO
-        loginListDAO.add(new User(pName, pPasword, pEmail, pBday, pRole));
+        if (conn == null) {
+            openConnection();
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+
+            String sql = "INSERT INTO user(NAME, VORNAME, Geburtsdatum, FK_A_ID) VALUES (?,'Hans',?,5)";
+
+            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            
+            preStmt.setString(1, pName);
+            preStmt.setDate(2, new java.sql.Date(Birthday.convertBirthdayToDate(pBday).getTime()));
+
+            preStmt.executeUpdate();
+            
+            int autoincremnt_UID = -1;
+            ResultSet key = preStmt.getGeneratedKeys();
+            if (key.next())
+                autoincremnt_UID = key.getInt(1);
+
+            sql = "INSERT INTO customer(BENUTZERNAME, PASSWORT, EMAIL, ROLLE, FK_U_ID,ISTMITARBEITER) VALUES (?,?,?,0,?,0);";
+
+            preStmt = conn.prepareStatement(sql);
+            
+            preStmt.setString(1, pName);
+            preStmt.setString(2, pPasword);
+            preStmt.setString(3, pEmail);
+            preStmt.setInt(4, autoincremnt_UID);
+            
+            preStmt.executeUpdate();
+            
+            conn.commit();
+        
+        } catch (SQLException exception) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+        }
     }
 
     /**
@@ -106,12 +205,33 @@ public class DataBean implements Serializable {
      * @return The authenticated user if successful, otherwise null
      */
     public User login(String user, String password) {
-        // TODO
-        for (int i = 0; i < loginListDAO.size(); i++) {
-            if (user.equals(loginListDAO.get(i).getUsername())
-                    && password.equals(loginListDAO.get(i).getPassword())) {
-                return loginListDAO.get(i);
+        if (conn == null) {
+            openConnection();
+        }
+        
+        try {
+            String sql = "SELECT customer.C_ID, customer.BENUTZERNAME, customer.PASSWORT, customer.EMAIL, user.Geburtsdatum, customer.ROLLE " +
+                         "FROM user " +
+                         "INNER JOIN customer ON user.U_ID = customer.FK_U_ID " +
+                         "WHERE customer.BENUTZERNAME = ? AND customer.PASSWORT = ?";
+            
+            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            
+            preStmt.setString(1, user);
+            preStmt.setString(2, password);
+            
+            ResultSet rs = preStmt.executeQuery();
+            
+            if (rs.next()) {
+                return new User(rs.getInt("C_ID"),
+                                rs.getString("BENUTZERNAME"),
+                                rs.getString("PASSWORT"),
+                                rs.getString("EMAIL"),
+                                Birthday.convertDateToBirthday(rs.getDate("GEBURTSDATUM")),
+                                rs.getInt("ROLLE"));
             }
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
         }
         return null;
     }
@@ -122,12 +242,6 @@ public class DataBean implements Serializable {
      * @return True if the user exists, otherwise false
      */
     public boolean userExist(String user) {
-        for (int i = 0; i < loginListDAO.size(); i++) {
-            if (user.equals(loginListDAO.get(i).getUsername())) {
-                return true;
-            }
-        }
-        
         if (conn == null) {
             openConnection();
         }
@@ -158,8 +272,35 @@ public class DataBean implements Serializable {
      * 
      * @return list of top seller users
      */
-    public List<User> selectTopSeller() {
-        return loginListDAO;
+    public List<ShowUser> selectTopSeller() {
+        if (conn == null) {
+            openConnection();
+        }
+        
+        List<ShowUser> topSeller = new ArrayList<>();
+        
+        try {
+            String sql = "SELECT customer.BENUTZERNAME, customer.EMAIL, COUNT(orders.O_ID) as Anzahl " +
+                         "FROM customer " +
+                         "INNER JOIN orders ON orders.FK_C_ID = customer.C_ID " +
+                         "WHERE orders.ZEITSTEMPEL >= DATE_ADD(NOW(),INTERVAL-2 MONTH) " +
+                         "GROUP BY customer.C_ID " +
+                         "HAVING Anzahl > 1 " +
+                         "ORDER BY Anzahl DESC";
+            
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            
+            while (rs.next()) {
+                topSeller.add(new ShowUser(
+                        rs.getString("BENUTZERNAME"),
+                        rs.getString("EMAIL"),
+                        rs.getInt("Anzahl")
+                ));
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return topSeller;
     }
     
     /**
@@ -168,8 +309,35 @@ public class DataBean implements Serializable {
      * 
      * @return list of the shop keeper users
      */
-    public List<User> selectShopKeeper() {
-        return loginListDAO;
+    public List<ShowUser> selectShopKeeper() {
+        if (conn == null) {
+            openConnection();
+        }
+        
+        List<ShowUser> shopKeeper = new ArrayList<>();
+        
+        try {
+            String sql = "SELECT customer.BENUTZERNAME, customer.EMAIL, COUNT(orders.O_ID) as Anzahl " +
+                         "FROM customer " +
+                         "LEFT JOIN orders ON orders.FK_C_ID = customer.C_ID " +
+                         "    and orders.ZEITSTEMPEL > DATE_ADD(NOW(), INTERVAL-1 YEAR) " +
+                         "GROUP BY customer.C_ID " +
+                         "HAVING Anzahl = 0 " +
+                         "ORDER BY customer.BENUTZERNAME ASC";
+            
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            
+            while (rs.next()) {
+                shopKeeper.add(new ShowUser(
+                        rs.getString("BENUTZERNAME"),
+                        rs.getString("EMAIL"),
+                        rs.getInt("Anzahl")
+                ));
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return shopKeeper;
     }
     
     /**
@@ -184,7 +352,7 @@ public class DataBean implements Serializable {
         }
         
         try {
-            String sql = "INSERT INTO service(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, MENGE, LAGERSTATUS, DATEIPFAD) "
+            String sql = "INSERT INTO produkt(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, MENGE, LAGERSTATUS, DATEIPFAD) "
                     + "VALUES (?,?,?,?,?,?,?,?)";
             
             PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -193,9 +361,9 @@ public class DataBean implements Serializable {
             preStmt.setString(3, product.getCategory().getName());
             preStmt.setString(4, product.getBillingType().getName());
             preStmt.setDouble(5, product.getPrice());
-            preStmt.setString(6, product.getStorageStatus().getName());
-            preStmt.setInt(7, product.getAmount());
-            preStmt.setString(8, product.getImage());
+            preStmt.setInt(6, product.getAmount());
+            preStmt.setString(7, product.getStorageStatus().getName());
+            preStmt.setString(8, "toastbrot.jpg");
             
             preStmt.executeUpdate();
             
@@ -227,8 +395,8 @@ public class DataBean implements Serializable {
             
         try {
             String sql = "UPDATE produkt SET "
-                    + "NAME='?',BESCHREIBUNG='?',KATEGORIE='?',ABRECHNUNGSART='?',PREIS='?',LAGERSTATUS='?',MENGE='?',DATEINAME='?' "
-                    + "WHERE S_ID = ?";
+                    + "NAME=?,BESCHREIBUNG=?,KATEGORIE=?,ABRECHNUNGSART=?,PREIS=?,LAGERSTATUS=?,MENGE=? "
+                    + "WHERE P_ID = ?";
             
             PreparedStatement preStmt = conn.prepareStatement(sql);
             preStmt.setString(1, product.getName());
@@ -238,8 +406,7 @@ public class DataBean implements Serializable {
             preStmt.setDouble(5, product.getPrice());
             preStmt.setString(6, product.getStorageStatus().getName());
             preStmt.setInt(7, product.getAmount());
-            preStmt.setString(8, product.getImage());
-            preStmt.setInt(9, id);
+            preStmt.setInt(8, id);
             
             preStmt.executeUpdate();
             
@@ -310,7 +477,7 @@ public class DataBean implements Serializable {
             preStmt.setString(4, service.getBillingType().getName());
             preStmt.setDouble(5, service.getPrice());
             preStmt.setString(6, service.getStorageStatus().getName());
-            preStmt.setString(7, service.getImage());
+            preStmt.setString(7, "videografie.jpg");
             
             preStmt.executeUpdate();
             
@@ -343,7 +510,7 @@ public class DataBean implements Serializable {
         try {
 
             String sql = "UPDATE service SET "
-                    + "NAME='?',BESCHREIBUNG='?',KATEGORIE='?',ABRECHNUNGSART='?',PREIS='?',LAGERSTATUS='?',DATEINAME='?' "
+                    + "NAME=?,BESCHREIBUNG=?,KATEGORIE=?,ABRECHNUNGSART=?,PREIS=?,LAGERSTATUS=? "
                     + "WHERE S_ID = ?";
             
             PreparedStatement preStmt = conn.prepareStatement(sql);
@@ -353,8 +520,7 @@ public class DataBean implements Serializable {
             preStmt.setString(4, service.getBillingType().getName());
             preStmt.setDouble(5, service.getPrice());
             preStmt.setString(6, service.getStorageStatus().getName());
-            preStmt.setString(7, service.getImage());
-            preStmt.setInt(8, id);
+            preStmt.setInt(7, id);
             
             preStmt.executeUpdate();
             
@@ -430,7 +596,6 @@ public class DataBean implements Serializable {
                         rs.getString("DATEIPFAD")
                 ));
             }
-            return product_list;
         } catch (SQLException exception) {
             Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
         }
@@ -464,7 +629,6 @@ public class DataBean implements Serializable {
                         rs.getString("DATEIPFAD")
                 ));
             }
-            return service_list;
         } catch (SQLException exception) {
             Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
         }

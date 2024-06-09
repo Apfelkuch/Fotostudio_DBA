@@ -5,7 +5,6 @@ import de.hsbi.fotostudio.modul.BasketItem;
 import de.hsbi.fotostudio.modul.Item;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
-import de.hsbi.fotostudio.modul.Service;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -88,10 +87,10 @@ public class MenuBean implements Serializable{
                 "Bestellung ist eingegangen",
                 "Bestellung bearbeitet, gesamtpreis " + getBasketPrice() + "€"
         ));
+        basket.addOrder();
         for (BasketItem basketItem : basket.getBasket()) {
             Item item = basketItem.getItem();
-            if (item instanceof Service) { // edit service on checkout
-            } else if (item instanceof Product) { // edit product on checkout
+            if (item instanceof Product) {
                 Product product = (Product) item;
                 product.setAmount(product.getAmount() - basketItem.getCount());
                 if(!products.updateProduct(product.getId(), product)) {
@@ -137,5 +136,4 @@ public class MenuBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
-    // GETTER && SETTER
 }

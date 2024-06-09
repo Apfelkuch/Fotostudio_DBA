@@ -41,6 +41,13 @@ public class Util {
                                                           .getSession(false);
         return session.getAttribute("username").toString();
     }
+    
+    public static int getCustomerId() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                                                          .getExternalContext()
+                                                          .getSession(false);
+        return (int) session.getAttribute("customerId");
+    }
 
     /**
      * Retrieves the user ID of the current user from the session.
