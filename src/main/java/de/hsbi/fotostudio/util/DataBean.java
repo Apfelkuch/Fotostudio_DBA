@@ -363,7 +363,7 @@ public class DataBean implements Serializable {
             preStmt.setDouble(5, product.getPrice());
             preStmt.setInt(6, product.getAmount());
             preStmt.setString(7, product.getStorageStatus().getName());
-            preStmt.setString(8, "toastbrot.jpg");
+            preStmt.setString(8, "image_not_found.jpg");
             
             preStmt.executeUpdate();
             
@@ -477,7 +477,7 @@ public class DataBean implements Serializable {
             preStmt.setString(4, service.getBillingType().getName());
             preStmt.setDouble(5, service.getPrice());
             preStmt.setString(6, service.getStorageStatus().getName());
-            preStmt.setString(7, "videografie.jpg");
+            preStmt.setString(7, "image_not_found.jpg");
             
             preStmt.executeUpdate();
             
