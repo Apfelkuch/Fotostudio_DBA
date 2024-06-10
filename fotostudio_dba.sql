@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Jun 2024 um 13:36
+-- Erstellungszeit: 10. Jun 2024 um 12:23
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -83,7 +83,8 @@ INSERT INTO `customer` (`C_ID`, `BENUTZERNAME`, `PASSWORT`, `EMAIL`, `ROLLE`, `F
 (9, 'FlashFocus', '09876', 'flash@example.com', 0, 4, '2024-06-07 13:49:24', 0),
 (10, 'ApertureArtist', '543210', 'aperture@example.com', 0, 5, '2024-06-07 13:49:24', 0),
 (11, 'FotoMaster', '33445', 'fotomaster@domain.com', 0, 18, '2024-06-09 10:33:25', 0),
-(12, 'CamExpert', '77654', 'camexpert@domain.com', 0, 19, '2024-06-09 10:33:25', 0);
+(12, 'CamExpert', '77654', 'camexpert@domain.com', 0, 19, '2024-06-09 10:33:25', 0),
+(14, 'Jürgen', 'jürgen', 'jfranz@hsbi.de', 0, 21, '2024-06-10 09:02:34', 0);
 
 -- --------------------------------------------------------
 
@@ -160,7 +161,10 @@ INSERT INTO `orders` (`O_ID`, `FK_C_ID`, `ZEITSTEMPEL`, `LIEFERDATUM`) VALUES
 (66, 11, '2020-04-05 07:45:00', '2020-04-16'),
 (67, 12, '2020-11-05 12:00:00', '2020-11-16'),
 (68, 11, '2021-08-10 12:20:00', '2021-08-23'),
-(69, 12, '2022-01-12 16:10:00', '2022-01-25');
+(69, 12, '2022-01-12 16:10:00', '2022-01-25'),
+(70, 14, '2024-06-10 09:03:19', '2024-06-24'),
+(71, 14, '2024-06-10 09:03:25', '2024-06-24'),
+(72, 14, '2024-06-10 09:03:30', '2024-06-24');
 
 -- --------------------------------------------------------
 
@@ -215,7 +219,7 @@ CREATE TABLE `produkt` (
 
 INSERT INTO `produkt` (`P_ID`, `NAME`, `BESCHREIBUNG`, `KATEGORIE`, `ABRECHNUNGSART`, `PREIS`, `MENGE`, `LAGERSTATUS`, `LETZTE ÄNDERUNG`, `DATEIPFAD`) VALUES
 (1, 'Sony Alpha 7 IV Body', 'Sony Alpha 7 IV:\r\n\r\n- Verbesserte Video Funktionen mit seitlich schwenkbaren Bildschirm und mehr\r\n- Videoauflösung von 4K 60p (Nur im Super-35-mm-Modus)\r\n- Rückwärtig belichteter Exmor R-Vollformatsensor\r\n- Neueste Echtzeit-Tracking-Technologie\r\n- Autofok', 'Equipment', 'Pro Objekt', 00002399.00, 0000100, 'In Stock', '2024-06-06 15:07:32', 'sony_alpha7vi.jpg'),
-(2, 'Sony SEL 24-70mm/2,8 G-Master Version 2', 'Das Sony SEL2470GM2 Vollformat-Objektiv: Ein besonders leichtes Objektiv mit großer Blendenöffnung, höchster Bildqualität und verbesserter Bedienbarkeit für Fotos und Filme. Es bietet fortschrittliches optisches Design, zwei XA-Elemente (extrem asphärisch', 'Equipment', 'Pro Objekt', 00002399.00, 0000005, 'Low Stock', '2024-06-06 15:12:27', 'sony_sel_24-70MM.jpg'),
+(2, 'Sony SEL 24-70mm/2,8 G-Master Version 2', 'Das Sony SEL2470GM2 Vollformat-Objektiv: Ein besonders leichtes Objektiv mit großer Blendenöffnung, höchster Bildqualität und verbesserter Bedienbarkeit für Fotos und Filme. Es bietet fortschrittliches optisches Design, zwei XA-Elemente (extrem asphärisch', 'Equipment', 'Pro Objekt', 00002399.00, 0000004, 'Low Stock', '2024-06-10 09:03:19', 'sony_sel_24-70MM.jpg'),
 (3, 'verbranntes Toastbrot', 'lecker, aber krebserregend ;)', 'Equipment', 'Pro Objekt', 01000000.00, 0000001, 'Low Stock', '2024-06-06 15:17:46', 'toastbrot.jpg'),
 (4, 'Canon EOS R5 Body', 'Canon EOS R5\r\n\r\n- 5 Achsen integrierter Bildstabilisator IBIS\r\n- 4K/120p RAW-Video im Vollformat\r\n- 8K RAW-Video im Vollformat mit interner Aufzeichnung\r\n- Volle kreative Freiheit bei deinen Filmaufnahmen\r\n- Zwei Speicherkarten-Steckplätze\r\n', 'Equipment', 'Pro Objekt', 00003499.00, 0000250, 'In Stock', '2024-06-06 15:20:48', 'canon_eos_r5_body.jpg'),
 (5, 'Canon RF 1200mm F8L IS USM', 'Canon RF 1200mm F8L IS USM - Leichtes Superteleobjektiv\r\n\r\n- Hohe Lichtstärke\r\n- 4-Stufen-Bildstabilisator\r\n- 9-Lamellen-Irisblende\r\n- Konfigurierbare Bedienelemente\r\n- Hochwertige Vergütung\r\n- Ausgewogene Gewichtsverteilung\r\n- Blende in 1/8 Stufen\r\n- Vie', 'Equipment', 'Pro Objekt', 00023449.00, 0000000, 'Out of Stock', '2024-06-06 15:25:18', 'canon_rf_1200mm_f8l.jpg'),
@@ -252,7 +256,9 @@ INSERT INTO `produktdetail` (`PD_ID`, `FK_O_ID`, `FK_P_ID`, `MENGE`) VALUES
 (7, 1, 10, 0000003),
 (8, 17, 4, 0000002),
 (9, 6, 1, 0000001),
-(10, 19, 8, 0000004);
+(10, 19, 8, 0000004),
+(11, 70, 2, 0000005),
+(12, 72, 3, 0000001);
 
 -- --------------------------------------------------------
 
@@ -370,7 +376,8 @@ INSERT INTO `user` (`U_ID`, `NAME`, `VORNAME`, `GEBURTSDATUM`, `FK_A_ID`) VALUES
 (9, 'Blitzmerker', 'Kai', '1982-01-16', 4),
 (16, 'NONE', 'NONE', '1899-12-12', 2),
 (18, 'Streber', 'Tina', '1994-10-26', 5),
-(19, 'Kicherer', 'Fritz', '1993-02-14', 2);
+(19, 'Kicherer', 'Fritz', '1993-02-14', 2),
+(21, 'Jürgen', 'Hans', '2020-06-20', 5);
 
 -- --------------------------------------------------------
 
@@ -436,7 +443,8 @@ ALTER TABLE `orders`
 -- Indizes für die Tabelle `personal`
 --
 ALTER TABLE `personal`
-  ADD PRIMARY KEY (`PSN_ID`);
+  ADD PRIMARY KEY (`PSN_ID`),
+  ADD KEY `PFK_U_ID` (`FK_U_ID`);
 
 --
 -- Indizes für die Tabelle `produkt`
@@ -502,7 +510,7 @@ ALTER TABLE `adresse`
 -- AUTO_INCREMENT für Tabelle `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT für Tabelle `lieferumfang`
@@ -514,7 +522,7 @@ ALTER TABLE `lieferumfang`
 -- AUTO_INCREMENT für Tabelle `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT für Tabelle `personal`
@@ -532,7 +540,7 @@ ALTER TABLE `produkt`
 -- AUTO_INCREMENT für Tabelle `produktdetail`
 --
 ALTER TABLE `produktdetail`
-  MODIFY `PD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `PD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT für Tabelle `service`
@@ -556,7 +564,7 @@ ALTER TABLE `servicepersonal`
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT für Tabelle `zubehör`
@@ -586,6 +594,12 @@ ALTER TABLE `lieferumfang`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `OFK_C_ID` FOREIGN KEY (`FK_C_ID`) REFERENCES `customer` (`C_ID`);
+
+--
+-- Constraints der Tabelle `personal`
+--
+ALTER TABLE `personal`
+  ADD CONSTRAINT `PFK_U_ID` FOREIGN KEY (`FK_U_ID`) REFERENCES `user` (`U_ID`);
 
 --
 -- Constraints der Tabelle `produktdetail`
