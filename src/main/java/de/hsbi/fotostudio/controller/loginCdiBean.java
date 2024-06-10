@@ -90,8 +90,12 @@ public class loginCdiBean implements Serializable {
 
     /**
      * Handles the logout process and adds a logout message.
+     * Moreover the welcome page is return to exit from all Pages
+     * which are not allow to be entered when logged out
+     * 
+     * @return Returns the path to the welcome page
      */
-    public void logoutMSG() {
+    public String logoutMSG() {
         //System.out.println("Logout called");
         // Perform logout actions
         logout();
@@ -102,6 +106,7 @@ public class loginCdiBean implements Serializable {
                 new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "Abmeldung erfolgreich!",
                         "Sie sind jetzt abgemeldet!"));
+        return "ServiceView?faces-redirect=true";
     }
 
     /**

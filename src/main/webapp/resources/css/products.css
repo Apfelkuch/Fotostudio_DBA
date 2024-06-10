@@ -19,6 +19,8 @@
 
 .product-description {
     margin: 1rem 0;
+    height: 2.6rem;
+    overflow: hidden;
 }
 
 .product-category-icon {
