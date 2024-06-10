@@ -11,8 +11,8 @@
           widgetVar="pD"
           responsive="true" >
     <h:form id="form-product-dialog">
-        <p:panel id="panel"
-                 style="width: 650px; margin: 0 auto;">
+        <p:scrollPanel id="panel"
+                 style="width: 650px; margin: 0 auto;height:70vh">
             <p:panelGrid id="product-dialog-content" 
                          columns="2"
                          layout="grid" >
@@ -31,8 +31,9 @@
                             update="growl"/>
                 </p:inputText>
                 <h:outputText value="Beschreibung:" />
-                <p:inputTextarea rows="5"
+                <p:inputTextarea rows="7"
                                  cols="30"
+                                 autoResize="false"
                                  id="DESCRIPTION" 
                                  value="#{productDialogBean.currentProduct.description}"
                                  readonly="#{!productDialogBean.editing}"
@@ -137,6 +138,6 @@
                                  style="float: right;">
                 </p:commandButton>
             </p:panelGrid>
-        </p:panel>
+        </p:scrollPanel>
     </h:form>
 </p:dialog>

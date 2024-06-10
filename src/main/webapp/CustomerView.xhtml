@@ -6,7 +6,7 @@
                 template="WEB-INF/templates/master.xhtml">
     <ui:define name="content">
         <h:form id="form-customerView">
-            <p:selectOneMenu id="SelectUserView"
+            <p:selectOneMenu id="customerView"
                              valueChangeListener="#{customerViewBean.getCustomerView}" >
                 <f:selectItem 
                     itemLabel="Top-Seller" 
@@ -16,18 +16,22 @@
                     itemValue="shopKeeper" />
                 <p:ajax event="change"
                         process="@form" 
-                        update="customerView"/>
+                        update="@form"/>
             </p:selectOneMenu>
-            <p:dataTable id="customerView"
-                         var="customer"
-                         value="#{customerViewBean.userList}"
+            <p:dataTable id="showUserView"
+                         var="showUser"
+                         value="#{customerViewBean.showUserList}"
                          emptyMessage="">
                 <p:column headerText="Name">
-                    <h:outputText value="#{customer.username}" />
+                    <h:outputText value="#{showUser.username}" />
                 </p:column>
 
                 <p:column headerText="E-Mail">
-                    <p:outputLabel value="#{customer.email}" />
+                    <p:outputLabel value="#{showUser.email}" />
+                </p:column>
+
+                <p:column headerText="Bestellungen">
+                    <p:outputLabel value="#{showUser.purchases}" />
                 </p:column>
             </p:dataTable>
         </h:form>

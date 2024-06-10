@@ -1,6 +1,6 @@
 package de.hsbi.fotostudio.modul;
 
-import de.hsbi.fotostudio.util.ProductData;
+import de.hsbi.fotostudio.util.DataBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -33,7 +33,7 @@ public class Products {
     private Category currentCategory;
     
     @Inject
-    private ProductData productData;
+    private DataBean dataBean;
     
     /**
      * Creates a new instance of Products
@@ -63,9 +63,9 @@ public class Products {
      * @param categorieId new id of the selected category
      */
     public void selectProductCategory(int categorieId) {
-        currentCategory = productData.getProduct_category_list().get(categorieId);
+        currentCategory = dataBean.getProduct_category_list().get(categorieId);
         LOG.info("[Products] category of the currentProducts is updated, new Category is: " + currentCategory.getName());
-        List<Product> immutableCopy = List.copyOf(productData.getProduct_list());
+        List<Product> immutableCopy = List.copyOf(dataBean.getProduct_list());
         currentProducts = null;
         if (categorieId == 0) {
             currentProducts = immutableCopy;
@@ -87,9 +87,9 @@ public class Products {
      * @param categorieId new id of the selected category
      */
     public void selectServiceCategory(int categorieId) {
-        currentCategory = productData.getService_category_list().get(categorieId);
+        currentCategory = dataBean.getService_category_list().get(categorieId);
         LOG.info("[Products] category of the currentServices is updated, new Category is: " + currentCategory.getName());
-        List<Service> immutableCopy = List.copyOf(productData.getService_list());
+        List<Service> immutableCopy = List.copyOf(dataBean.getService_list());
         currentServices = null;
         if (categorieId == 0) {
             currentServices = immutableCopy;
@@ -113,12 +113,12 @@ public class Products {
      * @return true if the Product is found and updated, otherwise false
      */
     public boolean updateProduct(int id, Product product) {
-        if (id < 0 || id >= productData.getProduct_list().size()){
+        if (id < 0 || id >= dataBean.getProduct_list().size()){
             return false;
         }
         
         // update Product daten in list (database)
-        boolean returnValue = productData.updateProduct_list(id, product);
+        boolean returnValue = dataBean.updateProduct_list(id, product);
         
         return returnValue;
     }
@@ -132,12 +132,12 @@ public class Products {
      * @return true if the Service is found and updated, otherwise false
      */
     public boolean updateService(int id, Service service) {
-        if (id < 0 || id >= productData.getService_list().size()){
+        if (id < 0 || id >= dataBean.getService_list().size()){
             return false;
         }
         
         // update Service daten in list (database)
-        boolean returnValue = productData.updateService_list(id, service);
+        boolean returnValue = dataBean.updateService_list(id, service);
         
         return returnValue;
     }
@@ -150,7 +150,7 @@ public class Products {
      */
     public Category findProductCategoryWithId(int id) {
         LOG.info("[Products] findProductCategoryWithId => id: " + id);
-        for (Category k : productData.getProduct_category_list()) {
+        for (Category k : dataBean.getProduct_category_list()) {
             if (k.getId() == id) {
                 return k;
             }
@@ -166,7 +166,7 @@ public class Products {
      */
     public Category findServiceCategoryWithId(int id) {
         LOG.info("[Products] findServiceCategoryWithId => id: " + id);
-        for (Category k : productData.getService_category_list()) {
+        for (Category k : dataBean.getService_category_list()) {
             if (k.getId() == id) {
                 return k;
             }
@@ -182,7 +182,7 @@ public class Products {
      */
     public StorageStatus findStorageStatusWithId(int id) {
         LOG.info("[Products] billingType => id: " + id);
-        for (StorageStatus l : productData.getStorageStatus_list()) {
+        for (StorageStatus l : dataBean.getStorageStatus_list()) {
             if (l.getId() == id) {
                 return l;
             }
@@ -200,7 +200,7 @@ public class Products {
     public boolean findProductWithNamefragment(String namefragment) {
         currentCategory = null;
         LOG.info("[Products] current Products contain in their title: " + namefragment.toLowerCase());
-        List<Product> immutableCopy = List.copyOf(productData.getProduct_list());
+        List<Product> immutableCopy = List.copyOf(dataBean.getProduct_list());
         currentProducts = null;
         currentProducts = immutableCopy.stream()
                 .filter(product -> product.getName().toLowerCase().contains(namefragment.toLowerCase()))
@@ -223,7 +223,7 @@ public class Products {
     public boolean findServiceWithNamefragment(String namefragment) {
         currentCategory = null;
         LOG.info("[Products] current Services contain in their title: " + namefragment.toLowerCase());
-        List<Service> immutableCopy = List.copyOf(productData.getService_list());
+        List<Service> immutableCopy = List.copyOf(dataBean.getService_list());
         currentServices = null;
         currentServices = immutableCopy.stream()
                 .filter(service -> service.getName().toLowerCase().contains(namefragment.toLowerCase()))

@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
-import de.hsbi.fotostudio.modul.User;
-import de.hsbi.fotostudio.util.LoginHandler;
+import de.hsbi.fotostudio.modul.ShowUser;
+import de.hsbi.fotostudio.util.DataBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.faces.event.ValueChangeEvent;
@@ -21,10 +21,10 @@ public class CustomerViewBean implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(CustomerViewBean.class.getName());
     
-    private List<User> userList;
+    private List<ShowUser> showUserList;
     
     @Inject
-    private LoginHandler loginHandler;
+    private DataBean dataBean;
 
     /**
      * Creates a new instance of CustomerViewBean
@@ -54,44 +54,46 @@ public class CustomerViewBean implements Serializable {
         
         switch (option) {
             case "topSeller":
+                LOG.info("[CustomerViewBean] topSeller");
                 selectTopSeller();
                 break;
             case "shopKeeper":
-                selectTopSeller();
+                LOG.info("[CustomerViewBean] shopKeeper");
+                selectShopKeeper();
                 break;
             default:
                 throw new UnsupportedOperationException("Not supported yet.");
         }
         
-        LOG.info("[CustomerViewBean] length: " + userList.size());
+        LOG.info("[CustomerViewBean] length: " + showUserList.size());
     }
     
     public void selectTopSeller() {
-        userList = loginHandler.selectTopSeller();
+        showUserList = dataBean.selectTopSeller();
     }
     
     public void selectShopKeeper() {
-        userList = loginHandler.selectShopKeeper();
+        showUserList = dataBean.selectShopKeeper();
     }
     
     // GETTER && SETTER
     
     /**
-     * Get Value of userList
+     * Get Value of showUserList
      * 
-     * @return the value of userList
+     * @return the value of showUserList
      */
-    public List<User> getUserList() {
-        return userList;
+    public List<ShowUser> getShowUserList() {
+        return showUserList;
     }
 
     /**
-     * Set Value of userList
+     * Set Value of showUserList
      * 
-     * @param userList the new value of userList
+     * @param showUserList the new value of showUserList
      */
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setShowUserList(List<ShowUser> showUserList) {
+        this.showUserList = showUserList;
     }
     
 }

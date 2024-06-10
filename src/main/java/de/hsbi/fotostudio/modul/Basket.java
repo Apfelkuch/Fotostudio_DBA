@@ -1,6 +1,9 @@
 package de.hsbi.fotostudio.modul;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import de.hsbi.fotostudio.util.DataBean;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -10,8 +13,11 @@ import java.util.logging.Logger;
  *
  * @author Janis Wiegräbe
  */
-@ApplicationScoped
-public class Basket {
+@SessionScoped
+public class Basket implements Serializable {
+    
+    @Inject
+    private DataBean dataBean;
 
     private static final Logger LOG = Logger.getLogger(Basket.class.getName());
     
@@ -151,6 +157,10 @@ public class Basket {
     public boolean clearBasket() {
         basket.clear();
         return basket.isEmpty();
+    }
+    
+    public void addOrder() {
+        dataBean.addOrder(basket);
     }
     
     // GETTER && SETTER

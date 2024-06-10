@@ -5,7 +5,7 @@ import de.hsbi.fotostudio.modul.Category;
 import de.hsbi.fotostudio.modul.StorageStatus;
 import de.hsbi.fotostudio.modul.Product;
 import de.hsbi.fotostudio.modul.Products;
-import de.hsbi.fotostudio.util.ProductData;
+import de.hsbi.fotostudio.util.DataBean;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -49,7 +49,7 @@ public class ProductDialogBean implements Serializable {
     private Products products;
     
     @Inject
-    private ProductData productData;
+    private DataBean dataBean;
     
     /**
      * Creates new instance of ProduktDialogBean
@@ -63,9 +63,9 @@ public class ProductDialogBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        category_list = productData.getProduct_category_list();
-        billingType_list = productData.getBillingType_list();
-        storageStatus_list = productData.getStorageStatus_list();
+        category_list = dataBean.getProduct_category_list();
+        billingType_list = dataBean.getBillingType_list();
+        storageStatus_list = dataBean.getStorageStatus_list();
         currentProduct = new Product();
     }
 
@@ -86,7 +86,7 @@ public class ProductDialogBean implements Serializable {
             PrimeFaces.current().ajax().update("form-service-view:data-view");
         } else {
             if(!currentProduct.getName().isBlank()) {
-                Product p = productData.addProduct_list(currentProduct);
+                Product p = dataBean.addProduct_list(currentProduct);
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Produkt hinzugefügt", p.toString());
             } else {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Kein Produkt hinzugefügt", "Ein Produkt braucht mindestens einen Namen");

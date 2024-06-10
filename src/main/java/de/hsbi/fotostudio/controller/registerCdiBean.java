@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.Birthday;
-import de.hsbi.fotostudio.util.LoginHandler;
+import de.hsbi.fotostudio.util.DataBean;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
@@ -37,7 +37,7 @@ public class registerCdiBean implements Serializable {
     private boolean bdayDataOk = false; // Flag to check if birthday is valid
 
     @Inject
-    private LoginHandler loginHandler; // Injected LoginHandler for user management
+    private DataBean dataBean; // Injected LoginHandler for user management
 
     // Getter and Setter methods for the user registration details
     /**
@@ -179,7 +179,7 @@ public class registerCdiBean implements Serializable {
         if (nameDataOk == true & pwdDataOk == true
                 & emailDataOk == true & bdayDataOk == true) {
             // All validation checks passed, add the new user
-            loginHandler.addUser(username, password, email, bday, 0);
+            dataBean.addUser(username, password, email, bday, 0);
             FacesContext.getCurrentInstance().addMessage(
                     null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -213,7 +213,7 @@ public class registerCdiBean implements Serializable {
     public void checkName(FacesContext fc, UIComponent uic, Object obj) {
         String wert = obj.toString();
         int count = wert.length();
-        boolean alreadyExist = loginHandler.userExist(wert);
+        boolean alreadyExist = dataBean.userExist(wert);
         nameDataOk = false;
         if (alreadyExist == true) {
             // Username already exists, show error message

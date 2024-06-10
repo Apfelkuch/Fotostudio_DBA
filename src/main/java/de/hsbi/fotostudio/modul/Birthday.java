@@ -1,5 +1,8 @@
 package de.hsbi.fotostudio.modul;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Represents a Birthday with day, month, and year attributes.
  * Provides methods to get and set these attributes.
@@ -38,6 +41,25 @@ public class Birthday {
         this.day = pDay;     // Set the day
         this.month = pMonth; // Set the month
         this.year = pYear;   // Set the year
+    }
+    
+    public static Birthday convertDateToBirthday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        
+        return new Birthday(calendar.get(Calendar.DAY_OF_MONTH),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.YEAR));
+    }
+    
+    public static Date convertBirthdayToDate(Birthday birthday) {
+        Calendar calendar = Calendar.getInstance();
+        
+        calendar.set(Calendar.DAY_OF_MONTH, birthday.getDay());
+        calendar.set(Calendar.MONTH, birthday.getMonth());
+        calendar.set(Calendar.YEAR, birthday.getYear());
+        
+        return calendar.getTime();
     }
 
     /**

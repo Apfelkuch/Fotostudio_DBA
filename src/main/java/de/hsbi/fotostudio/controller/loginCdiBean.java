@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.User;
-import de.hsbi.fotostudio.util.LoginHandler;
+import de.hsbi.fotostudio.util.DataBean;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -28,7 +28,7 @@ public class loginCdiBean implements Serializable {
     private boolean nameDataOk = false, pwdDataOk = false, login = false; // Flags for data validation and login status
 
     @Inject
-    private LoginHandler loginHandler; // LoginHandler instance for managing authentication
+    private DataBean dataBean; // LoginHandler instance for managing authentication
 
     /**
      * Handles the login process. Authenticates the user and manages the
@@ -36,12 +36,13 @@ public class loginCdiBean implements Serializable {
      */
     public void loginProject() {
         // Attempt to authenticate the user
-        User currentUser = loginHandler.login(uname, password);
+        User currentUser = dataBean.login(uname, password);
         // Check if authentication was successful and data is valid
         if (currentUser != null && nameDataOk == true && pwdDataOk == true) {
 
             // Get Http Session and store user details
             HttpSession session = Util.getSession();
+            session.setAttribute("customerId", currentUser.getId());
             session.setAttribute("username", uname);
             session.setAttribute("userid", session.getId());
             session.setAttribute("userrole", currentUser.getRole());
@@ -89,8 +90,12 @@ public class loginCdiBean implements Serializable {
 
     /**
      * Handles the logout process and adds a logout message.
+     * Moreover the welcome page is return to exit from all Pages
+     * which are not allow to be entered when logged out
+     * 
+     * @return Returns the path to the welcome page
      */
-    public void logoutMSG() {
+    public String logoutMSG() {
         //System.out.println("Logout called");
         // Perform logout actions
         logout();
@@ -101,6 +106,7 @@ public class loginCdiBean implements Serializable {
                 new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "Abmeldung erfolgreich!",
                         "Sie sind jetzt abgemeldet!"));
+        return "ServiceView?faces-redirect=true";
     }
 
     /**

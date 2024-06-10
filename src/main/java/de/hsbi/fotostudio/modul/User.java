@@ -9,6 +9,7 @@ package de.hsbi.fotostudio.modul;
 public class User {
 
     // Attributes
+    private int id;
     private String username; // User's username
     private String password; // User's password
     private String email;    // User's email
@@ -25,6 +26,7 @@ public class User {
      * Role: nobody (0)
      */
     public User() {
+        id = -1;
         username = "INVALID";
         password = "0000";
         email = "INVALID@INVALID.com";
@@ -40,7 +42,8 @@ public class User {
      * @param pBirthday The birthday of the user
      * @param pRole The role of the user (0 = nobody, 1 = admin, 2 = janis)
      */
-    public User(String pUsername, String pPassword, String pEmail, Birthday pBirthday, int pRole) {
+    public User(int pId, String pUsername, String pPassword, String pEmail, Birthday pBirthday, int pRole) {
+        id = pId;
         username = pUsername;
         password = pPassword;
         email = pEmail;
@@ -49,6 +52,15 @@ public class User {
     }
 
     // Getter and Setter Methods
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     /**
      * Get the username of the user.
      * @return The username of the user
