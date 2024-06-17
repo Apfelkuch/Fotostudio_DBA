@@ -26,13 +26,16 @@ public class registerCdiBean implements Serializable {
     private String username;  // Stores the username input from the user
     private String password;  // Stores the password input from the user
     private String email;     // Stores the email input from the user
-    private String date;      // Date of birth in string format
     private Birthday bday = new Birthday(); // Birthday object to store parsed date
 
     // Validation flags for user input
     // Validation flags for user input
     private boolean nameDataOk = false; // Flag to check if username is valid
     private boolean pwdDataOk = false;  // Flag to check if password is valid
+
+    public void setPwdDataOk(boolean pwdDataOk) {
+        this.pwdDataOk = pwdDataOk;
+    }
     private boolean emailDataOk = false;// Flag to check if email is valid
     private boolean bdayDataOk = false; // Flag to check if birthday is valid
 
@@ -120,25 +123,6 @@ public class registerCdiBean implements Serializable {
     }
 
     /**
-     * Checks if the given birthday is within the acceptable range. The
-     * acceptable range is from the year 1910 to 2100.
-     *
-     * @param d the Birthday object to check
-     * @return true if the date is within the range, false otherwise
-     */
-    public boolean dateInRange(Birthday d) {
-        System.out.println("Tag: " + d.getDay() + "Monat: " + d.getMonth() + "Jahr: " + d.getYear());
-        if (d.getDay() < 32 && d.getDay() > -1) { // Day must be between 1 and 31
-            if (d.getMonth() < 13 && d.getMonth() > -1) { // Month must be between 1 and 12
-                if (d.getYear() < 2101 && d.getYear() > 1909) { // Year must be between 1910 and 2100
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * Converts a date string into a Birthday object. The expected format of the
      * date string is "dd.MM.yyyy".
      *
@@ -146,27 +130,18 @@ public class registerCdiBean implements Serializable {
      * @return a Birthday object or null if the format is invalid
      */
     public Birthday convertDateString(String dateString) {
-        //System.out.println("Hallo");
-        int first = dateString.indexOf(".");
-        int second = dateString.indexOf(".", 4);
-        int length = dateString.length();
-        if (first == 2 & second == 5 & length == 10) {
-            // Split the string into components based on the '.' delimiter
-            //System.out.println("HUHU");
-            // String in Teile aufteilen
-            String[] teile = dateString.split("\\.");
-            Birthday convertBday = new Birthday();
-            // Prüfen, ob genügend Teile vorhanden sind
-            if (teile.length == 3) {
-                // Parse and set day, month, and year
-                convertBday.setDay(Integer.parseInt(teile[0]));
-                //System.out.println("Tag: " + convertBday.getDay());
-                convertBday.setMonth(Integer.parseInt(teile[1]));
-                //System.out.println("Monat: " + convertBday.getMonth());
-                convertBday.setYear(Integer.parseInt(teile[2]));
-                //System.out.println("Jahr: " + convertBday.getYear());
-                return convertBday;
-            }
+        String[] teile = dateString.split("\\.");
+        Birthday convertBday = new Birthday();
+        // Prüfen, ob genügend Teile vorhanden sind
+        if (teile.length == 3) {
+            // Parse and set day, month, and year
+            convertBday.setDay(Integer.parseInt(teile[0]));
+            //System.out.println("Tag: " + convertBday.getDay());
+            convertBday.setMonth(Integer.parseInt(teile[1]));
+            //System.out.println("Monat: " + convertBday.getMonth());
+            convertBday.setYear(Integer.parseInt(teile[2]));
+            //System.out.println("Jahr: " + convertBday.getYear());
+            return convertBday;
         }
         return null;
     }
@@ -212,47 +187,23 @@ public class registerCdiBean implements Serializable {
      */
     public void checkName(FacesContext fc, UIComponent uic, Object obj) {
         String wert = obj.toString();
-        int count = wert.length();
         boolean alreadyExist = dataBean.userExist(wert);
         nameDataOk = false;
         if (alreadyExist == true) {
             // Username already exists, show error message
             Util.addComponentMessage(uic.getClientId(), "error", "Benutzername", "Der Benutzer exestiert bereits");
-        } else if (count < 5) {
-            // Username too short, show warning message
-            //msg = new FacesMessage("Mindestens 5 Zeichen!");
-            //throw new ValidatorException(msg);
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Minimal 5 Zeichen!");
-        } else if (count > 12) {
-            // Username too long, show warning message
-            //msg = new FacesMessage("Maximal 12 Zeichen!");
-            //throw new ValidatorException(msg);
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Maximal 12 Zeichen!");
         } else {
-            // Username valid
-            nameDataOk = true;
-            Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
-        }
-    }
 
-    /**
-     * Validates the password. Ensures it meets the minimum length requirement.
-     *
-     * @param fc FacesContext instance
-     * @param uic UIComponent instance
-     * @param obj the object to validate
-     */
-    public void checkPwd(FacesContext fc, UIComponent uic, Object obj) {
-        String wert = obj.toString();
-        int count = wert.length();
-        pwdDataOk = false;
-        if (count < 5) {
-            // Password too short, show warning message
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Passwort)", "Minimal 5 Zeichen!");
-        } else {
-            // Password valid
-            pwdDataOk = true;
-            Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
+            String pattern = "^.{5,12}$";
+            String res = wert.replaceFirst(pattern, "");
+            if (!res.isEmpty()) {
+                // Username does not match pattern, show warning messag
+                Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Zwischen 5 und 12 Zeichen!");
+            } else {
+                // Username valid
+                nameDataOk = true;
+                Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
+            }
         }
     }
 
@@ -265,7 +216,7 @@ public class registerCdiBean implements Serializable {
      */
     public void checkEmail(FacesContext fc, UIComponent uic, Object obj) {
         String wert = obj.toString();
-        String pattern = "[A-Za-z.0-9]+@[a-z]+.[a-z]{2,3}";
+        String pattern = "^(\\w{3,})(-|_|\\+|\\.)?\\w*@((\\w+)(\\.|-))+(\\w{2,})$";
         String res = wert.replaceFirst(pattern, "");
         emailDataOk = false;
         if (!res.isEmpty()) {
@@ -287,21 +238,19 @@ public class registerCdiBean implements Serializable {
      * @param obj the object to validate
      */
     public void checkBday(FacesContext fc, UIComponent uic, Object obj) {
-        String wert = obj.toString();
         bdayDataOk = false;
-        Birthday b = convertDateString(wert);
-        if (b != null) {
-            if (dateInRange(b) == true) {
-                // Date is within range, show info message
-                Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
-                bdayDataOk = true;
-            } else {
-                // Date is out of range, show warning message
-                Util.addComponentMessage(uic.getClientId(), "warn", "falsches Datum", " Datum zwischen 1910 und 2100");
-            }
-        } else {
+        String wert = obj.toString();
+
+        String pattern = "^((0[1-9])|([12]\\d)|30|31)\\.(?<=\\.)(0[\\d]|1[012])\\.(?<=\\.)((19|20)[\\d]{2})$";
+        String res = wert.replaceFirst(pattern, "");
+
+        if (!res.isEmpty()) {
             // Date format invalid, show warning message
             Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Datum)!", " falsches Format: tt.mm.jjjj");
+        } else {
+            // Date valid
+            bdayDataOk = true;
+            Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
         }
     }
 }
