@@ -46,9 +46,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         value="#{registerCdiBean.password}"
                         feedback="false"
                         placeholder="Mindestens 5 Zeichen !"
-                        validator="#{registerCdiBean.checkPwd}"
                         required="true"
                         requiredMessage="Eingabe erforderlich!">
+                        <f:validator validatorId="passwordValidation"/>
                         <p:ajax 
                             event="blur" 
                             update="PWDREG_MSG" 
@@ -98,7 +98,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         action="#{registerCdiBean.insertNewUser()}"
                         value="Regestrieren" 
                         update="@form"                      
-                        style="float: right;">                        
+                        style="float: right;"
+                        disabled="#{facesContext.validationFailed}">                        
                     </p:commandButton>
                 </h:panelGrid>
             </p:panel>
