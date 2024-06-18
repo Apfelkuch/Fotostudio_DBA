@@ -1,7 +1,7 @@
 package de.hsbi.fotostudio.controller;
 
 import de.hsbi.fotostudio.modul.Basket;
-import de.hsbi.fotostudio.modul.Product;
+import de.hsbi.fotostudio.modul.Produkt;
 import de.hsbi.fotostudio.modul.Products;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
@@ -31,7 +31,7 @@ public class ProductViewBean implements Serializable{
     @Inject
     private Basket basket;
     
-    private Product currentProduct;
+    private Produkt currentProduct;
     
     private static final Logger LOG = Logger.getLogger(ProductViewBean.class.getName());
     
@@ -69,7 +69,7 @@ public class ProductViewBean implements Serializable{
      * 
      * @param product new Product which is shown in the ProductDialog.
      */
-    public void info(Product product) {
+    public void info(Produkt product) {
         LOG.info("[ProductViewBean] info: " + product.getName());
         products.setAddNewItem(false);
         products.setCurrentProduct(product);
@@ -82,7 +82,7 @@ public class ProductViewBean implements Serializable{
     public void createProduct() {
         LOG.info("[ProductViewBean] add Product");
         products.setAddNewItem(true);
-        products.setCurrentProduct(new Product());
+        products.setCurrentProduct(new Produkt());
         PrimeFaces.current().ajax().update(":form-product-dialog");
         LOG.info("[ProductViewBean] add Product : "
                 + products.getCurrentProduct().toString());
@@ -93,9 +93,9 @@ public class ProductViewBean implements Serializable{
      * 
      * @param product the product to be added 
      */
-    public void addProductToBasket(Product product) {
+    public void addProductToBasket(Produkt product) {
         LOG.info("[ProductViewBean] add Product to basket");
-        int count = basket.incrementBasketItem(product);
+        long count = basket.incrementBasketItem(product);
         showMassage(new FacesMessage(
                 FacesMessage.SEVERITY_INFO,
                 "Produkt in Warenkorb hinzugefügt",
@@ -139,7 +139,7 @@ public class ProductViewBean implements Serializable{
      * 
      * @return the value of products.getCurrentProducts
      */
-    public List<Product> getCurrentProducts() {
+    public List<Produkt> getCurrentProducts() {
         return products.getCurrentProducts();
     }
 
@@ -148,7 +148,7 @@ public class ProductViewBean implements Serializable{
      * 
      * @return the value of products.getCurrentProduct
      */
-    public Product getCurrentProduct() {
+    public Produkt getCurrentProduct() {
         return products.getCurrentProduct();
     }
 
@@ -157,7 +157,7 @@ public class ProductViewBean implements Serializable{
      * 
      * @param currentProduct the new value of the current Product
      */
-    public void setCurrentProduct(Product currentProduct) {
+    public void setCurrentProduct(Produkt currentProduct) {
         products.setCurrentProduct(currentProduct);
     }
     

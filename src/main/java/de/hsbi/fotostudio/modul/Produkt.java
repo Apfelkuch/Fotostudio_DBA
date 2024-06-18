@@ -23,35 +23,36 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * This class is model for a Service
+ * This class is model for a Produkt
  *
  * @version 1.1
  * @author Janis Wiegräbe
  */
 @Entity
-@Table(name = "service")
+@Table(name = "produkt")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s"),
-    @NamedQuery(name = "Service.findBySId", query = "SELECT s FROM Service s WHERE s.sId = :sId"),
-    @NamedQuery(name = "Service.findByName", query = "SELECT s FROM Service s WHERE s.name = :name"),
-    @NamedQuery(name = "Service.findByBeschreibung", query = "SELECT s FROM Service s WHERE s.beschreibung = :beschreibung"),
-    @NamedQuery(name = "Service.findByKategorie", query = "SELECT s FROM Service s WHERE s.kategorie = :kategorie"),
-    @NamedQuery(name = "Service.findByAbrechnungsart", query = "SELECT s FROM Service s WHERE s.abrechnungsart = :abrechnungsart"),
-    @NamedQuery(name = "Service.findByPreis", query = "SELECT s FROM Service s WHERE s.preis = :preis"),
-    @NamedQuery(name = "Service.findByLagerstatus", query = "SELECT s FROM Service s WHERE s.lagerstatus = :lagerstatus"),
-    @NamedQuery(name = "Service.findByZeitstempel", query = "SELECT s FROM Service s WHERE s.zeitstempel = :zeitstempel"),
-    @NamedQuery(name = "Service.findByDateipfad", query = "SELECT s FROM Service s WHERE s.dateipfad = :dateipfad"),
-    @NamedQuery(name = "Service.update", query = "UPDATE Service s SET s.name = :name, s.beschreibung = :beschreibung, s.kategorie = :kategorie, s.abrechnungsart = :abrechnungsart, s.preis = :preis, s.lagerstatus = :lagerstatus, s.zeitstempel = :zeitstempel WHERE s.sId = :sId")
+    @NamedQuery(name = "Produkt.findAll", query = "SELECT p FROM Produkt p"),
+    @NamedQuery(name = "Produkt.findByPId", query = "SELECT p FROM Produkt p WHERE p.pId = :pId"),
+    @NamedQuery(name = "Produkt.findByName", query = "SELECT p FROM Produkt p WHERE p.name = :name"),
+    @NamedQuery(name = "Produkt.findByBeschreibung", query = "SELECT p FROM Produkt p WHERE p.beschreibung = :beschreibung"),
+    @NamedQuery(name = "Produkt.findByKategorie", query = "SELECT p FROM Produkt p WHERE p.kategorie = :kategorie"),
+    @NamedQuery(name = "Produkt.findByAbrechnungsart", query = "SELECT p FROM Produkt p WHERE p.abrechnungsart = :abrechnungsart"),
+    @NamedQuery(name = "Produkt.findByPreis", query = "SELECT p FROM Produkt p WHERE p.preis = :preis"),
+    @NamedQuery(name = "Produkt.findByMenge", query = "SELECT p FROM Produkt p WHERE p.menge = :menge"),
+    @NamedQuery(name = "Produkt.findByLagerstatus", query = "SELECT p FROM Produkt p WHERE p.lagerstatus = :lagerstatus"),
+    @NamedQuery(name = "Produkt.findByZeitstempel", query = "SELECT p FROM Produkt p WHERE p.zeitstempel = :zeitstempel"),
+    @NamedQuery(name = "Produkt.findByDateipfad", query = "SELECT p FROM Produkt p WHERE p.dateipfad = :dateipfad"),
+    @NamedQuery(name = "Produkt.update", query = "UPDATE Produkt p SET p.name = :name, p.beschreibung = :beschreibung, p.kategorie = :kategorie, p.abrechnungsart = :abrechnungsart, p.preis = :preis, p.menge = :menge, p.lagerstatus = :lagerstatus, p.zeitstempel = :zeitstempel WHERE p.pId = :pId")
 })
-public class Service extends Item implements Serializable {
+public class Produkt extends Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "S_ID")
-    private Integer sId;
+    @Column(name = "P_ID")
+    private Integer pId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -76,7 +77,11 @@ public class Service extends Item implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PREIS")
-    protected BigDecimal preis;
+    private BigDecimal preis;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MENGE")
+    private long menge;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 12)
@@ -92,38 +97,38 @@ public class Service extends Item implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "DATEIPFAD")
     private String dateipfad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkSId")
-    private Collection<Servicedetail> servicedetailCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkSId")
-    private Collection<Servicepersonal> servicepersonalCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkPId")
+    private Collection<Produktdetail> produktdetailCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkPId")
+    private Collection<Lieferumfang> lieferumfangCollection;
 
-    public Service() {
-        this(-1);
+    public Produkt() {
+        this.pId = -1;
     }
 
-    public Service(Integer sId) {
-        this.sId = sId;
+    public Produkt(Integer pId) {
+        this.pId = pId;
     }
 
-    public Service(Integer sId, String name, String beschreibung, String kategorie, String abrechnungsart, BigDecimal preis, String lagerstatus, Date zeitstempel, String dateipfad)
-    {
-        this.sId = sId;
+    public Produkt(Integer pId, String name, String beschreibung, String kategorie, String abrechnungsart, BigDecimal preis, long menge, String lagerstatus, Date letzteÄnderung, String dateipfad) {
+        this.pId = pId;
         this.name = name;
         this.beschreibung = beschreibung;
         this.kategorie = kategorie;
         this.abrechnungsart = abrechnungsart;
         this.preis = preis;
+        this.menge = menge;
         this.lagerstatus = lagerstatus;
-        this.zeitstempel = zeitstempel;
+        this.zeitstempel = letzteÄnderung;
         this.dateipfad = dateipfad;
     }
 
-    public Integer getSId() {
-        return sId;
+    public Integer getPId() {
+        return pId;
     }
 
-    public void setSId(Integer sId) {
-        this.sId = sId;
+    public void setPId(Integer pId) {
+        this.pId = pId;
     }
     
     /**
@@ -215,7 +220,26 @@ public class Service extends Item implements Serializable {
     public void setPreis(BigDecimal preis) {
         this.preis = preis;
     }
+    
+    /**
+     * Get Value of menge
+     * 
+     * @return the value of menge
+     */
+    @Override
+    public long getMenge() {
+        return menge;
+    }
 
+    /**
+     * Set Value of menge
+     * 
+     * @param menge the new value of menge
+     */
+    public void setMenge(long menge) {
+        this.menge = menge;
+    }
+    
     public StorageStatus getLagerstatus() {
         return storageStatus;
     }
@@ -255,38 +279,38 @@ public class Service extends Item implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Servicedetail> getServicedetailCollection() {
-        return servicedetailCollection;
+    public Collection<Produktdetail> getProduktdetailCollection() {
+        return produktdetailCollection;
     }
 
-    public void setServicedetailCollection(Collection<Servicedetail> servicedetailCollection) {
-        this.servicedetailCollection = servicedetailCollection;
+    public void setProduktdetailCollection(Collection<Produktdetail> produktdetailCollection) {
+        this.produktdetailCollection = produktdetailCollection;
     }
 
     @XmlTransient
-    public Collection<Servicepersonal> getServicepersonalCollection() {
-        return servicepersonalCollection;
+    public Collection<Lieferumfang> getLieferumfangCollection() {
+        return lieferumfangCollection;
     }
 
-    public void setServicepersonalCollection(Collection<Servicepersonal> servicepersonalCollection) {
-        this.servicepersonalCollection = servicepersonalCollection;
+    public void setLieferumfangCollection(Collection<Lieferumfang> lieferumfangCollection) {
+        this.lieferumfangCollection = lieferumfangCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (sId != null ? sId.hashCode() : 0);
+        hash += (pId != null ? pId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Service)) {
+        if (!(object instanceof Produkt)) {
             return false;
         }
-        Service other = (Service) object;
-        if ((this.sId == null && other.sId != null) || (this.sId != null && !this.sId.equals(other.sId))) {
+        Produkt other = (Produkt) object;
+        if ((this.pId == null && other.pId != null) || (this.pId != null && !this.pId.equals(other.pId))) {
             return false;
         }
         return true;
@@ -294,7 +318,7 @@ public class Service extends Item implements Serializable {
 
     @Override
     public String toString() {
-        return "de.hsbi.fotostudio.modul.Service[ sId=" + sId + " ]";
+        return "de.hsbi.fotostudio.modul.Produkt[ pId=" + pId + " ]";
     }
     
     /**
@@ -315,11 +339,6 @@ public class Service extends Item implements Serializable {
      */
     public boolean inCategory(Category category) {
         return this.category.equals(category);
-    }
-    
-    @Override
-    public long getMenge() {
-        return -1;
     }
     
 }

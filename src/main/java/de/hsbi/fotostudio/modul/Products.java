@@ -3,8 +3,9 @@ package de.hsbi.fotostudio.modul;
 import de.hsbi.fotostudio.util.DataBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,13 +19,13 @@ import java.util.stream.Collectors;
  * @author Janis Wiegräbe
  */
 @Named(value = "products")
-@ApplicationScoped
-public class Products {
+@SessionScoped
+public class Products implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(Products.class.getName());
     
-    private List<Product> currentProducts;
-    private Product currentProduct;
+    private List<Produkt> currentProducts;
+    private Produkt currentProduct;
     private boolean addNewItem = false;
     
     private List<Service> currentServices;
@@ -51,7 +52,7 @@ public class Products {
         currentServices = new ArrayList<>();
         selectProductCategory(0);
         selectServiceCategory(0);
-        currentProduct = new Product();
+        currentProduct = new Produkt();
         currentService = new Service();
         currentCategory = null;
     }
@@ -65,7 +66,7 @@ public class Products {
     public void selectProductCategory(int categorieId) {
         currentCategory = dataBean.getProduct_category_list().get(categorieId);
         LOG.info("[Products] category of the currentProducts is updated, new Category is: " + currentCategory.getName());
-        List<Product> immutableCopy = List.copyOf(dataBean.getProduct_list());
+        List<Produkt> immutableCopy = List.copyOf(dataBean.getProduct_list());
         currentProducts = null;
         if (categorieId == 0) {
             currentProducts = immutableCopy;
@@ -112,7 +113,7 @@ public class Products {
      * @param product the Product with the new data
      * @return true if the Product is found and updated, otherwise false
      */
-    public boolean updateProduct(int id, Product product) {
+    public boolean updateProduct(int id, Produkt product) {
         if (id < 0 || id >= dataBean.getProduct_list().size()){
             return false;
         }
@@ -181,10 +182,26 @@ public class Products {
      * @return the StorageStatus to the given id
      */
     public StorageStatus findStorageStatusWithId(int id) {
-        LOG.info("[Products] billingType => id: " + id);
+        LOG.info("[Products] findStorageStatusWithId => id: " + id);
         for (StorageStatus l : dataBean.getStorageStatus_list()) {
             if (l.getId() == id) {
                 return l;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This Methode finds the BillingType to a given id
+     * 
+     * @param id the id of the BillingType this Methode searchs for 
+     * @return the BillingType to the given id
+     */
+    public BillingType findBillingTypeWithId(int id) {
+        LOG.info("[Products] findBillingTypeWithId => id: " + id);
+        for (BillingType b : dataBean.getBillingType_list()) {
+            if (b.getId() == id) {
+                return b;
             }
         }
         return null;
@@ -200,7 +217,7 @@ public class Products {
     public boolean findProductWithNamefragment(String namefragment) {
         currentCategory = null;
         LOG.info("[Products] current Products contain in their title: " + namefragment.toLowerCase());
-        List<Product> immutableCopy = List.copyOf(dataBean.getProduct_list());
+        List<Produkt> immutableCopy = List.copyOf(dataBean.getProduct_list());
         currentProducts = null;
         currentProducts = immutableCopy.stream()
                 .filter(product -> product.getName().toLowerCase().contains(namefragment.toLowerCase()))
@@ -243,7 +260,7 @@ public class Products {
      * 
      * @return the value of currentProducts
      */
-    public List<Product> getCurrentProducts() {
+    public List<Produkt> getCurrentProducts() {
         return currentProducts;
     }
 
@@ -261,7 +278,7 @@ public class Products {
      * 
      * @return the value of currentProduct
      */
-    public Product getCurrentProduct() {
+    public Produkt getCurrentProduct() {
         return currentProduct;
     }
 
@@ -270,7 +287,7 @@ public class Products {
      * 
      * @param currentProduct the new value of currentProduct
      */
-    public void setCurrentProduct(Product currentProduct) {
+    public void setCurrentProduct(Produkt currentProduct) {
         LOG.info("[Products] current Product: " + currentProduct.getName());
         this.currentProduct = currentProduct;
     }

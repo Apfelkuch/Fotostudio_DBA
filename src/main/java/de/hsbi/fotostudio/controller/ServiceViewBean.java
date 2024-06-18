@@ -95,7 +95,7 @@ public class ServiceViewBean implements Serializable{
      */
     public void addServiceToBasket(Service service) {
         LOG.info("[ServiceViewBean] add Service to basket");
-        int count = basket.incrementBasketItem(service);
+        long count = basket.incrementBasketItem(service);
         showMassage(new FacesMessage(
                 FacesMessage.SEVERITY_INFO,
                 "Service in Warenkorb hinzugefügt",

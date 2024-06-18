@@ -35,7 +35,7 @@
                                  cols="30"
                                  autoResize="false"
                                  id="DESCRIPTION" 
-                                 value="#{productDialogBean.currentProduct.description}"
+                                 value="#{productDialogBean.currentProduct.beschreibung}"
                                  readonly="#{!productDialogBean.editing}"
                                  style="width: 100%"
                                  placeholder="Produktbeschreibung" >
@@ -45,15 +45,14 @@
                 </p:inputTextarea>
                 <h:outputText value="Kategorie:" />
                 <p:selectOneMenu id="CATEGORY"
-                                 value="#{productDialogBean.currentProduct.category}" 
+                                 value="#{productDialogBean.currentProduct.kategorieff}" 
                                  valueChangeListener="#{productDialogBean.getCategory}"
-                                 editable="#{productDialogBean.editing}"
                                  converter="productCategoryConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
-                        itemLabel="#{productDialogBean.currentProduct.category.name}" 
-                        itemValue="#{productDialogBean.currentProduct.category}" 
+                        itemLabel="#{productDialogBean.currentProduct.kategorieff.name}" 
+                        itemValue="#{productDialogBean.currentProduct.kategorieff}" 
                         noSelectionOption="true" />
                     <f:selectItems 
                         value="#{productDialogBean.category_list}"
@@ -67,28 +66,28 @@
                 </p:selectOneMenu>
                 <h:outputText value="Abrechnungsart:" />
                 <p:selectOneMenu id="BILLINGTYPE"
-                                 value="#{productDialogBean.currentProduct.billingType.name}" 
+                                 value="#{productDialogBean.currentProduct.abrechnungsartff}" 
                                  valueChangeListener="#{productDialogBean.getBillingType}"
-                                 editable="#{productDialogBean.editing}"
+                                 converter="billingTypeConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
-                        itemLabel="#{productDialogBean.currentProduct.billingType.name}" 
-                        itemValue="#{productDialogBean.currentProduct.billingType.name}" 
+                        itemLabel="#{productDialogBean.currentProduct.abrechnungsartff.name}" 
+                        itemValue="#{productDialogBean.currentProduct.abrechnungsartff}" 
                         noSelectionOption="true"/>
                     <f:selectItems 
                         value="#{productDialogBean.billingType_list}" 
                         itemDisabled="#{!productDialogBean.editing}"
                         var="billingType" 
                         itemLabel="#{billingType.name}" 
-                        itemValue="#{billingType.name}"/>
+                        itemValue="#{billingType}"/>
                     <p:ajax event="change"
                             process="@this" 
                             update="growl"/>
                 </p:selectOneMenu>
                 <h:outputText value="Preis:" />
                 <p:inputNumber id="PRICE" 
-                             value="#{productDialogBean.currentProduct.price}"
+                             value="#{productDialogBean.currentProduct.preis}"
                              readonly="#{!productDialogBean.editing}" 
                              style="width: 100%"
                              placeholder="0,0">
@@ -98,7 +97,7 @@
                 </p:inputNumber>
                 <h:outputText value="Menge:" />
                 <p:inputNumber id="AMOUNT" 
-                               value="#{productDialogBean.currentProduct.amount}"
+                               value="#{productDialogBean.currentProduct.menge}"
                                readonly="#{!productDialogBean.editing}"
                                style="width: 100%"
                                placeholder="0" >
@@ -108,15 +107,14 @@
                 </p:inputNumber>
                 <h:outputText value="Lagerstatus:" />
                 <p:selectOneMenu id="STORAGESTATUS"
-                                 value="#{productDialogBean.currentProduct.storageStatus}" 
+                                 value="#{productDialogBean.currentProduct.lagerstatusff}" 
                                  valueChangeListener="#{productDialogBean.getStorageStatus}"
-                                 editable="#{productDialogBean.editing}"
                                  converter="storageStatusConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
-                        itemLabel="#{productDialogBean.currentProduct.storageStatus.name}" 
-                        itemValue="#{productDialogBean.currentProduct.storageStatus}" 
+                        itemLabel="#{productDialogBean.currentProduct.lagerstatusff.name}" 
+                        itemValue="#{productDialogBean.currentProduct.lagerstatusff}" 
                         noSelectionOption="true"/>
                     <f:selectItems 
                         value="#{productDialogBean.storageStatus_list}" 

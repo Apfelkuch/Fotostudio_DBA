@@ -1,12 +1,14 @@
 package de.hsbi.fotostudio.modul;
 
+import java.io.Serializable;
+
 /**
  * This class is model for a BillingType
  * 
- * @version 0.1
+ * @version 1.1
  * @author Janis Wiegräbe
  */
-public class BillingType {
+public class BillingType implements Serializable{
     
     private int id;
     private String name;

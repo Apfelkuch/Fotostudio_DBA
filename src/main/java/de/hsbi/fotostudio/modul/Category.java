@@ -1,12 +1,14 @@
 package de.hsbi.fotostudio.modul;
 
+import java.io.Serializable;
+
 /**
  * This class is model for a Category
  * 
- * @version 0.1
+ * @version 1.1
  * @author Janis Wiegräbe
  */
-public class Category {
+public class Category implements Serializable{
     
     private int id;
     private String name;

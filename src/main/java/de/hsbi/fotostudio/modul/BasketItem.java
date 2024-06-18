@@ -9,8 +9,8 @@ public class BasketItem {
     
     private int id;
     private Item item;
-    private int count;
-    private float price;
+    private long count;
+    private double price;
 
     /**
      * Creates instance of BasketItem
@@ -29,7 +29,7 @@ public class BasketItem {
         this.id = id;
         this.item = item;
         this.count = count;
-        this.setPrice(item.price * count);
+        this.setPrice(item.getPreis().doubleValue() * count);
     }
     
     /**
@@ -37,11 +37,11 @@ public class BasketItem {
      * 
      * @return the new count
      */
-    public int incrementCount() {
+    public long incrementCount() {
 //        if ((this.count + 1) > this.item.amount) {
 //            return this.count;
 //        } else {
-            this.price += this.item.price;
+            this.price += this.item.getPreis().doubleValue();
             setPrice(price);
             return ++this.count;
 //        }
@@ -52,8 +52,8 @@ public class BasketItem {
      * 
      * @return the new count
      */
-    public int decrementCount() {
-        this.price -= this.item.price;
+    public long decrementCount() {
+        this.price -= this.item.getPreis().doubleValue();
         setPrice(price);
         return --this.count;
     }
@@ -62,18 +62,17 @@ public class BasketItem {
      * Returns the maximum number if an item is present.
      * If the amount is set to infinity, a default maximum value
      * of 1 000 000 is used.
-     * @see {double}
      * 
      * @return 
      */
-    public int getMaxAmount() {
+    public long getMaxAmount() {
         if (item == null) {
             return 0;
         }
-        if (item.amount < 0) {
+        if (item.getMenge() < 0) {
             return 1000000;
         } else {
-            return item.amount;
+            return item.getMenge();
         }
     }
 
@@ -120,7 +119,7 @@ public class BasketItem {
      * 
      * @return the value of count
      */
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
@@ -129,7 +128,7 @@ public class BasketItem {
      * 
      * @param count the new value of count
      */
-    public void setCount(int count) {
+    public void setCount(long count) {
         if (count > getMaxAmount()) {
             this.count = getMaxAmount();
         } else {
@@ -143,7 +142,7 @@ public class BasketItem {
      * 
      * @return the value of price
      */
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -152,8 +151,8 @@ public class BasketItem {
      * 
      * @param price the new value of price
      */
-    public void setPrice(float price) {
-        this.price = Math.round(price * 100) / 100f;
+    public final void setPrice(double price) {
+        this.price = Math.round(price * 100) / 100.0;
     }
     
     

@@ -60,7 +60,7 @@ public class Basket implements Serializable {
      * @param item the given item
      * @return the count item in the basket
      */
-    public int incrementBasketItem(Item item) {
+    public long incrementBasketItem(Item item) {
         BasketItem basketItem = searchBasketItemInList(item);
         if (basketItem != null) {
             return basketItem.incrementCount();
@@ -81,10 +81,10 @@ public class Basket implements Serializable {
      * @param item the given item
      * @return the count item in the basket
      */
-    public int decrementBasketItem(Item item) {
+    public long decrementBasketItem(Item item) {
         BasketItem basketItem = searchBasketItemInList(item);
         if (basketItem != null) {
-            int count = basketItem.decrementCount();
+            long count = basketItem.decrementCount();
             if (count == -1) {
                 basket.remove(basketItem);
                 return 0;
@@ -103,7 +103,7 @@ public class Basket implements Serializable {
      * @param count the new count for the basktItem
      * @return the new count of the basketItem
      */
-    public int setCountOnBasketItem(BasketItem basketItem, int count) {
+    public long setCountOnBasketItem(BasketItem basketItem, long count) {
         basketItem.setCount(count);
         return basketItem.getCount();
     }
@@ -141,7 +141,7 @@ public class Basket implements Serializable {
     public float getTotalPrice() {
         float totalPrice = 0f;
         for (BasketItem basketItem : basket) {
-            float added = Math.round((basketItem.getCount() * basketItem.getItem().getPrice()) * 100) / 100f;
+            float added = Math.round((basketItem.getCount() * basketItem.getItem().getPreis().doubleValue()) * 100) / 100f;
             totalPrice = Math.round((totalPrice + added) * 100) / 100f;
         }
         if (totalPrice < 0) {
