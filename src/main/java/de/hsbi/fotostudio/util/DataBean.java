@@ -236,7 +236,7 @@ public class DataBean implements Serializable {
      * 
      * @return list of top seller users
      */
-    public List<ShowUser> selectTopSeller() {
+    public List<ShowUser> selectTopSellerCustomer() {
         try {
             List<ShowUser> topSeller = new ArrayList<>();
             
@@ -263,12 +263,23 @@ public class DataBean implements Serializable {
     }
     
     /**
+     * Returns a List of all Items which were purchased in the last
+     * 3 months. The Items are sorted in descending order of their last purchase.
+     * 
+     * @return list of top seller items
+     */
+    public List<ShowUser> selectTopSellerItem() {
+        // todo
+        return new ArrayList<>();
+    }
+    
+    /**
      * Returns a List of all Users which have not purchased something
      * this year.
      * 
      * @return list of the shop keeper users
      */
-    public List<ShowUser> selectShopKeeper() {
+    public List<ShowUser> selectShopKeeperCustomer() {
         try {
             List<ShowUser> shopKeeper = new ArrayList<>();
             
@@ -292,6 +303,17 @@ public class DataBean implements Serializable {
         } catch (Exception e) {
             LOG.log(Level.SEVERE, null, e);
         }
+        return new ArrayList<>();
+    }
+    
+    /**
+     * Returns a List of all Users which have not purchased something
+     * this year.
+     * 
+     * @return list of the shop keeper users
+     */
+    public List<ShowUser> selectShopKeeperItem() {
+        // todo
         return new ArrayList<>();
     }
     
