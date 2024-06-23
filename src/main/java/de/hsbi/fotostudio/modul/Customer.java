@@ -87,13 +87,32 @@ public class Customer implements Serializable {
     @ManyToOne(optional = false)
     private User fkUId;
 
+    /**
+     * Creates instance of Service
+     */
     public Customer() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param cId the cId parameter for the new instance
+     */
     public Customer(Integer cId) {
         this.cId = cId;
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param cId the id parameter for the new instance
+     * @param benutzername the benutzername parameter for the new instance
+     * @param passwort the passwort parameter for the new instance
+     * @param email the email parameter for the new instance
+     * @param rolle the rolle parameter for the new instance
+     * @param zeitstempel the zeitstempel parameter for the new instance
+     * @param istmitarbeiter the istmitarbeiter parameter for the new instance
+     */
     public Customer(Integer cId, String benutzername, String passwort, String email, int rolle, Date zeitstempel, Boolean istmitarbeiter) {
         this.cId = cId;
         this.benutzername = benutzername;
@@ -104,79 +123,174 @@ public class Customer implements Serializable {
         this.istmitarbeiter = istmitarbeiter;
     }
 
+    /**
+     * Get Value of cId
+     * 
+     * @return the value of cId
+     */
     public Integer getCId() {
         return cId;
     }
 
+    /**
+     * Set Value of cId
+     * 
+     * @param cId the new value of cId
+     */
     public void setCId(Integer cId) {
         this.cId = cId;
     }
 
+    /**
+     * Get Value of benutzername
+     * 
+     * @return the value of benutzername
+     */
     public String getBenutzername() {
         return benutzername;
     }
 
+    /**
+     * Set Value of benutzername
+     * 
+     * @param benutzername the new value of benutzername
+     */
     public void setBenutzername(String benutzername) {
         this.benutzername = benutzername;
     }
 
+    /**
+     * Get Value of passwort
+     * 
+     * @return the value of passwort
+     */
     public String getPasswort() {
         return passwort;
     }
 
+    /**
+     * Set Value of passwort
+     * 
+     * @param passwort the new value of passwort
+     */
     public void setPasswort(String passwort) {
         this.passwort = passwort;
     }
 
+    /**
+     * Get Value of email
+     * 
+     * @return the value of email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Set Value of email
+     * 
+     * @param email the new value of email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Get Value of rolle
+     * 
+     * @return the value of rolle
+     */
     public int getRolle() {
         return rolle;
     }
 
+    /**
+     * Set Value of rolle
+     * 
+     * @param rolle the new value of rolle
+     */
     public void setRolle(int rolle) {
         this.rolle = rolle;
     }
 
+    /**
+     * Get Value of zeitstempel
+     * 
+     * @return the value of zeitstempel
+     */
     public Date getZeitstempel() {
         return zeitstempel;
     }
 
+    /**
+     * Set Value of zeitstempel
+     * 
+     * @param zeitstempel the new value of zeitstempel
+     */
     public void setZeitstempel(Date zeitstempel) {
         this.zeitstempel = zeitstempel;
     }
 
+    /**
+     * Get Value of istmitarbeiter
+     * 
+     * @return the value of istmitarbeiter
+     */
     public Boolean getIstmitarbeiter() {
         return istmitarbeiter;
     }
 
+    /**
+     * Set Value of istmitarbeiter
+     * 
+     * @param istmitarbeiter the new value of istmitarbeiter
+     */
     public void setIstmitarbeiter(Boolean istmitarbeiter) {
         this.istmitarbeiter = istmitarbeiter;
     }
 
+    /**
+     * Get Value of ordersCollection
+     * 
+     * @return the value of ordersCollection
+     */
     @XmlTransient
     public Collection<Orders> getOrdersCollection() {
         return ordersCollection;
     }
 
+    /**
+     * Set Value of ordersCollection
+     * 
+     * @param ordersCollection the new value of ordersCollection
+     */
     public void setOrdersCollection(Collection<Orders> ordersCollection) {
         this.ordersCollection = ordersCollection;
     }
 
+    /**
+     * Get Value of fkUId
+     * 
+     * @return the value of fkUId
+     */
     public User getFkUId() {
         return fkUId;
     }
 
+    /**
+     * Set Value of fkUId
+     * 
+     * @param fkUId the new value of fkUId
+     */
     public void setFkUId(User fkUId) {
         this.fkUId = fkUId;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -184,6 +298,12 @@ public class Customer implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -197,6 +317,11 @@ public class Customer implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Customer[ cId=" + cId + " ]";

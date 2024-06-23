@@ -3,7 +3,6 @@ package de.hsbi.fotostudio.modul;
 import de.hsbi.fotostudio.util.DataBean;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
-import java.util.stream.Collectors;
 
 /**
  * The Item interface is used to combine Products and Services

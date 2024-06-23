@@ -60,68 +60,147 @@ public class Orders implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkOId")
     private Collection<Servicedetail> servicedetailCollection;
 
+    /**
+     * Creates instance of Service
+     */
     public Orders() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param oId the oId parameter for the new instance
+     */
     public Orders(Integer oId) {
         this.oId = oId;
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param oId the oId parameter for the new instance
+     * @param zeitstempel the timestemp parameter for the new instance
+     */
     public Orders(Integer oId, Date zeitstempel) {
         this.oId = oId;
         this.zeitstempel = zeitstempel;
     }
 
+    /**
+     * Get Value of oId
+     * 
+     * @return the value of oId
+     */
     public Integer getOId() {
         return oId;
     }
 
+    /**
+     * Set Value of oId
+     * 
+     * @param oId the new value of oId
+     */
     public void setOId(Integer oId) {
         this.oId = oId;
     }
 
+    /**
+     * Get Value of zeitstempel
+     * 
+     * @return the value of zeitstempel
+     */
     public Date getZeitstempel() {
         return zeitstempel;
     }
 
+    /**
+     * Set Value of zeitstempel
+     * 
+     * @param zeitstempel the new value of zeitstempel
+     */
     public void setZeitstempel(Date zeitstempel) {
         this.zeitstempel = zeitstempel;
     }
 
+    /**
+     * Get Value of lieferdatum
+     * 
+     * @return the value of lieferdatum
+     */
     public Date getLieferdatum() {
         return lieferdatum;
     }
 
+    /**
+     * Set Value of lieferdatum
+     * 
+     * @param lieferdatum the new value of lieferdatum
+     */
     public void setLieferdatum(Date lieferdatum) {
         this.lieferdatum = lieferdatum;
     }
 
+    /**
+     * Get Value of produktdetailCollection
+     * 
+     * @return the value of produktdetailCollection
+     */
     @XmlTransient
     public Collection<Produktdetail> getProduktdetailCollection() {
         return produktdetailCollection;
     }
 
+    /**
+     * Set Value of produktdetailCollection
+     * 
+     * @param produktdetailCollection the new value of produktdetailCollection
+     */
     public void setProduktdetailCollection(Collection<Produktdetail> produktdetailCollection) {
         this.produktdetailCollection = produktdetailCollection;
     }
 
+    /**
+     * Get Value of fkCId
+     * 
+     * @return the value of fkCId
+     */
     public Customer getFkCId() {
         return fkCId;
     }
 
+    /**
+     * Set Value of fkCId
+     * 
+     * @param fkCId the new value of fkCId
+     */
     public void setFkCId(Customer fkCId) {
         this.fkCId = fkCId;
     }
 
+    /**
+     * Get Value of servicedetailCollection
+     * 
+     * @return the value of servicedetailCollection
+     */
     @XmlTransient
     public Collection<Servicedetail> getServicedetailCollection() {
         return servicedetailCollection;
     }
 
+    /**
+     * Set Value of servicedetailCollection
+     * 
+     * @param servicedetailCollection the new value of servicedetailCollection
+     */
     public void setServicedetailCollection(Collection<Servicedetail> servicedetailCollection) {
         this.servicedetailCollection = servicedetailCollection;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -129,6 +208,12 @@ public class Orders implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -142,6 +227,11 @@ public class Orders implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Orders[ oId=" + oId + " ]";

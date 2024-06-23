@@ -45,52 +45,111 @@ public class Lieferumfang implements Serializable {
     private Produkt fkPId;
     @JoinColumn(name = "FK_Z_ID", referencedColumnName = "Z_ID")
     @ManyToOne(optional = false)
-    private Zubehör fkZId;
+    private Zubehoer fkZId;
 
+    /**
+     * Creates instance of Service
+     */
     public Lieferumfang() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param lId the lId parameter for the new instance
+     */
     public Lieferumfang(Integer lId) {
         this.lId = lId;
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param lId the lId parameter for the new instance
+     * @param menge the menge parameter for the new instance
+     */
     public Lieferumfang(Integer lId, long menge) {
         this.lId = lId;
         this.menge = menge;
     }
 
+    /**
+     * Get Value of lId
+     * 
+     * @return the value of lId
+     */
     public Integer getLId() {
         return lId;
     }
 
+    /**
+     * Set Value of lId
+     * 
+     * @param lId the new value of lId
+     */
     public void setLId(Integer lId) {
         this.lId = lId;
     }
 
+    /**
+     * Get Value of menge
+     * 
+     * @return the value of menge
+     */
     public long getMenge() {
         return menge;
     }
 
+    /**
+     * Set Value of menge
+     * 
+     * @param menge the new value of menge
+     */
     public void setMenge(long menge) {
         this.menge = menge;
     }
 
+    /**
+     * Get Value of fkPId
+     * 
+     * @return the value of fkPId
+     */
     public Produkt getFkPId() {
         return fkPId;
     }
 
+    /**
+     * Set Value of fkPId
+     * 
+     * @param fkPId the new value of fkPId
+     */
     public void setFkPId(Produkt fkPId) {
         this.fkPId = fkPId;
     }
 
-    public Zubehör getFkZId() {
+    /**
+     * Get Value of fkZId
+     * 
+     * @return the value of fkZId
+     */
+    public Zubehoer getFkZId() {
         return fkZId;
     }
 
-    public void setFkZId(Zubehör fkZId) {
+    /**
+     * Set Value of fkZId
+     * 
+     * @param fkZId the new value of fkZId
+     */
+    public void setFkZId(Zubehoer fkZId) {
         this.fkZId = fkZId;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -98,6 +157,12 @@ public class Lieferumfang implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -111,6 +176,11 @@ public class Lieferumfang implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Lieferumfang[ lId=" + lId + " ]";

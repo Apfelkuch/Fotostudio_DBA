@@ -66,6 +66,9 @@ public class DataBean implements Serializable {
     public DataBean() {
     }
     
+    /**
+     * Initalization of the variables with are not stored in the database
+     */
     @PostConstruct
     public void init() {
         
@@ -90,6 +93,11 @@ public class DataBean implements Serializable {
         billingType_list.add(new BillingType(3, "Pro Familie"));
     }
     
+    /**
+     * Add a new Order from a basket to the database
+     * 
+     * @param basket The order which is added to the database
+     */
     public void addOrder(List<BasketItem> basket) {
         try {
             ut.begin();
@@ -483,6 +491,13 @@ public class DataBean implements Serializable {
         return service_list;
     }
     
+    /**
+     * Returns the product category, with the name which is given as in categoryString
+     * If the name is not found, the first category in the product_category_list is returned.
+     * 
+     * @param categoryString The name of the product cateogry
+     * @return The category object, with the given name or the first category in the product_category_list
+     */
     public Category findProductCategory(String categoryString) {
         Category category = product_category_list.get(0);
         for (Category c : product_category_list) {
@@ -494,6 +509,13 @@ public class DataBean implements Serializable {
         return category;
     }
     
+    /**
+     * Returns the service category, with the name which is given as in categoryString
+     * If the name is not found, the first category in the service_category_list is returned.
+     * 
+     * @param categoryString The name of the service cateogry
+     * @return The category object, with the given name or the first category in the service_category_list
+     */
     public Category findServiceCategory(String categoryString) {
         Category category = service_category_list.get(0);
         for (Category c : service_category_list) {
@@ -505,6 +527,13 @@ public class DataBean implements Serializable {
         return category;
     }
     
+    /**
+     * Returns the billing type, with the name which is given as in billingTypeString
+     * If the name is not found, the first billing type in the billingType_list is returned.
+     * 
+     * @param billingTypeString The name of the billing type
+     * @return The billing type object, with the given name or the first billing type in the billingType_list
+     */
     public BillingType findBillingType(String billingTypeString) {
         BillingType billingType = billingType_list.get(0);
         for (BillingType b : billingType_list) {
@@ -516,6 +545,13 @@ public class DataBean implements Serializable {
         return billingType;
     }
     
+    /**
+     * Returns the storage status, with the name which is given as in storageStatusString
+     * If the name is not found, the first storage status in the storageStatus_list is returned.
+     * 
+     * @param storageStatusString The name of the storage status
+     * @return The storage status object, with the given name or the first storage status in the storageStatus_list
+     */
     public StorageStatus findStorageStatus(String storageStatusString) {
         StorageStatus storageStatus = storageStatus_list.get(0);
         for (StorageStatus s : storageStatus_list) {

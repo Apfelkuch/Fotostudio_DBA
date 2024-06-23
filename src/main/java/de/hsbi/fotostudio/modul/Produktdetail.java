@@ -47,50 +47,109 @@ public class Produktdetail implements Serializable {
     @ManyToOne(optional = false)
     private Produkt fkPId;
 
+    /**
+     * Creates instance of Service
+     */
     public Produktdetail() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param pdId the pdId parameter for the new instance
+     */
     public Produktdetail(Integer pdId) {
         this.pdId = pdId;
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param pdId the pdId parameter for the new instance
+     * @param menge the menge parameter for the new instance
+     */
     public Produktdetail(Integer pdId, int menge) {
         this.pdId = pdId;
         this.menge = menge;
     }
 
+    /**
+     * Get Value of pdId
+     * 
+     * @return the value of pdId
+     */
     public Integer getPdId() {
         return pdId;
     }
 
+    /**
+     * Set Value of pdId
+     * 
+     * @param pdId the new value of pdId
+     */
     public void setPdId(Integer pdId) {
         this.pdId = pdId;
     }
 
+    /**
+     * Get Value of menge
+     * 
+     * @return the value of menge
+     */
     public int getMenge() {
         return menge;
     }
 
+    /**
+     * Set Value of menge
+     * 
+     * @param menge the new value of menge
+     */
     public void setMenge(int menge) {
         this.menge = menge;
     }
 
+    /**
+     * Get Value of fkOId
+     * 
+     * @return the value of fkOId
+     */
     public Orders getFkOId() {
         return fkOId;
     }
 
+    /**
+     * Set Value of fkOId
+     * 
+     * @param fkOId the new value of fkOId
+     */
     public void setFkOId(Orders fkOId) {
         this.fkOId = fkOId;
     }
 
+    /**
+     * Get Value of fkPId
+     * 
+     * @return the value of fkPId
+     */
     public Produkt getFkPId() {
         return fkPId;
     }
 
+    /**
+     * Set Value of fkPId
+     * 
+     * @param fkPId the new value of fkPId
+     */
     public void setFkPId(Produkt fkPId) {
         this.fkPId = fkPId;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -98,6 +157,12 @@ public class Produktdetail implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -111,6 +176,11 @@ public class Produktdetail implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Produktdetail[ pdId=" + pdId + " ]";

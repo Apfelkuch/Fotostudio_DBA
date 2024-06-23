@@ -97,14 +97,35 @@ public class Service extends Item implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkSId")
     private Collection<Servicepersonal> servicepersonalCollection;
 
+    /**
+     * Creates instance of Service
+     */
     public Service() {
         this(-1);
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param sId the sId parameter for the new instance
+     */
     public Service(Integer sId) {
         this.sId = sId;
     }
-
+    
+    /**
+     * Creates instance of Service
+     * 
+     * @param sId the sId parameter for the new instance
+     * @param name the name parameter for the new instance
+     * @param beschreibung the beschreibung parameter for the new instance
+     * @param kategorie the category kategorie for the new instance
+     * @param abrechnungsart the abrechnungsart parameter for the new instance
+     * @param preis the preis parameter for the new instance
+     * @param lagerstatus the lagerstatus parameter for the new instance
+     * @param zeitstempel the zeitstempel parameter for the new instance
+     * @param dateipfad the dateipfad path parameter for the new instance
+     */
     public Service(Integer sId, String name, String beschreibung, String kategorie, String abrechnungsart, BigDecimal preis, String lagerstatus, Date zeitstempel, String dateipfad)
     {
         this.sId = sId;
@@ -118,10 +139,20 @@ public class Service extends Item implements Serializable {
         this.dateipfad = dateipfad;
     }
 
+    /**
+     * Get Value of sId
+     * 
+     * @return the value of sId
+     */
     public Integer getSId() {
         return sId;
     }
 
+    /**
+     * Set Value of sId
+     * 
+     * @param sId the new value of sId
+     */
     public void setSId(Integer sId) {
         this.sId = sId;
     }
@@ -145,53 +176,113 @@ public class Service extends Item implements Serializable {
         this.name = name;
     }
 
+    /**
+     * Get Value of id
+     * 
+     * @return the value of id
+     */
     public String getBeschreibung() {
         return beschreibung;
     }
 
+    /**
+     * Set Value of beschreibung
+     * 
+     * @param beschreibung the new value of beschreibung
+     */
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
     }
 
+    /**
+     * Get Value of category
+     * 
+     * @return the value of category
+     */
     public Category getKategorie() {
         return category;
     }
 
+    /**
+     * Get Value of category
+     * 
+     * @return the value of category
+     */
     public Category getKategorieff() {
         return category;
     }
     
+    /**
+     * Get Value of kategorie
+     * 
+     * @return the value of kategorie
+     */
     public String getKategorieString() {
         return kategorie;
     }
 
+    /**
+     * Set Value of category and kategorie
+     * 
+     * @param category the new value of category
+     */
     public void setKategorie(Category category) {
         this.kategorie = category.getName();
         this.category = category;
     }
 
+    /**
+     * Set Value of category and kategorie
+     * 
+     * @param category the new value of category
+     */
     public void setKategorieff(Category category) {
         this.kategorie = category.getName();
         this.category = category;
     }
 
+    /**
+     * Get Value of billingType
+     * 
+     * @return the value of billingType
+     */
     public BillingType getAbrechnungsart() {
         return billingType;
     }
 
+    /**
+     * Get Value of billingType
+     * 
+     * @return the value of billingType
+     */
     public BillingType getAbrechnungsartff() {
         return billingType;
     }
     
+    /**
+     * Get Value of abrechnungsart
+     * 
+     * @return the value of abrechnungsart
+     */
     public String getAbrechnungsartString() {
         return abrechnungsart;
     }
 
+    /**
+     * Set Value of billingType and abrechnungsart
+     * 
+     * @param billingType the new value of billingType
+     */
     public void setAbrechnungsart(BillingType billingType) {
         this.abrechnungsart = billingType.getName();
         this.billingType = billingType;
     }
 
+    /**
+     * Set Value of billingType and abrechnungsart
+     * 
+     * @param billingType the new value of billingType
+     */
     public void setAbrechnungsartff(BillingType billingType) {
         this.abrechnungsart = billingType.getName();
         this.billingType = billingType;
@@ -216,69 +307,145 @@ public class Service extends Item implements Serializable {
         this.preis = preis;
     }
 
+    /**
+     * Get Value of storageStatus
+     * 
+     * @return the value of storageStatus
+     */
     public StorageStatus getLagerstatus() {
         return storageStatus;
     }
     
+    /**
+     * Get Value of storageStatus
+     * 
+     * @return the value of storageStatus
+     */
     public StorageStatus getLagerstatusff() {
         return storageStatus;
     }
     
+    /**
+     * Get Value of lagerstatus
+     * 
+     * @return the value of lagerstatus
+     */
     public String getLagerstatusString() {
         return lagerstatus;
     }
 
+    /**
+     * Set Value of storageStatus and lagerstatus
+     * 
+     * @param storageStatus the new value of storageStatus
+     */
     public void setLagerstatus(StorageStatus storageStatus) {
         this.lagerstatus = storageStatus.getName();
         this.storageStatus = storageStatus;
     }
 
+    /**
+     * Set Value of storageStatus and lagerstatus
+     * 
+     * @param storageStatus the new value of storageStatus
+     */
     public void setLagerstatusff(StorageStatus storageStatus) {
         this.lagerstatus = storageStatus.getName();
         this.storageStatus = storageStatus;
     }
 
+    /**
+     * Get Value of zeitstempel
+     * 
+     * @return the value of zeitstempel
+     */
     public Date getZeitstempel() {
         return zeitstempel;
     }
 
+    /**
+     * Set Value of zeitstempel
+     * 
+     * @param zeitstempel the new value of zeitstempel
+     */
     public void setZeitstempel(Date zeitstempel) {
         this.zeitstempel = zeitstempel;
     }
 
+    /**
+     * Get Value of dateipfad
+     * 
+     * @return the value of dateipfad
+     */
     public String getDateipfad() {
         return dateipfad;
     }
 
+    /**
+     * Set Value of dateipfad
+     * 
+     * @param dateipfad the new value of dateipfad
+     */
     public void setDateipfad(String dateipfad) {
         this.dateipfad = dateipfad;
     }
 
+    /**
+     * Get Value of servicedetailCollection
+     * 
+     * @return the value of servicedetailCollection
+     */
     @XmlTransient
     public Collection<Servicedetail> getServicedetailCollection() {
         return servicedetailCollection;
     }
 
+    /**
+     * Set Value of servicedetailCollection
+     * 
+     * @param servicedetailCollection the new value of servicedetailCollection
+     */
     public void setServicedetailCollection(Collection<Servicedetail> servicedetailCollection) {
         this.servicedetailCollection = servicedetailCollection;
     }
 
+    /**
+     * Get Value of servicepersonalCollection
+     * 
+     * @return the value of servicepersonalCollection
+     */
     @XmlTransient
     public Collection<Servicepersonal> getServicepersonalCollection() {
         return servicepersonalCollection;
     }
 
+    /**
+     * Set Value of servicepersonalCollection
+     * 
+     * @param servicepersonalCollection the new value of servicepersonalCollection
+     */
     public void setServicepersonalCollection(Collection<Servicepersonal> servicepersonalCollection) {
         this.servicepersonalCollection = servicepersonalCollection;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (sId != null ? sId.hashCode() : 0);
         return hash;
     }
-
+    
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -291,10 +458,18 @@ public class Service extends Item implements Serializable {
         }
         return true;
     }
-
+    
+    /**
+     * Converts the Obeject date into a String, for easier debugging
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
-        return "de.hsbi.fotostudio.modul.Service[ sId=" + sId + " ]";
+        return "de.hsbi.fotostudio.modul.Service[" + sId + ", " + name + ", " + beschreibung 
+                + ", " + category.getName() + ", " + billingType.getName()
+                + ", " + preis + ", " + storageStatus.getName()
+                + ", " + dateipfad + "]";
     }
     
     /**
@@ -316,7 +491,12 @@ public class Service extends Item implements Serializable {
     public boolean inCategory(Category category) {
         return this.category.equals(category);
     }
-    
+
+    /**
+     * Override Methode from Item to return the amount of this service
+     * 
+     * @return the value of -1 to visualize that the amount is infinit
+     */
     @Override
     public long getMenge() {
         return -1;

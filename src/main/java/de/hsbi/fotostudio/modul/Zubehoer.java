@@ -20,19 +20,19 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * This class is model for a Zubehör
+ * This class is model for a Zubehoer
  *
  * @version 0.1
  * @author Janis Wiegräbe
  */
 @Entity
-@Table(name = "zubeh\u00f6r")
+@Table(name = "zubehoer")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Zubeh\u00f6r.findAll", query = "SELECT z FROM Zubeh\u00f6r z"),
-    @NamedQuery(name = "Zubeh\u00f6r.findByZId", query = "SELECT z FROM Zubeh\u00f6r z WHERE z.zId = :zId"),
-    @NamedQuery(name = "Zubeh\u00f6r.findByArtikelname", query = "SELECT z FROM Zubeh\u00f6r z WHERE z.artikelname = :artikelname")})
-public class Zubehör implements Serializable {
+    @NamedQuery(name = "Zubehoer.findAll", query = "SELECT z FROM Zubehoer z"),
+    @NamedQuery(name = "Zubehoer.findByZId", query = "SELECT z FROM Zubehoer z WHERE z.zId = :zId"),
+    @NamedQuery(name = "Zubehoer.findByArtikelname", query = "SELECT z FROM Zubehoer z WHERE z.artikelname = :artikelname")})
+public class Zubehoer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,52 +54,112 @@ public class Zubehör implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkZId")
     private Collection<Lieferumfang> lieferumfangCollection;
 
-    public Zubehör() {
+    /**
+     * Creates instance of Service
+     */
+    public Zubehoer() {
     }
 
-    public Zubehör(Integer zId) {
+    /**
+     * Creates instance of Service
+     * 
+     * @param zId the zId parameter for the new instance
+     */
+    public Zubehoer(Integer zId) {
         this.zId = zId;
     }
 
-    public Zubehör(Integer zId, String artikelname, String artikelbeschreibung) {
+    /**
+     * Creates instance of Service
+     * 
+     * @param zId the zId parameter for the new instance
+     * @param artikelname the artikelname parameter for the new instance
+     * @param artikelbeschreibung the artikelbeschreibung parameter for the new instance
+     */
+    public Zubehoer(Integer zId, String artikelname, String artikelbeschreibung) {
         this.zId = zId;
         this.artikelname = artikelname;
         this.artikelbeschreibung = artikelbeschreibung;
     }
 
+    /**
+     * Get Value of zId
+     * 
+     * @return the value of zId
+     */
     public Integer getZId() {
         return zId;
     }
 
+    /**
+     * Set Value of zId
+     * 
+     * @param zId the new value of zId
+     */
     public void setZId(Integer zId) {
         this.zId = zId;
     }
 
+    /**
+     * Get Value of artikelname
+     * 
+     * @return the value of artikelname
+     */
     public String getArtikelname() {
         return artikelname;
     }
 
+    /**
+     * Set Value of artikelname
+     * 
+     * @param artikelname the new value of artikelname
+     */
     public void setArtikelname(String artikelname) {
         this.artikelname = artikelname;
     }
 
+    /**
+     * Get Value of artikelbeschreibung
+     * 
+     * @return the value of artikelbeschreibung
+     */
     public String getArtikelbeschreibung() {
         return artikelbeschreibung;
     }
 
+    /**
+     * Set Value of artikelbeschreibung
+     * 
+     * @param artikelbeschreibung the new value of artikelbeschreibung
+     */
     public void setArtikelbeschreibung(String artikelbeschreibung) {
         this.artikelbeschreibung = artikelbeschreibung;
     }
 
+    /**
+     * Get Value of lieferumfangCollection
+     * 
+     * @return the value of lieferumfangCollection
+     */
     @XmlTransient
     public Collection<Lieferumfang> getLieferumfangCollection() {
         return lieferumfangCollection;
     }
 
+    /**
+     * Set Value of lieferumfangCollection
+     * 
+     * @param lieferumfangCollection the new value of lieferumfangCollection
+     */
     public void setLieferumfangCollection(Collection<Lieferumfang> lieferumfangCollection) {
         this.lieferumfangCollection = lieferumfangCollection;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -107,22 +167,33 @@ public class Zubehör implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Zubehör)) {
+        if (!(object instanceof Zubehoer)) {
             return false;
         }
-        Zubehör other = (Zubehör) object;
+        Zubehoer other = (Zubehoer) object;
         if ((this.zId == null && other.zId != null) || (this.zId != null && !this.zId.equals(other.zId))) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
-        return "de.hsbi.fotostudio.modul.Zubeh\u00f6r[ zId=" + zId + " ]";
+        return "de.hsbi.fotostudio.modul.Zubehoer[ zId=" + zId + " ]";
     }
     
 }

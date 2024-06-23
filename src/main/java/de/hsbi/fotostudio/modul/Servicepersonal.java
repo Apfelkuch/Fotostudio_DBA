@@ -41,37 +41,80 @@ public class Servicepersonal implements Serializable {
     @ManyToOne(optional = false)
     private Service fkSId;
 
+    /**
+     * Creates instance of Service
+     */
     public Servicepersonal() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param spId the spId parameter for the new instance
+     */
     public Servicepersonal(Integer spId) {
         this.spId = spId;
     }
 
+    /**
+     * Get Value of spId
+     * 
+     * @return the value of spId
+     */
     public Integer getSpId() {
         return spId;
     }
 
+    /**
+     * Set Value of spId
+     * 
+     * @param spId the new value of spId
+     */
     public void setSpId(Integer spId) {
         this.spId = spId;
     }
 
+    /**
+     * Get Value of fkPsnId
+     * 
+     * @return the value of fkPsnId
+     */
     public Personal getFkPsnId() {
         return fkPsnId;
     }
 
+    /**
+     * Set Value of fkPsnId
+     * 
+     * @param fkPsnId the new value of fkPsnId
+     */
     public void setFkPsnId(Personal fkPsnId) {
         this.fkPsnId = fkPsnId;
     }
 
+    /**
+     * Get Value of fkSId
+     * 
+     * @return the value of fkSId
+     */
     public Service getFkSId() {
         return fkSId;
     }
 
+    /**
+     * Set Value of fkSId
+     * 
+     * @param fkSId the new value of fkSId
+     */
     public void setFkSId(Service fkSId) {
         this.fkSId = fkSId;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -79,6 +122,12 @@ public class Servicepersonal implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -92,6 +141,11 @@ public class Servicepersonal implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Servicepersonal[ spId=" + spId + " ]";

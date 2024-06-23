@@ -102,15 +102,40 @@ public class Produkt extends Item implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkPId")
     private Collection<Lieferumfang> lieferumfangCollection;
 
+    
+    /**
+     * Creates instance of Service
+     */
     public Produkt() {
         this.pId = -1;
     }
 
+    
+    /**
+     * Creates instance of Service
+     * 
+     * @param pId the pId parameter for the new instance
+     */
     public Produkt(Integer pId) {
         this.pId = pId;
     }
 
-    public Produkt(Integer pId, String name, String beschreibung, String kategorie, String abrechnungsart, BigDecimal preis, long menge, String lagerstatus, Date letzteÄnderung, String dateipfad) {
+    
+    /**
+     * Creates instance of Service
+     * 
+     * @param pId the pId parameter for the new instance
+     * @param name the name parameter for the new instance
+     * @param beschreibung the beschreibung parameter for the new instance
+     * @param kategorie the category kategorie for the new instance
+     * @param abrechnungsart the abrechnungsart parameter for the new instance
+     * @param preis the preis parameter for the new instance
+     * @param menge the menge parameter fot the new instance
+     * @param lagerstatus the lagerstatus parameter for the new instance
+     * @param zeitstempel the zeitstempel parameter for the new instance
+     * @param dateipfad the dateipfad path parameter for the new instance
+     */
+    public Produkt(Integer pId, String name, String beschreibung, String kategorie, String abrechnungsart, BigDecimal preis, long menge, String lagerstatus, Date zeitstempel, String dateipfad) {
         this.pId = pId;
         this.name = name;
         this.beschreibung = beschreibung;
@@ -119,14 +144,24 @@ public class Produkt extends Item implements Serializable {
         this.preis = preis;
         this.menge = menge;
         this.lagerstatus = lagerstatus;
-        this.zeitstempel = letzteÄnderung;
+        this.zeitstempel = zeitstempel;
         this.dateipfad = dateipfad;
     }
 
+    /**
+     * Get Value of pId
+     * 
+     * @return the value of pId
+     */
     public Integer getPId() {
         return pId;
     }
 
+    /**
+     * Set Value of pId
+     * 
+     * @param pId the new value of pId
+     */
     public void setPId(Integer pId) {
         this.pId = pId;
     }
@@ -150,53 +185,113 @@ public class Produkt extends Item implements Serializable {
         this.name = name;
     }
 
+    /**
+     * Get Value of beschreibung
+     * 
+     * @return the value of beschreibung
+     */
     public String getBeschreibung() {
         return beschreibung;
     }
 
+    /**
+     * Set Value of beschreibung
+     * 
+     * @param beschreibung the new value of beschreibung
+     */
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
     }
 
+    /**
+     * Get Value of category
+     * 
+     * @return the value of category
+     */
     public Category getKategorie() {
         return category;
     }
 
+    /**
+     * Get Value of category
+     * 
+     * @return the value of category
+     */
     public Category getKategorieff() {
         return category;
     }
     
+    /**
+     * Get Value of kategorie
+     * 
+     * @return the value of kategorie
+     */
     public String getKategorieString() {
         return kategorie;
     }
 
+    /**
+     * Set Value of category and kategorie
+     * 
+     * @param category the new value of category
+     */
     public void setKategorie(Category category) {
         this.kategorie = category.getName();
         this.category = category;
     }
 
+    /**
+     * Set Value of category and kategorie
+     * 
+     * @param category the new value of category
+     */
     public void setKategorieff(Category category) {
         this.kategorie = category.getName();
         this.category = category;
     }
 
+    /**
+     * Get Value of billingType
+     * 
+     * @return the value of billingType
+     */
     public BillingType getAbrechnungsart() {
         return billingType;
     }
 
+    /**
+     * Get Value of abrechnungsart
+     * 
+     * @return the value of abrechnungsart
+     */
     public BillingType getAbrechnungsartff() {
         return billingType;
     }
     
+    /**
+     * Get Value of abrechnungsart
+     * 
+     * @return the value of abrechnungsart
+     */
     public String getAbrechnungsartString() {
         return abrechnungsart;
     }
 
+    /**
+     * Set Value of billingType and abrechnungsart
+     * 
+     * @param billingType the new value of billingType
+     */
     public void setAbrechnungsart(BillingType billingType) {
         this.abrechnungsart = billingType.getName();
         this.billingType = billingType;
     }
 
+    /**
+     * Set Value of billingType and abrechnungsart
+     * 
+     * @param billingType the new value of billingType
+     */
     public void setAbrechnungsartff(BillingType billingType) {
         this.abrechnungsart = billingType.getName();
         this.billingType = billingType;
@@ -240,62 +335,134 @@ public class Produkt extends Item implements Serializable {
         this.menge = menge;
     }
     
+    /**
+     * Get Value of storageStatus
+     * 
+     * @return the value of storageStatus
+     */
     public StorageStatus getLagerstatus() {
         return storageStatus;
     }
     
+    /**
+     * Get Value of storageStatus
+     * 
+     * @return the value of storageStatus
+     */
     public StorageStatus getLagerstatusff() {
         return storageStatus;
     }
     
+    /**
+     * Get Value of lagerstatus
+     * 
+     * @return the value of lagerstatus
+     */
     public String getLagerstatusString() {
         return lagerstatus;
     }
 
+
+    /**
+     * Set Value of storageStatus and lagerstatus
+     * 
+     * @param storageStatus the new value of storageStatus
+     */
     public void setLagerstatus(StorageStatus storageStatus) {
         this.lagerstatus = storageStatus.getName();
         this.storageStatus = storageStatus;
     }
 
+
+    /**
+     * Set Value of storageStatus and lagerstatus
+     * 
+     * @param storageStatus the new value of storageStatus
+     */
     public void setLagerstatusff(StorageStatus storageStatus) {
         this.lagerstatus = storageStatus.getName();
         this.storageStatus = storageStatus;
     }
 
+    /**
+     * Get Value of zeitstempel
+     * 
+     * @return the value of zeitstempel
+     */
     public Date getZeitstempel() {
         return zeitstempel;
     }
 
+    /**
+     * Set Value of zeitstempel
+     * 
+     * @param zeitstempel the new value of zeitstempel
+     */
     public void setZeitstempel(Date zeitstempel) {
         this.zeitstempel = zeitstempel;
     }
 
+    /**
+     * Get Value of dateipfad
+     * 
+     * @return the value of dateipfad
+     */
     public String getDateipfad() {
         return dateipfad;
     }
 
+    /**
+     * Set Value of dateipfad
+     * 
+     * @param dateipfad the new value of dateipfad
+     */
     public void setDateipfad(String dateipfad) {
         this.dateipfad = dateipfad;
     }
 
+    /**
+     * Get Value of produktdetailCollection
+     * 
+     * @return the value of produktdetailCollection
+     */
     @XmlTransient
     public Collection<Produktdetail> getProduktdetailCollection() {
         return produktdetailCollection;
     }
 
+    /**
+     * Set Value of produktdetailCollection
+     * 
+     * @param produktdetailCollection the new value of produktdetailCollection
+     */
     public void setProduktdetailCollection(Collection<Produktdetail> produktdetailCollection) {
         this.produktdetailCollection = produktdetailCollection;
     }
 
+    /**
+     * Get Value of lieferumfangCollection
+     * 
+     * @return the value of lieferumfangCollection
+     */
     @XmlTransient
     public Collection<Lieferumfang> getLieferumfangCollection() {
         return lieferumfangCollection;
     }
 
+    /**
+     * Set Value of lieferumfangCollection
+     * 
+     * @param lieferumfangCollection the new value of lieferumfangCollection
+     */
     public void setLieferumfangCollection(Collection<Lieferumfang> lieferumfangCollection) {
         this.lieferumfangCollection = lieferumfangCollection;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -303,6 +470,12 @@ public class Produkt extends Item implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -316,9 +489,17 @@ public class Produkt extends Item implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject date into a String, for easier debugging
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
-        return "de.hsbi.fotostudio.modul.Produkt[ pId=" + pId + " ]";
+        return "de.hsbi.fotostudio.modul.Produkt[ "+ pId + ", " + name + ", " + beschreibung 
+                + ", " + category.getName() + ", " + billingType.getName()
+                + ", " + preis + ", " + storageStatus.getName() + ", " + menge
+                + ", " + dateipfad + "]";
     }
     
     /**

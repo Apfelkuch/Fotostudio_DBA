@@ -69,13 +69,31 @@ public class Adresse implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAId")
     private Collection<User> userCollection;
 
+    /**
+     * Creates instance of Service
+     */
     public Adresse() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param aId the aId parameter for the new instance
+     */
     public Adresse(Integer aId) {
         this.aId = aId;
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param aId the aId parameter for the new instance
+     * @param strasse the strasse parameter for the new instance
+     * @param hausnr the hausnr parameter for the new instance
+     * @param plz the plz parameter for the new instance
+     * @param ort the ort parameter for the new instance
+     * @param land the land parameter for the new instance
+     */
     public Adresse(Integer aId, String strasse, int hausnr, int plz, String ort, String land) {
         this.aId = aId;
         this.strasse = strasse;
@@ -84,64 +102,139 @@ public class Adresse implements Serializable {
         this.ort = ort;
         this.land = land;
     }
-
+    
+    /**
+     * Get Value of aId
+     * 
+     * @return the value of aId
+     */
     public Integer getAId() {
         return aId;
     }
-
+    
+    /**
+     * Set Value of aId
+     * 
+     * @param aId the new value of aId
+     */
     public void setAId(Integer aId) {
         this.aId = aId;
     }
-
+    
+    /**
+     * Get Value of strasse
+     * 
+     * @return the value of strasse
+     */
     public String getStrasse() {
         return strasse;
     }
 
+    /**
+     * Set Value of strasse
+     * 
+     * @param strasse the new value of strasse
+     */
     public void setStrasse(String strasse) {
         this.strasse = strasse;
     }
 
+    /**
+     * Get Value of hausnr
+     * 
+     * @return the value of hausnr
+     */
     public int getHausnr() {
         return hausnr;
     }
 
+    /**
+     * Set Value of hausnr
+     * 
+     * @param hausnr the new value of hausnr
+     */
     public void setHausnr(int hausnr) {
         this.hausnr = hausnr;
     }
 
+    /**
+     * Get Value of plz
+     * 
+     * @return the value of plz
+     */
     public int getPlz() {
         return plz;
     }
 
+    /**
+     * Set Value of plz
+     * 
+     * @param plz the new value of plz
+     */
     public void setPlz(int plz) {
         this.plz = plz;
     }
 
+    /**
+     * Get Value of ort
+     * 
+     * @return the value of ort
+     */
     public String getOrt() {
         return ort;
     }
 
+    /**
+     * Set Value of ort
+     * 
+     * @param ort the new value of ort
+     */
     public void setOrt(String ort) {
         this.ort = ort;
     }
 
+    /**
+     * Get Value of land
+     * 
+     * @return the value of land
+     */
     public String getLand() {
         return land;
     }
 
+    /**
+     * Set Value of land
+     * 
+     * @param land the new value of land
+     */
     public void setLand(String land) {
         this.land = land;
     }
 
+    /**
+     * Get Value of userCollection
+     * 
+     * @return the value of userCollection
+     */
     @XmlTransient
     public Collection<User> getUserCollection() {
         return userCollection;
     }
 
+    /**
+     * Set Value of userCollection
+     * 
+     * @param userCollection the new value of userCollection
+     */
     public void setUserCollection(Collection<User> userCollection) {
         this.userCollection = userCollection;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -149,6 +242,12 @@ public class Adresse implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -161,7 +260,12 @@ public class Adresse implements Serializable {
         }
         return true;
     }
-
+    
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Adresse[ aId=" + aId + " ]";

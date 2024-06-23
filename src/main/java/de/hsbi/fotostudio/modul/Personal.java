@@ -52,51 +52,110 @@ public class Personal implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkPsnId")
     private Collection<Servicepersonal> servicepersonalCollection;
 
+    /**
+     * Creates instance of Service
+     */
     public Personal() {
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param psnId the psnId parameter for the new instance
+     */
     public Personal(Integer psnId) {
         this.psnId = psnId;
     }
 
+    /**
+     * Creates instance of Service
+     * 
+     * @param psnId the psnId parameter for the new instance
+     * @param aufgabe the aufgabe parameter for the new instance
+     */
     public Personal(Integer psnId, String aufgabe) {
         this.psnId = psnId;
         this.aufgabe = aufgabe;
     }
 
+    /**
+     * Get Value of psnId
+     * 
+     * @return the value of psnId
+     */
     public Integer getPsnId() {
         return psnId;
     }
 
+    /**
+     * Set Value of psnId
+     * 
+     * @param psnId the new value of psnId
+     */
     public void setPsnId(Integer psnId) {
         this.psnId = psnId;
     }
 
+    /**
+     * Get Value of aufgabe
+     * 
+     * @return the value of aufgabe
+     */
     public String getAufgabe() {
         return aufgabe;
     }
 
+    /**
+     * Set Value of aufgabe
+     * 
+     * @param aufgabe the new value of aufgabe
+     */
     public void setAufgabe(String aufgabe) {
         this.aufgabe = aufgabe;
     }
 
+    /**
+     * Get Value of fkUId
+     * 
+     * @return the value of fkUId
+     */
     public User getFkUId() {
         return fkUId;
     }
 
+    /**
+     * Set Value of fkUId
+     * 
+     * @param fkUId the new value of fkUId
+     */
     public void setFkUId(User fkUId) {
         this.fkUId = fkUId;
     }
 
+    /**
+     * Get Value of servicepersonalCollection
+     * 
+     * @return the value of servicepersonalCollection
+     */
     @XmlTransient
     public Collection<Servicepersonal> getServicepersonalCollection() {
         return servicepersonalCollection;
     }
 
+    /**
+     * Set Value of servicepersonalCollection
+     * 
+     * @param servicepersonalCollection the new value of servicepersonalCollection
+     */
     public void setServicepersonalCollection(Collection<Servicepersonal> servicepersonalCollection) {
         this.servicepersonalCollection = servicepersonalCollection;
     }
 
+    /**
+     * Generates hash code of the class using the id parameter
+     * 
+     * @return the hash code for this class
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -104,6 +163,12 @@ public class Personal implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares a object to this instance using the id.
+     * 
+     * @param object the objekt this instance is compared against
+     * @return true if the object and this instance are the equal, otherwise false
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -117,6 +182,11 @@ public class Personal implements Serializable {
         return true;
     }
 
+    /**
+     * Converts the Obeject into a String, showing the id
+     * 
+     * @return the String which represants the Object data
+     */
     @Override
     public String toString() {
         return "de.hsbi.fotostudio.modul.Personal[ psnId=" + psnId + " ]";
