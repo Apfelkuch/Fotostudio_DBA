@@ -35,7 +35,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         requiredMessage="Eingabe erforderlich!">
                         <p:ajax 
                             event="blur" 
-                            update="USERNAMEREG_MSG" 
+                            update="USERNAMEREG_MSG BTNREGBEST" 
                             process="@this"/>
                     </p:inputText>
                     <p:message for="USERNAMEREG" id="USERNAMEREG_MSG"/>
@@ -51,7 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         <f:validator validatorId="passwordValidation"/>
                         <p:ajax 
                             event="blur" 
-                            update="PWDREG_MSG" 
+                            update="PWDREG_MSG BTNREGBEST" 
                             process="@this"/>
                     </p:password>
                     <p:message for="PWDREG" id="PWDREG_MSG"/>
@@ -66,7 +66,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         requiredMessage="Eingabe erforderlich!">
                         <p:ajax 
                             event="blur" 
-                            update="EMAIL_MSG" 
+                            update="EMAIL_MSG BTNREGBEST" 
                             process="@this"/>
                     </p:inputText>
                     <p:message for="EMAIL" id="EMAIL_MSG"/>
@@ -81,7 +81,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         requiredMessage="Eingabe erforderlich!">
                         <p:ajax 
                             event="blur" 
-                            update="BDAY_MSG" 
+                            update="BDAY_MSG BTNREGBEST" 
                             process="@this"/>
                     </p:inputText>
                     <p:message for="BDAY" id="BDAY_MSG"/>
@@ -97,7 +97,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         id="BTNREGBEST" 
                         action="#{registerCdiBean.insertNewUser()}"
                         value="Regestrieren" 
-                        update="@form"                      
+                        update="BTNREGBEST"                      
                         style="float: right;"
                         disabled="#{facesContext.validationFailed}">                        
                     </p:commandButton>

@@ -36,7 +36,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         <f:validateRegex pattern="^.{5,12}$"/>                    
                         <p:ajax 
                             event="blur"
-                            update="USERNAME_MSG"
+                            update="USERNAME_MSG BTNLOGIN"
                             process="@this"/>
                     </p:inputText>
                     <p:message for="USERNAME" id="USERNAME_MSG"/>
@@ -53,7 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         <f:validateLength minimum="5"/>
                         <p:ajax 
                             event="blur"                            
-                            update="PWD_MSG"
+                            update="PWD_MSG BTNLOGIN"
                             process="@this"/>
                     </p:password>
                     <p:message for="PWD" id="PWD_MSG"/>
@@ -64,7 +64,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     action="#{loginCdiBean.loginProject()}"
                     value="Login" 
                     update="@all"                    
-                    style="float: right">
+                    style="float: right"
+                    disabled="#{facesContext.validationFailed}">
                 </p:commandButton> 
 
                 <p:divider align="left">

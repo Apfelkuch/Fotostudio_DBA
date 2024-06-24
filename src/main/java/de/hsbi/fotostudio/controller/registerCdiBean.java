@@ -28,17 +28,6 @@ public class registerCdiBean implements Serializable {
     private String email;     // Stores the email input from the user
     private Birthday bday = new Birthday(); // Birthday object to store parsed date
 
-    // Validation flags for user input
-    // Validation flags for user input
-    private boolean nameDataOk = false; // Flag to check if username is valid
-    private boolean pwdDataOk = false;  // Flag to check if password is valid
-
-    public void setPwdDataOk(boolean pwdDataOk) {
-        this.pwdDataOk = pwdDataOk;
-    }
-    private boolean emailDataOk = false;// Flag to check if email is valid
-    private boolean bdayDataOk = false; // Flag to check if birthday is valid
-
     @Inject
     private DataBean dataBean; // Injected LoginHandler for user management
 
@@ -151,30 +140,21 @@ public class registerCdiBean implements Serializable {
      * is added using the LoginHandler.
      */
     public void insertNewUser() {
-        if (nameDataOk == true & pwdDataOk == true
-                & emailDataOk == true & bdayDataOk == true) {
-            // All validation checks passed, add the new user
-            dataBean.addUser(username, password, email, bday, 0);
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Registrierung erfolgreich",
-                            "Benutzer wurde angelegt"));
-            PrimeFaces.current().executeScript("PF('dlgreg').hide()");
-        } else {
-            // Validation failed, display an error message
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Registrierung fehlgeschlagen",
-                            "falsche Angaben von Benutzerdaten"));
-        }
+        //add the new user            
+        dataBean.addUser(username, password, email, bday, 0);
+        FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Registrierung erfolgreich",
+                        "Benutzer wurde angelegt"));
+        PrimeFaces.current().executeScript("PF('dlgreg').hide()");
         // Reset user details after registration attempt
         username = null;
         password = null;
         email = null;
         bday = null;
-
+        // Optionally, update the form to reflect changes
+        PrimeFaces.current().ajax().update("FORMREG");
     }
 
     /**
@@ -188,9 +168,9 @@ public class registerCdiBean implements Serializable {
     public void checkName(FacesContext fc, UIComponent uic, Object obj) {
         String wert = obj.toString();
         boolean alreadyExist = dataBean.userExist(wert);
-        nameDataOk = false;
         if (alreadyExist == true) {
             // Username already exists, show error message
+            FacesContext.getCurrentInstance().validationFailed();
             Util.addComponentMessage(uic.getClientId(), "error", "Benutzername", "Der Benutzer exestiert bereits");
         } else {
 
@@ -198,10 +178,9 @@ public class registerCdiBean implements Serializable {
             String res = wert.replaceFirst(pattern, "");
             if (!res.isEmpty()) {
                 // Username does not match pattern, show warning messag
+                FacesContext.getCurrentInstance().validationFailed();
                 Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Zwischen 5 und 12 Zeichen!");
             } else {
-                // Username valid
-                nameDataOk = true;
                 Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
             }
         }
@@ -218,13 +197,11 @@ public class registerCdiBean implements Serializable {
         String wert = obj.toString();
         String pattern = "^(\\w{3,})(-|_|\\+|\\.)?\\w*@((\\w+)(\\.|-))+(\\w{2,})$";
         String res = wert.replaceFirst(pattern, "");
-        emailDataOk = false;
         if (!res.isEmpty()) {
             // Email does not match pattern, show warning messag
+            FacesContext.getCurrentInstance().validationFailed();
             Util.addComponentMessage(uic.getClientId(), "warn", "Fehlerhafte E-Mail Adresse", "ungültiges Format");
         } else {
-            // Email valid
-            emailDataOk = true;
             Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
         }
     }
@@ -238,7 +215,6 @@ public class registerCdiBean implements Serializable {
      * @param obj the object to validate
      */
     public void checkBday(FacesContext fc, UIComponent uic, Object obj) {
-        bdayDataOk = false;
         String wert = obj.toString();
 
         String pattern = "^((0[1-9])|([12]\\d)|30|31)\\.(?<=\\.)(0[\\d]|1[012])\\.(?<=\\.)((19|20)[\\d]{2})$";
@@ -246,10 +222,9 @@ public class registerCdiBean implements Serializable {
 
         if (!res.isEmpty()) {
             // Date format invalid, show warning message
+            FacesContext.getCurrentInstance().validationFailed();
             Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Datum)!", " falsches Format: tt.mm.jjjj");
         } else {
-            // Date valid
-            bdayDataOk = true;
             Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
         }
     }
