@@ -14,8 +14,10 @@ import java.io.Serializable;
 import org.primefaces.PrimeFaces;
 
 /**
- *
- * @author Frederick
+ * Managed Bean for user login. This bean handles user input, validates
+ * it, and interacts with the DataBean to login the users.
+ * @version 0.1
+ * @author Frederick Zahn
  */
 @Named(value = "loginCdiBean")
 @SessionScoped
@@ -24,8 +26,7 @@ public class loginCdiBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private String password; // Stores the user's password
     private String message, uname; // Stores messages and the username
-    private int role; // Stores the user's role
-    private boolean nameDataOk = false, pwdDataOk = false, login = false; // Flags for data validation and login status
+    private boolean login = false; // Flags for data validation and login status
 
     @Inject
     private DataBean dataBean; // LoginHandler instance for managing authentication
@@ -37,36 +38,29 @@ public class loginCdiBean implements Serializable {
     public void loginProject() {
         // Attempt to authenticate the user
         Customer currentUser = dataBean.login(uname, password);
-        // Check if authentication was successful and data is valid
-        if (currentUser != null && nameDataOk == true && pwdDataOk == true) {
-
-            // Get Http Session and store user details
-            HttpSession session = Util.getSession();
-            session.setAttribute("customerId", currentUser.getCId());
-            session.setAttribute("username", uname);
-            session.setAttribute("userid", session.getId());
-            session.setAttribute("userrole", currentUser.getRolle());
-            session.setAttribute("loggedin", true);
-            // Display a success message
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Anmeldung als " + Util.getUserName() + " erfolgreich!",
-                            "Ihre ID: " + Util.getUserId()));
-            login = true;
-            // Hide the login dialog
-            PrimeFaces.current().executeScript("PF('dlglog').hide()");
-
-        } else {
-            // Display an invalid login message
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Ungültige Anmeldung!",
-                            "Bitte versuchen Sie es erneut!"));
-            // Perform logout actions
-            logout();
-        }
+        System.out.println("Ich werde aufgerufen für login user");
+        // Get Http Session and store user details
+        HttpSession session = Util.getSession();
+        session.setAttribute("customerId", currentUser.getCId());
+        session.setAttribute("username", uname);
+        session.setAttribute("userid", session.getId());
+        session.setAttribute("userrole", currentUser.getRolle());
+        session.setAttribute("loggedin", true);
+        System.out.println("Ich werde aufgerufen für Message");
+        // Display a success message
+        FacesContext.getCurrentInstance().addMessage(
+                null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Anmeldung als " + Util.getUserName() + " erfolgreich!",
+                        "Ihre ID: " + Util.getUserId()));
+        login = true;
+        System.out.println("Ich werde aufgerufen für hide");
+        // Hide the login dialog
+        PrimeFaces.current().executeScript("PF('dlglog').hide()");
+        password = null;
+        uname = null;
+        System.out.println("Ich werde aufgerufen für refresh");
+        PrimeFaces.current().ajax().update("FORMLOG");
     }
 
     /**
@@ -89,10 +83,10 @@ public class loginCdiBean implements Serializable {
     }
 
     /**
-     * Handles the logout process and adds a logout message.
-     * Moreover the welcome page is return to exit from all Pages
-     * which are not allow to be entered when logged out
-     * 
+     * Handles the logout process and adds a logout message. Moreover the
+     * welcome page is return to exit from all Pages which are not allow to be
+     * entered when logged out
+     *
      * @return Returns the path to the welcome page
      */
     public String logoutMSG() {
@@ -107,51 +101,6 @@ public class loginCdiBean implements Serializable {
                         "Abmeldung erfolgreich!",
                         "Sie sind jetzt abgemeldet!"));
         return "ServiceView?faces-redirect=true";
-    }
-
-    /**
-     * Validates the username. Ensures it meets the length requirements.
-     *
-     * @param fc FacesContext instance.
-     * @param uic UIComponent instance.
-     * @param obj Object to validate.
-     */
-    public void checkName(FacesContext fc, UIComponent uic, Object obj) {
-        String value = obj.toString();
-        int count = value.length();
-        nameDataOk = false;
-        if (count < 5) {
-            // Display a warning message if the username is too short
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Mindestens 5 Zeichen!");
-        } else if (count > 12) {
-            // Display a warning message if the username is too long
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Maximal 12 Zeichen!");
-        } else {
-            nameDataOk = true;
-            // Display a success message if the username length is valid
-            Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
-        }
-    }
-
-    /**
-     * Validates the password. Ensures it meets the length requirements.
-     *
-     * @param fc FacesContext instance.
-     * @param uic UIComponent instance.
-     * @param obj Object to validate.
-     */
-    public void checkPwd(FacesContext fc, UIComponent uic, Object obj) {
-        String value = obj.toString();
-        int count = value.length();
-        pwdDataOk = false;
-        if (count < 5) {
-            // Display a warning message if the password is too short
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Passwort)", "Mindestens 5 Zeichen !");
-        } else {
-            pwdDataOk = true;
-            // Display a success message if the password length is valid
-            Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
-        }
     }
 
     /**

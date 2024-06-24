@@ -7,7 +7,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core">
     <p:dialog 
         header="Login-Dialog" 
         showEffect="fade" 
@@ -29,12 +30,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         id="USERNAME" 
                         value="#{loginCdiBean.uname}"
                         placeholder="Name (min. 5 Zeichen !)"
-                        validator='#{loginCdiBean.checkName}'
                         required="true"
-                        requiredMessage="Eingabe erforderlich!">
+                        requiredMessage="Eingabe erforderlich!"
+                        validatorMessage="Benutzername zwischen 5 und 12 Zeichen!">
+                        <f:validateRegex pattern="^.{5,12}$"/>                    
                         <p:ajax 
                             event="blur"
-                            update="USERNAME_MSG"
+                            update="USERNAME_MSG BTNLOGIN"
                             process="@this"/>
                     </p:inputText>
                     <p:message for="USERNAME" id="USERNAME_MSG"/>
@@ -45,12 +47,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         value="#{loginCdiBean.password}"
                         feedback="false"
                         placeholder="Mindestens 5 Zeichen !"
-                        validator='#{loginCdiBean.checkPwd}'
                         required="true"
-                        requiredMessage="Eingabe erforderlich!">                      
+                        requiredMessage="Eingabe erforderlich!"
+                        validatorMessage="Passwort mindestens 5 Zeichen!">
+                        <f:validateLength minimum="5"/>
                         <p:ajax 
                             event="blur"                            
-                            update="PWD_MSG"
+                            update="PWD_MSG BTNLOGIN"
                             process="@this"/>
                     </p:password>
                     <p:message for="PWD" id="PWD_MSG"/>
@@ -61,7 +64,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     action="#{loginCdiBean.loginProject()}"
                     value="Login" 
                     update="@all"                    
-                    style="float: right">
+                    style="float: right"
+                    disabled="#{facesContext.validationFailed}">
                 </p:commandButton> 
 
                 <p:divider align="left">
