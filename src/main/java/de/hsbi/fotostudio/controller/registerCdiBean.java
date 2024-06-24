@@ -6,6 +6,7 @@ import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.ValidatorException;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -15,7 +16,8 @@ import org.primefaces.PrimeFaces;
 /**
  * Managed Bean for user registration. This bean handles user input, validates
  * it, and interacts with the DataBean to register new users.
- * @version  0.1
+ *
+ * @version 0.1
  * @author Frederick Zahn
  */
 @Named(value = "registerCdiBean")
@@ -178,8 +180,10 @@ public class registerCdiBean implements Serializable {
             String res = wert.replaceFirst(pattern, "");
             if (!res.isEmpty()) {
                 // Username does not match pattern, show warning messag
-                FacesContext.getCurrentInstance().validationFailed();
-                Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Zwischen 5 und 12 Zeichen!");
+                //FacesContext.getCurrentInstance().validationFailed();
+                //Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Benutzername)", "Zwischen 5 und 12 Zeichen!");
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Syntax (Benutzername)", "Zwischen 5 und 12 Zeichen!");
+                throw new ValidatorException(msg);
             } else {
                 Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
             }
@@ -199,8 +203,10 @@ public class registerCdiBean implements Serializable {
         String res = wert.replaceFirst(pattern, "");
         if (!res.isEmpty()) {
             // Email does not match pattern, show warning messag
-            FacesContext.getCurrentInstance().validationFailed();
-            Util.addComponentMessage(uic.getClientId(), "warn", "Fehlerhafte E-Mail Adresse", "ungültiges Format");
+            //FacesContext.getCurrentInstance().validationFailed();
+            //Util.addComponentMessage(uic.getClientId(), "warn", "Fehlerhafte E-Mail Adresse", "ungültiges Format");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Fehlerhafte E-Mail Adresse", "ungültiges Format");
+            throw new ValidatorException(msg);
         } else {
             Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
         }
@@ -222,8 +228,10 @@ public class registerCdiBean implements Serializable {
 
         if (!res.isEmpty()) {
             // Date format invalid, show warning message
-            FacesContext.getCurrentInstance().validationFailed();
-            Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Datum)!", " falsches Format: tt.mm.jjjj");
+            //FacesContext.getCurrentInstance().validationFailed();
+            //Util.addComponentMessage(uic.getClientId(), "warn", "Syntax (Datum)!", " falsches Format: tt.mm.jjjj");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Syntax (Datum)!", " falsches Format: tt.mm.jjjj");
+            throw new ValidatorException(msg);
         } else {
             Util.addComponentMessage(uic.getClientId(), "info", "OK!", "OK!");
         }
