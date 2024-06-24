@@ -78,10 +78,11 @@ public class ServiceDialogBean implements Serializable {
         LOG.info("[ServiceDialogBean] save: " + currentService.toString());
         FacesMessage message;
         if (!products.isAddNewItem()) {
-            currentService.setId(products.getCurrentService().getId());
-            products.updateService(currentService.getId(), currentService);
+            currentService.setSId(products.getCurrentService().getSId());
+            currentService.setDateipfad(products.getCurrentService().getDateipfad());
+            products.updateService(currentService.getSId(), currentService);
             // set Category to reload the product list
-            products.selectServiceCategory(currentService.getCategory().getId());
+            products.selectServiceCategory(currentService.getKategorie().getId());
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Service gespeichert", "");
             PrimeFaces.current().ajax().update("form-service-view:data-view");
         } else {
@@ -109,14 +110,14 @@ public class ServiceDialogBean implements Serializable {
         Category newCategory = (Category) event.getNewValue();
         
         for (Category k : category_list) {
-            if (k.getName().equals(currentCategoryName)) {
-                currentService.setCategory(k);
+            if (k.getName().equals(newCategory.getName())) {
+                currentService.setKategorie(k);
                 break;
             }
         }
-        if (currentService.getCategory() != null) {
+        if (currentService.getKategorie() != null) {
             LOG.info("[ServiceDialogBean] selected category: "
-                    + currentService.getCategory().getName());
+                    + currentService.getKategorie().getName());
 //            FacesContext.getCurrentInstance().
 //                    addMessage(null,new FacesMessage("Category gültig!"));
         }
@@ -129,17 +130,19 @@ public class ServiceDialogBean implements Serializable {
      * befor and after the ValueChange
      */
     public void getBillingType(ValueChangeEvent event) {
-        currentBillingTypeName = (String) event.getNewValue();
-        for (BillingType abrechnungsart : billingType_list) {
-            if (abrechnungsart.getName().equals(currentBillingTypeName)) {
-                currentBillingType = abrechnungsart;
+        LOG.info("[ServiceDialogBean] getBillingType");
+        
+        BillingType newBillingType = (BillingType) event.getNewValue();
+        
+        for (BillingType b : billingType_list) {
+            if (b.getName().equals(newBillingType.getName())) {
+                currentService.setAbrechnungsart(b);
                 break;
             }
         }
-        if (currentBillingType != null) {
-            LOG.info("[ServiceDialogBean] selected BillingType");
-//            FacesContext.getCurrentInstance().
-//                    addMessage(null,new FacesMessage("BillingType gültig!"));
+        if (currentService.getAbrechnungsart() != null) {
+            LOG.info("[ServiceDialogBean] selected billingType: "
+                    + currentService.getAbrechnungsart().getName());
         }
     }
     
@@ -155,8 +158,8 @@ public class ServiceDialogBean implements Serializable {
         StorageStatus newStorageStatus = (StorageStatus) event.getNewValue();
         
         for (StorageStatus l : storageStatus_list) {
-            if (l.getName().equals(currentStorageStatusName)) {
-                currentService.setStorageStatus(l);
+            if (l.getName().equals(newStorageStatus.getName())) {
+                currentService.setLagerstatus(l);
                 break;
             }
         }
@@ -176,10 +179,10 @@ public class ServiceDialogBean implements Serializable {
      */
     public int getHeader() {
         this.currentService = products.getCurrentService();
-        LOG.info("[ServiceDialogBean] load: " + currentService.getId());
+        LOG.info("[ServiceDialogBean] load: " + currentService.getSId());
         LOG.info("[ServiceDialogBean] load: " + currentService.toString());
         
-        return currentService.getId();
+        return currentService.getSId();
     }
 
     /**

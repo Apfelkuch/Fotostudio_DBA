@@ -18,7 +18,7 @@
                     </p:column>
 
                     <p:column headerText="Einzelpreis [€]">
-                        <p:outputLabel value="#{basketItem.item.price}" >
+                        <p:outputLabel value="#{basketItem.item.preis}" >
                             <f:convertNumber type="currency" currencySymbol="€" maxFractionDigits="2" />
                         </p:outputLabel>
                     </p:column>
@@ -33,7 +33,7 @@
                     </p:column>
 
                     <p:column headerText="Gesamtpreis">
-                        <p:outputLabel value="#{basketItem.count * basketItem.item.price}" >
+                        <p:outputLabel value="#{basketItem.count * basketItem.item.preis}" >
                             <f:convertNumber type="currency" currencySymbol="€" maxFractionDigits="2" />
                         </p:outputLabel>
                     </p:column>

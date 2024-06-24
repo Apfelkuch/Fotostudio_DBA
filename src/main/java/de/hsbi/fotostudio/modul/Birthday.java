@@ -1,5 +1,6 @@
 package de.hsbi.fotostudio.modul;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,9 +9,10 @@ import java.util.Date;
  * Provides methods to get and set these attributes.
  * Includes constructors for initializing the Birthday object with default or specified values.
  * 
+ * @since 1.1
  * @author Frederick
  */
-public class Birthday {
+public class Birthday implements Serializable{
 
     // Attributes to store the day, month, and year of the birthday
     private int day;

@@ -38,7 +38,7 @@ public class CustomerViewBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        selectTopSeller();
+        selectTopSellerCustomer();
     }
     
     /**
@@ -53,13 +53,21 @@ public class CustomerViewBean implements Serializable {
         String option = (String) event.getNewValue();
         
         switch (option) {
-            case "topSeller":
-                LOG.info("[CustomerViewBean] topSeller");
-                selectTopSeller();
+            case "topSellerCustomer":
+                LOG.info("[CustomerViewBean] topSellerCustomer");
+                selectTopSellerCustomer();
                 break;
-            case "shopKeeper":
-                LOG.info("[CustomerViewBean] shopKeeper");
-                selectShopKeeper();
+            case "shopKeeperCustomer":
+                LOG.info("[CustomerViewBean] shopKeeperCustomer");
+                selectShopKeeperCustomer();
+                break;
+            case "topSellerItem":
+                LOG.info("[CustomerViewBean] topSellerItem");
+                selectTopSellerItem();
+                break;
+            case "shopKeeperItem":
+                LOG.info("[CustomerViewBean] shopKeeperItem");
+                selectShopKeeperItem();
                 break;
             default:
                 throw new UnsupportedOperationException("Not supported yet.");
@@ -68,12 +76,20 @@ public class CustomerViewBean implements Serializable {
         LOG.info("[CustomerViewBean] length: " + showUserList.size());
     }
     
-    public void selectTopSeller() {
-        showUserList = dataBean.selectTopSeller();
+    public void selectTopSellerCustomer() {
+        showUserList = dataBean.selectTopSellerCustomer();
     }
     
-    public void selectShopKeeper() {
-        showUserList = dataBean.selectShopKeeper();
+    public void selectShopKeeperCustomer() {
+        showUserList = dataBean.selectShopKeeperCustomer();
+    }
+    
+    public void selectTopSellerItem() {
+        showUserList = dataBean.selectTopSellerItem();
+    }
+    
+    public void selectShopKeeperItem() {
+        showUserList = dataBean.selectShopKeeperItem();
     }
     
     // GETTER && SETTER

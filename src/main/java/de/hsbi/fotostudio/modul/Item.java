@@ -1,45 +1,36 @@
 package de.hsbi.fotostudio.modul;
 
-import java.util.logging.Logger;
+import de.hsbi.fotostudio.util.DataBean;
+import jakarta.inject.Inject;
+import java.math.BigDecimal;
 
 /**
  * The Item interface is used to combine Products and Services
  * to go together in the Basket
  *
+ * @since 1.1
  * @author Janis Wiegräbe
  */
 public abstract class Item {
-
-    private static final Logger LOG = Logger.getLogger(Item.class.getName());
     
-    protected String name;
-    protected float price;
     /**
      * >=0 -> amount valid
      * < 0  -> amount is infinite
      */
-    protected int amount;
-
-    /**
-     * Creates an Item using the name and price parameters
-     * 
-     * @param name the name for the new Item
-     * @param price the price for the new Item
-     * @param amount the amount for the new Item
-     */
-    public Item(String name, float price, int amount) {
-        this.name = name;
-        this.price = price;
-        this.amount = amount;
-    }
     
-    /**
-     * Creates an Item
-     */
+    @Inject
+    private DataBean dataBean;
+    
+    protected Category category;
+    protected BillingType billingType;
+    protected StorageStatus storageStatus;
+    
     public Item() {
+        category = new Category();
+        billingType = new BillingType();
+        storageStatus = new StorageStatus();
     }
-    
-    
+
     /**
      * Methode to get the Type of the Item, 
      * needs to be implementet by every Item
@@ -53,54 +44,47 @@ public abstract class Item {
      * 
      * @return the value of name
      */
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
+    
+    /**
+     * Get Value of preis
+     * 
+     * @return the value of preis
+     */
+    public abstract BigDecimal getPreis();
+    
+    /**
+     * Get Value of menge
+     * 
+     * @return the value of menge
+     */
+    public abstract long getMenge();
 
     /**
-     * Set Value of name
+     * Set Value of category
      * 
-     * @param name the new value of name
+     * @param category the new value of category
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setCategory(Category category) {
+        this.category = category;
     }
     
     /**
-     * Get Value of price
+     * Set Value of billingType
      * 
-     * @return the value of price
+     * @param billingType the new value of billingType
      */
-    public float getPrice() {
-        return price;
-    }
-
-    /**
-     * Set Value of price
-     * 
-     * @param price the new value of price
-     */
-    public void setPrice(float price) {
-        this.price = price;
+    public void setBillingType(BillingType billingType) {
+        this.billingType = billingType;
     }
     
     /**
-     * Get Value of amount
+     * Set Value of storageStatus
      * 
-     * @return the value of amount
+     * @param storageStatus the new value of storageStatus
      */
-    public int getAmount() {
-        return amount;
+    public void setStorageStatus(StorageStatus storageStatus) {
+        this.storageStatus = storageStatus;
     }
-
-    /**
-     * Set Value of amount
-     * 
-     * @param amount the new value of amount
-     */
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-    
     
 }

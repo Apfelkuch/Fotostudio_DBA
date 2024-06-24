@@ -1,25 +1,35 @@
 package de.hsbi.fotostudio.util;
 
+import de.hsbi.fotostudio.modul.Adresse;
 import de.hsbi.fotostudio.modul.BasketItem;
 import de.hsbi.fotostudio.modul.BillingType;
 import de.hsbi.fotostudio.modul.Birthday;
 import de.hsbi.fotostudio.modul.Category;
 import de.hsbi.fotostudio.modul.Item;
-import de.hsbi.fotostudio.modul.Product;
+import de.hsbi.fotostudio.modul.Produkt;
 import de.hsbi.fotostudio.modul.Service;
 import de.hsbi.fotostudio.modul.ShowUser;
 import de.hsbi.fotostudio.modul.StorageStatus;
+import de.hsbi.fotostudio.modul.Customer;
+import de.hsbi.fotostudio.modul.Orders;
+import de.hsbi.fotostudio.modul.Produktdetail;
+import de.hsbi.fotostudio.modul.Servicedetail;
 import de.hsbi.fotostudio.modul.User;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.HeuristicMixedException;
+import jakarta.transaction.HeuristicRollbackException;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.RollbackException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,15 +46,19 @@ import java.util.logging.Logger;
 public class DataBean implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(DataBean.class.getName());
-    
-    Connection conn;
-    
-    private List<Product> product_list;
+        
+    private List<Produkt> product_list;
     private List<Service> service_list;
     private List<BillingType> billingType_list;
     private List<Category> product_category_list;
     private List<Category> service_category_list;
     private List<StorageStatus> storageStatus_list;
+    
+    @PersistenceContext
+    private EntityManager em;
+    
+    @Resource
+    private UserTransaction ut;
 
     /**
      * Creates a new instance of DataBean
@@ -52,9 +66,11 @@ public class DataBean implements Serializable {
     public DataBean() {
     }
     
+    /**
+     * Initalization of the variables with are not stored in the database
+     */
     @PostConstruct
     public void init() {
-        openConnection();
         
         product_category_list = new ArrayList<>();
         product_category_list.add(new Category(0, "Alles"));
@@ -77,71 +93,59 @@ public class DataBean implements Serializable {
         billingType_list.add(new BillingType(3, "Pro Familie"));
     }
     
-    public void openConnection() {
-        try {
-            String dbUrl = "jdbc:mariadb://localhost:3306/fotostudio_dba";
-            
-            conn = DriverManager.getConnection(dbUrl, "fotostudio_admin", "12345");
-            
-            LOG.info("[DataBean] Connection to Database successfull!");
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }
-    }
-    
+    /**
+     * Add a new Order from a basket to the database
+     * 
+     * @param basket The order which is added to the database
+     */
     public void addOrder(List<BasketItem> basket) {
-        if (conn == null) {
-            openConnection();
-        }
-        
         try {
-            conn.setAutoCommit(false);
+            ut.begin();
             
-            String sql = "INSERT INTO orders(FK_C_ID,LIEFERDATUM) VALUES (?,?)";
+            TypedQuery<Customer> query = em.createNamedQuery("Customer.findByCId", Customer.class);
+            query.setParameter("cId", Util.getCustomerId());
+            Customer customer = query.getSingleResult();
             
-            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            
-            preStmt.setInt(1, Util.getCustomerId());
+            Orders order = new Orders();
+            order.setFkCId(customer);
+            order.setZeitstempel(new Date());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             calendar.add(Calendar.DAY_OF_MONTH, 14);
-            preStmt.setDate(2, new java.sql.Date(calendar.getTime().getTime()));
+            order.setLieferdatum(calendar.getTime());
             
-            preStmt.executeUpdate();
-            
-            int autoincremntId = -1;
-            ResultSet key = preStmt.getGeneratedKeys();
-            if (key.next())
-                autoincremntId = key.getInt(1);
+            em.persist(order);
             
             for (BasketItem basketItem : basket) {
                 Item item = basketItem.getItem();
                 if (item instanceof Service) { // edit service on checkout
-                    sql = "INSERT INTO servicedetail(FK_O_ID, FK_S_ID, MENGE) VALUES (?,?,?)";
-            
-                    preStmt = conn.prepareStatement(sql);
-                    preStmt.setInt(1, autoincremntId);
-                    preStmt.setInt(2, ((Service) item).getId());
-                    preStmt.setInt(3, item.getAmount());
-
-                    preStmt.executeUpdate();
-                } else if (item instanceof Product) { // edit product on checkout
-                    sql = "INSERT INTO produktdetail(FK_O_ID, FK_P_ID, MENGE) VALUES (?,?,?)";
-            
-                    preStmt = conn.prepareStatement(sql);
-                    preStmt.setInt(1, autoincremntId);
-                    preStmt.setInt(2, ((Product) item).getId());
-                    preStmt.setInt(3, item.getAmount());
-
-                    preStmt.executeUpdate();
+                    Servicedetail servicedetail = new Servicedetail();
+                    servicedetail.setMenge((int) basketItem.getCount());
+                    servicedetail.setFkSId((Service) item);
+                    servicedetail.setFkOId(order);
+                    em.persist(servicedetail);
+                } else if (item instanceof Produkt) { // edit product on checkout
+                    Produktdetail produktdetail = new Produktdetail();
+                    produktdetail.setMenge((int) basketItem.getCount());
+                    produktdetail.setFkPId((Produkt) item);
+                    produktdetail.setFkOId(order);
+                    em.persist(produktdetail);
                 } else {
                     LOG.info("[Basket] invalid item in basket");
                 }
             }
-            
-            conn.commit();
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+
+            ut.commit();
+        
+        } catch (HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException | IllegalStateException | SecurityException ex) {
+            if (em.getTransaction().isActive()) {
+                try {
+                    ut.rollback();
+                } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                    Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -154,84 +158,63 @@ public class DataBean implements Serializable {
      * @param pRole The role of the new user
      */
     public void addUser(String pName, String pPasword, String pEmail, Birthday pBday, int pRole) {
-        if (conn == null) {
-            openConnection();
-        }
-        
         try {
-            conn.setAutoCommit(false);
+            ut.begin();
 
-            String sql = "INSERT INTO user(NAME, VORNAME, Geburtsdatum, FK_A_ID) VALUES (?,'Hans',?,5)";
+            TypedQuery<Adresse> query = em.createNamedQuery("Adresse.findByAId", Adresse.class);
+            query.setParameter("aId", 5);
+            Adresse adresse = query.getSingleResult();
 
-            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            User user = new User();
+            user.setName(pName);
+            user.setVorname("Hans");
+            user.setGeburtsdatum(Birthday.convertBirthdayToDate(pBday));
+            user.setFkAId(adresse);
             
-            preStmt.setString(1, pName);
-            preStmt.setDate(2, new java.sql.Date(Birthday.convertBirthdayToDate(pBday).getTime()));
+            em.persist(user);
 
-            preStmt.executeUpdate();
+            Customer customer = new Customer();
+            customer.setBenutzername(pName);
+            customer.setPasswort(pPasword);
+            customer.setEmail(pEmail);
+            customer.setRolle(0);
+            customer.setFkUId(user);
+            customer.setIstmitarbeiter(false);
+            customer.setZeitstempel(new Date());
             
-            int autoincremnt_UID = -1;
-            ResultSet key = preStmt.getGeneratedKeys();
-            if (key.next())
-                autoincremnt_UID = key.getInt(1);
+            em.persist(customer);
 
-            sql = "INSERT INTO customer(BENUTZERNAME, PASSWORT, EMAIL, ROLLE, FK_U_ID,ISTMITARBEITER) VALUES (?,?,?,0,?,0);";
-
-            preStmt = conn.prepareStatement(sql);
-            
-            preStmt.setString(1, pName);
-            preStmt.setString(2, pPasword);
-            preStmt.setString(3, pEmail);
-            preStmt.setInt(4, autoincremnt_UID);
-            
-            preStmt.executeUpdate();
-            
-            conn.commit();
+            ut.commit();
         
-        } catch (SQLException exception) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException | IllegalStateException | SecurityException ex) {
+            if (em.getTransaction().isActive()) {
+                try {
+                    ut.rollback();
+                } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                    Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             }
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
-     * Authenticates a user by checking username and password.
+     * Authenticates a customer by checking username and password.
      * @param user The username of the user to authenticate
      * @param password The password of the user to authenticate
      * @return The authenticated user if successful, otherwise null
      */
-    public User login(String user, String password) {
-        if (conn == null) {
-            openConnection();
-        }
-        
+    public Customer login(String user, String password) {
         try {
-            String sql = "SELECT customer.C_ID, customer.BENUTZERNAME, customer.PASSWORT, customer.EMAIL, user.Geburtsdatum, customer.ROLLE " +
-                         "FROM user " +
-                         "INNER JOIN customer ON user.U_ID = customer.FK_U_ID " +
-                         "WHERE customer.BENUTZERNAME = ? AND customer.PASSWORT = ?";
+            TypedQuery<Customer> query = em.createNamedQuery("Customer.login", Customer.class);
+            query.setParameter("benutztername", user);
+            query.setParameter("passwort", password);
             
-            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            List<Customer> customers = query.getResultList();
             
-            preStmt.setString(1, user);
-            preStmt.setString(2, password);
-            
-            ResultSet rs = preStmt.executeQuery();
-            
-            if (rs.next()) {
-                return new User(rs.getInt("C_ID"),
-                                rs.getString("BENUTZERNAME"),
-                                rs.getString("PASSWORT"),
-                                rs.getString("EMAIL"),
-                                Birthday.convertDateToBirthday(rs.getDate("GEBURTSDATUM")),
-                                rs.getInt("ROLLE"));
-            }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            return customers.size() == 1 ? customers.get(0) : null;
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, null, e);
         }
         return null;
     }
@@ -242,28 +225,17 @@ public class DataBean implements Serializable {
      * @return True if the user exists, otherwise false
      */
     public boolean userExist(String user) {
-        if (conn == null) {
-            openConnection();
-        }
-        
         try {
-            String sql = "SELECT COUNT(C_ID) FROM customer WHERE BENUTZERNAME = ?";
+            Query query = em.createNamedQuery("Customer.exists");
+            query.setParameter("benutzername", user);
             
-            PreparedStatement preStmt = conn.prepareStatement(sql);
+            long userCount = (long) query.getSingleResult();
             
-            preStmt.setString(1, user);
-            
-            ResultSet rs = preStmt.executeQuery();
-            
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-            
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            return userCount > 0;
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, null, e);
         }
-        
-        return false;
+        return true;
     }
     
     /**
@@ -272,35 +244,41 @@ public class DataBean implements Serializable {
      * 
      * @return list of top seller users
      */
-    public List<ShowUser> selectTopSeller() {
-        if (conn == null) {
-            openConnection();
-        }
-        
-        List<ShowUser> topSeller = new ArrayList<>();
-        
+    public List<ShowUser> selectTopSellerCustomer() {
         try {
-            String sql = "SELECT customer.BENUTZERNAME, customer.EMAIL, COUNT(orders.O_ID) as Anzahl " +
-                         "FROM customer " +
-                         "INNER JOIN orders ON orders.FK_C_ID = customer.C_ID " +
-                         "WHERE orders.ZEITSTEMPEL >= DATE_ADD(NOW(),INTERVAL-2 MONTH) " +
-                         "GROUP BY customer.C_ID " +
-                         "HAVING Anzahl > 1 " +
-                         "ORDER BY Anzahl DESC";
+            List<ShowUser> topSeller = new ArrayList<>();
             
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            Query query = em.createQuery("SELECT c,COUNT(o.oId) as Anzahl FROM Orders o LEFT JOIN FETCH o.fkCId c WHERE o.zeitstempel > :timeBorder GROUP BY c.cId HAVING Anzahl > 1 ORDER BY c.benutzername DESC");
             
-            while (rs.next()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -2);
+            query.setParameter("timeBorder", calendar.getTime());
+            
+            List<Object[]> entries = query.getResultList();
+            for (Object[] entry : entries) {
+                Customer customer = (Customer) entry[0];
                 topSeller.add(new ShowUser(
-                        rs.getString("BENUTZERNAME"),
-                        rs.getString("EMAIL"),
-                        rs.getInt("Anzahl")
+                        customer.getBenutzername(),
+                        customer.getEmail(),
+                        ((Long) entry[1]).intValue()
                 ));
             }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            return topSeller;
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, null, e);
         }
-        return topSeller;
+        return new ArrayList<>();
+    }
+    
+    /**
+     * Returns a List of all Items which were purchased in the last
+     * 3 months. The Items are sorted in descending order of their last purchase.
+     * 
+     * @return list of top seller items
+     */
+    public List<ShowUser> selectTopSellerItem() {
+        // todo
+        return new ArrayList<>();
     }
     
     /**
@@ -309,35 +287,42 @@ public class DataBean implements Serializable {
      * 
      * @return list of the shop keeper users
      */
-    public List<ShowUser> selectShopKeeper() {
-        if (conn == null) {
-            openConnection();
-        }
-        
-        List<ShowUser> shopKeeper = new ArrayList<>();
-        
+    public List<ShowUser> selectShopKeeperCustomer() {
         try {
-            String sql = "SELECT customer.BENUTZERNAME, customer.EMAIL, COUNT(orders.O_ID) as Anzahl " +
-                         "FROM customer " +
-                         "LEFT JOIN orders ON orders.FK_C_ID = customer.C_ID " +
-                         "    and orders.ZEITSTEMPEL > DATE_ADD(NOW(), INTERVAL-1 YEAR) " +
-                         "GROUP BY customer.C_ID " +
-                         "HAVING Anzahl = 0 " +
-                         "ORDER BY customer.BENUTZERNAME ASC";
+            List<ShowUser> shopKeeper = new ArrayList<>();
             
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            Query query = em.createQuery("SELECT c,COUNT(o.oId) as Anzahl FROM Orders o LEFT JOIN FETCH o.fkCId c WHERE o.zeitstempel > :timeBorder GROUP BY c.cId HAVING Anzahl = 0 ORDER BY c.benutzername ASC");
             
-            while (rs.next()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR, -1);
+            query.setParameter("timeBorder", calendar.getTime());
+            
+            List<Object[]> entries = query.getResultList();
+            for (Object[] entry : entries) {
+                Customer customer = (Customer) entry[0];
                 shopKeeper.add(new ShowUser(
-                        rs.getString("BENUTZERNAME"),
-                        rs.getString("EMAIL"),
-                        rs.getInt("Anzahl")
+                        customer.getBenutzername(),
+                        customer.getEmail(),
+                        ((Long) entry[1]).intValue()
                 ));
             }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            
+            return shopKeeper;
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, null, e);
         }
-        return shopKeeper;
+        return new ArrayList<>();
+    }
+    
+    /**
+     * Returns a List of all Users which have not purchased something
+     * this year.
+     * 
+     * @return list of the shop keeper users
+     */
+    public List<ShowUser> selectShopKeeperItem() {
+        // todo
+        return new ArrayList<>();
     }
     
     /**
@@ -346,39 +331,24 @@ public class DataBean implements Serializable {
      * @param product the new product which is added, the id will be overwritten
      * @return the added product with the new id
      */
-    public Product addProduct_list(Product product) {
-        if (conn == null) {
-            openConnection();
-        }
-        
+    public Produkt addProduct_list(Produkt product) {
         try {
-            String sql = "INSERT INTO produkt(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, MENGE, LAGERSTATUS, DATEIPFAD) "
-                    + "VALUES (?,?,?,?,?,?,?,?)";
-            
-            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preStmt.setString(1, product.getName());
-            preStmt.setString(2, product.getDescription());
-            preStmt.setString(3, product.getCategory().getName());
-            preStmt.setString(4, product.getBillingType().getName());
-            preStmt.setDouble(5, product.getPrice());
-            preStmt.setInt(6, product.getAmount());
-            preStmt.setString(7, product.getStorageStatus().getName());
-            preStmt.setString(8, "image_not_found.jpg");
-            
-            preStmt.executeUpdate();
-            
-            int autoincremntId = -1;
-            ResultSet key = preStmt.getGeneratedKeys();
-            if (key.next())
-                autoincremntId = key.getInt(1);
-            
-            product.setId(autoincremntId);
-            
-            return product;
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            ut.begin();
+            product.setZeitstempel(new Date());
+            product.setDateipfad("image_not_found.jpg");
+            em.persist(product);
+            ut.commit();
+        } catch (HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException | IllegalStateException | SecurityException ex) {
+            if (em.getTransaction().isActive()) {
+                try {
+                    ut.rollback();
+                } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                    Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return product;
     }
     
     /**
@@ -388,32 +358,22 @@ public class DataBean implements Serializable {
      * @param product the Product with the new data
      * @return true if the Product is found and updated, otherwise false
      */
-    public boolean updateProduct_list(int id, Product product) {
-        if (conn == null) {
-            openConnection();
-        }
-            
+    public boolean updateProduct_list(int id, Produkt product) {
         try {
-            String sql = "UPDATE produkt SET "
-                    + "NAME=?,BESCHREIBUNG=?,KATEGORIE=?,ABRECHNUNGSART=?,PREIS=?,LAGERSTATUS=?,MENGE=? "
-                    + "WHERE P_ID = ?";
-            
-            PreparedStatement preStmt = conn.prepareStatement(sql);
-            preStmt.setString(1, product.getName());
-            preStmt.setString(2, product.getDescription());
-            preStmt.setString(3, product.getCategory().getName());
-            preStmt.setString(4, product.getBillingType().getName());
-            preStmt.setDouble(5, product.getPrice());
-            preStmt.setString(6, product.getStorageStatus().getName());
-            preStmt.setInt(7, product.getAmount());
-            preStmt.setInt(8, id);
-            
-            preStmt.executeUpdate();
-            
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            ut.begin();
+            product.setZeitstempel(new Date());
+            em.merge(product);
+            ut.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException | SystemException | NotSupportedException ex) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                ut.rollback();
+            } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
         }
-        return false;
+        return true;
     }
     
     /**
@@ -423,36 +383,11 @@ public class DataBean implements Serializable {
      * @param id the product which is search for
      * @return the searches product if the search was successfull overwise null
      */
-    public Product findProduct_list(int id) {
-        if (conn == null) {
-            openConnection();
-        }
+    public Produkt findProduct_list(int id) {
+        TypedQuery<Produkt> query = em.createNamedQuery("Produkt.findByPId", Produkt.class);
+        query.setParameter("pId", id);
         
-        try {
-            String sql = "SELECT * FROM produkt WHERE P_ID = ?";
-            
-            PreparedStatement preStmt = conn.prepareStatement(sql);
-            preStmt.setInt(1, id);
-            
-            ResultSet rs = preStmt.executeQuery();
-            
-            if (rs.next()) {
-                return new Product(
-                        rs.getInt("P_ID"),
-                        rs.getString("NAME"),
-                        rs.getString("BESCHREIBUNG"),
-                        findProductCategory(rs.getString("KATEGORIE")),
-                        findBillingType(rs.getString("ABRECHNUNGART")),
-                        rs.getFloat("PREIS"),
-                        rs.getInt("MENGE"),
-                        findStorageStatus(rs.getString("LAGERSTATUS")),
-                        rs.getString("DATEIPFAD")
-                );
-            }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
-        }
-        return null;
+        return query.getSingleResult();
     }
     
     /**
@@ -462,37 +397,23 @@ public class DataBean implements Serializable {
      * @return the added service with the new id
      */
     public Service addService_list(Service service) {
-        if (conn == null) {
-            openConnection();
-        }
-        
         try {
-            String sql = "INSERT INTO service(NAME, BESCHREIBUNG, KATEGORIE, ABRECHNUNGSART, PREIS, LAGERSTATUS, DATEIPFAD) "
-                    + "VALUES (?,?,?,?,?,?,?)";
-            
-            PreparedStatement preStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preStmt.setString(1, service.getName());
-            preStmt.setString(2, service.getDescription());
-            preStmt.setString(3, service.getCategory().getName());
-            preStmt.setString(4, service.getBillingType().getName());
-            preStmt.setDouble(5, service.getPrice());
-            preStmt.setString(6, service.getStorageStatus().getName());
-            preStmt.setString(7, "image_not_found.jpg");
-            
-            preStmt.executeUpdate();
-            
-            int autoincremntId = -1;
-            ResultSet key = preStmt.getGeneratedKeys();
-            if (key.next())
-                autoincremntId = key.getInt(1);
-            
-            service.setId(autoincremntId);
-            
-            return service;
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            ut.begin();
+            service.setZeitstempel(new Date());
+            service.setDateipfad("image_not_found.jpg");
+            em.persist(service);
+            ut.commit();
+        } catch (HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException | IllegalStateException | SecurityException ex) {
+            if (em.getTransaction().isActive()) {
+                try {
+                    ut.rollback();
+                } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                    Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return service;
     }
     
     /**
@@ -503,31 +424,21 @@ public class DataBean implements Serializable {
      * @return true if the service is found and updated, otherwise false
      */
     public boolean updateService_list(int id, Service service) {
-        if (conn == null) {
-            openConnection();
-        }
-            
         try {
-
-            String sql = "UPDATE service SET "
-                    + "NAME=?,BESCHREIBUNG=?,KATEGORIE=?,ABRECHNUNGSART=?,PREIS=?,LAGERSTATUS=? "
-                    + "WHERE S_ID = ?";
-            
-            PreparedStatement preStmt = conn.prepareStatement(sql);
-            preStmt.setString(1, service.getName());
-            preStmt.setString(2, service.getDescription());
-            preStmt.setString(3, service.getCategory().getName());
-            preStmt.setString(4, service.getBillingType().getName());
-            preStmt.setDouble(5, service.getPrice());
-            preStmt.setString(6, service.getStorageStatus().getName());
-            preStmt.setInt(7, id);
-            
-            preStmt.executeUpdate();
-            
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
+            ut.begin();
+            service.setZeitstempel(new Date());
+            em.merge(service);
+            ut.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException | SystemException | NotSupportedException ex) {
+            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                ut.rollback();
+            } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
         }
-        return false;
+        return true;
     }
     
     /**
@@ -538,34 +449,10 @@ public class DataBean implements Serializable {
      * @return the searches service if the search was successfull overwise null
      */
     public Service findService_list(int id) {
-        if (conn == null) {
-            openConnection();
-        }
+        TypedQuery<Service> query = em.createNamedQuery("Service.findBySId", Service.class);
+        query.setParameter("sId", id);
         
-        try {
-            String sql = "SELECT * FROM service WHERE S_ID = ?";
-            
-            PreparedStatement preStmt = conn.prepareStatement(sql);
-            preStmt.setInt(1, id);
-            
-            ResultSet rs = preStmt.executeQuery();
-            
-            if (rs.next()) {
-                return new Service(
-                        rs.getInt("S_ID"),
-                        rs.getString("NAME"),
-                        rs.getString("BESCHREIBUNG"),
-                        findServiceCategory(rs.getString("KATEGORIE")),
-                        findBillingType(rs.getString("ABRECHNUNGSART")),
-                        rs.getFloat("PREIS"),
-                        findStorageStatus(rs.getString("LAGERSTATUS")),
-                        rs.getString("DATEIPFAD")
-                );
-            }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
-        }
-        return null;
+        return query.getSingleResult();
     }
 
     /**
@@ -573,32 +460,16 @@ public class DataBean implements Serializable {
      * 
      * @return the value of product_list
      */
-    public List<Product> getProduct_list() {
-        if (conn == null) {
-            openConnection();
+    public List<Produkt> getProduct_list() {
+        TypedQuery<Produkt> query = em.createNamedQuery("Produkt.findAll", Produkt.class);
+        product_list = query.getResultList();
+        
+        for (Produkt p : product_list) {
+            p.setCategory(findProductCategory(p.getKategorieString()));
+            p.setBillingType(findBillingType(p.getAbrechnungsartString()));
+            p.setStorageStatus(findStorageStatus(p.getLagerstatusString()));
         }
         
-        product_list = new ArrayList<>();
-        
-        try {
-            String sql = "SELECT * FROM produkt";
-            ResultSet rs = conn.createStatement().executeQuery(sql);
-            while (rs.next()) {
-                product_list.add(new Product(
-                        rs.getInt("P_ID"),
-                        rs.getString("NAME"),
-                        rs.getString("BESCHREIBUNG"),
-                        findProductCategory(rs.getString("KATEGORIE")),
-                        findBillingType(rs.getString("ABRECHNUNGSART")),
-                        rs.getFloat("PREIS"),
-                        rs.getInt("MENGE"),
-                        findStorageStatus(rs.getString("LAGERSTATUS")),
-                        rs.getString("DATEIPFAD")
-                ));
-            }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
-        }
         return product_list;
     }
     
@@ -608,33 +479,25 @@ public class DataBean implements Serializable {
      * @return the value of service_list
      */
     public List<Service> getService_list() {
-        if (conn == null) {
-            openConnection();
+        TypedQuery<Service> query = em.createNamedQuery("Service.findAll", Service.class);
+        service_list = query.getResultList();
+        
+        for (Service s : service_list) {
+            s.setCategory(findServiceCategory(s.getKategorieString()));
+            s.setBillingType(findBillingType(s.getAbrechnungsartString()));
+            s.setStorageStatus(findStorageStatus(s.getLagerstatusString()));
         }
         
-        service_list = new ArrayList<>();
-        
-        try {
-            String sql = "SELECT * FROM service";
-            ResultSet rs = conn.createStatement().executeQuery(sql);
-            while (rs.next()) {
-                service_list.add(new Service(
-                        rs.getInt("S_ID"),
-                        rs.getString("NAME"),
-                        rs.getString("BESCHREIBUNG"),
-                        findServiceCategory(rs.getString("KATEGORIE")),
-                        findBillingType(rs.getString("ABRECHNUNGSART")),
-                        rs.getFloat("PREIS"),
-                        findStorageStatus(rs.getString("LAGERSTATUS")),
-                        rs.getString("DATEIPFAD")
-                ));
-            }
-        } catch (SQLException exception) {
-            Logger.getLogger(DataBean.class.getName()).log(Level.SEVERE, null, exception);
-        }
         return service_list;
     }
     
+    /**
+     * Returns the product category, with the name which is given as in categoryString
+     * If the name is not found, the first category in the product_category_list is returned.
+     * 
+     * @param categoryString The name of the product cateogry
+     * @return The category object, with the given name or the first category in the product_category_list
+     */
     public Category findProductCategory(String categoryString) {
         Category category = product_category_list.get(0);
         for (Category c : product_category_list) {
@@ -646,6 +509,13 @@ public class DataBean implements Serializable {
         return category;
     }
     
+    /**
+     * Returns the service category, with the name which is given as in categoryString
+     * If the name is not found, the first category in the service_category_list is returned.
+     * 
+     * @param categoryString The name of the service cateogry
+     * @return The category object, with the given name or the first category in the service_category_list
+     */
     public Category findServiceCategory(String categoryString) {
         Category category = service_category_list.get(0);
         for (Category c : service_category_list) {
@@ -657,6 +527,13 @@ public class DataBean implements Serializable {
         return category;
     }
     
+    /**
+     * Returns the billing type, with the name which is given as in billingTypeString
+     * If the name is not found, the first billing type in the billingType_list is returned.
+     * 
+     * @param billingTypeString The name of the billing type
+     * @return The billing type object, with the given name or the first billing type in the billingType_list
+     */
     public BillingType findBillingType(String billingTypeString) {
         BillingType billingType = billingType_list.get(0);
         for (BillingType b : billingType_list) {
@@ -668,6 +545,13 @@ public class DataBean implements Serializable {
         return billingType;
     }
     
+    /**
+     * Returns the storage status, with the name which is given as in storageStatusString
+     * If the name is not found, the first storage status in the storageStatus_list is returned.
+     * 
+     * @param storageStatusString The name of the storage status
+     * @return The storage status object, with the given name or the first storage status in the storageStatus_list
+     */
     public StorageStatus findStorageStatus(String storageStatusString) {
         StorageStatus storageStatus = storageStatus_list.get(0);
         for (StorageStatus s : storageStatus_list) {

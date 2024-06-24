@@ -9,11 +9,17 @@
             <p:selectOneMenu id="customerView"
                              valueChangeListener="#{customerViewBean.getCustomerView}" >
                 <f:selectItem 
-                    itemLabel="Top-Seller" 
-                    itemValue="topSeller" />
+                    itemLabel="Top-Seller Customer" 
+                    itemValue="topSellerCustomer" />
                 <f:selectItem 
-                    itemLabel="Ladenhüter" 
-                    itemValue="shopKeeper" />
+                    itemLabel="Ladenhüter Customer" 
+                    itemValue="shopKeeperCustomer" />
+                <f:selectItem 
+                    itemLabel="Top-Seller Item" 
+                    itemValue="topSellerItem" />
+                <f:selectItem 
+                    itemLabel="Ladenhüter Item"
+                    itemValue="shopKeeperItem" />
                 <p:ajax event="change"
                         process="@form" 
                         update="@form"/>

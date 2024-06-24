@@ -41,22 +41,22 @@
                             <div class="product-grid-item-top">
                                 <div class="product-category">
                                     <i class="pi pi-tag product-category-icon"/>
-                                    <span>#{product.category.name}</span>
+                                    <span>#{product.kategorie.name}</span>
                                 </div>
                                 <div class="product-grid-badge">
-                                    <span class="product-badge status-#{product.storageStatus.name.toLowerCase().replace(' ', '')}">#{product.storageStatus.name}</span>
+                                    <span class="product-badge status-#{product.lagerstatus.name.toLowerCase().replace(' ', '')}">#{product.lagerstatus.name}</span>
                                 </div>
                             </div>
                             <div class="product-grid-item-content">
-                                <p:graphicImage name="product/#{product.image}"
+                                <p:graphicImage name="product/#{product.dateipfad}"
                                                 library="images"
                                                 class="image-grid"/>
                                 <div class="product-name">#{product.name}</div>
-                                <div class="product-description">#{product.description}</div>
+                                <div class="product-description">#{product.beschreibung}</div>
                             </div>
                             <div class="product-grid-item-bottom">
                                 <div class="product-grid-item-bottom-parts">
-                                    <h:outputText value="#{product.price}" 
+                                    <h:outputText value="#{product.preis}" 
                                                   styleClass="product-price"
                                                   style="justify-content: center">
                                         <f:convertNumber currencySymbol="€" type="currency"/>
@@ -74,7 +74,7 @@
                                                      styleClass="rounded-button product-grid-action-buy"
                                                      update="@all"
                                                      action="#{productViewBean.addProductToBasket(product)}"
-                                                     disabled="#{!(product.amount > 0) or (product.storageStatus.id == 2)}">
+                                                     disabled="#{!(product.menge > 0) or (product.lagerstatus.id == 2)}">
                                     </p:commandButton>
                                 </div>
                             </div>
@@ -83,25 +83,25 @@
 
                     <p:dataViewListItem>
                         <div class="product-list-item">
-                            <p:graphicImage name="product/#{product.image}"
+                            <p:graphicImage name="product/#{product.dateipfad}"
                                             library="images"
                                             class="image-list"/>
                             <div class="product-list-detail">
                                 <div class="product-name">#{product.name}</div>
-                                <div class="product-description">#{product.description}</div>
+                                <div class="product-description">#{product.beschreibung}</div>
                                 <i class="pi pi-tag product-category-icon"/>
                                 <span class="product-category">
-                                    #{product.category.name}
+                                    #{product.kategorie.name}
                                 </span>
                             </div>
                             <div class="product-list-action" >
                                 <div class="product-list-action-info">
-                                    <h:outputText value="#{product.price}"
+                                    <h:outputText value="#{product.preis}"
                                                   styleClass="product-price"
                                                   style="justify-content: end">
                                         <f:convertNumber currencySymbol="€" type="currency"/>
                                     </h:outputText>
-                                    <span class="product-badge status-#{product.storageStatus.name.toLowerCase().replace(' ', '')}">#{product.storageStatus.name}</span>
+                                    <span class="product-badge status-#{product.lagerstatus.name.toLowerCase().replace(' ', '')}">#{product.lagerstatus.name}</span>
                                 </div>
                                 <div class="product-list-action-buy">
                                     <p:commandButton type="button"
@@ -115,7 +115,7 @@
                                                      styleClass="rounded-button"
                                                      update="@all"
                                                      action="#{productViewBean.addProductToBasket(product)}"
-                                                     disabled="#{!(product.amount > 0) or (product.storageStatus.id == 2)}">
+                                                     disabled="#{!(product.menge > 0) or (product.lagerstatus.id == 2)}">
                                     </p:commandButton>
                                 </div>
                             </div>

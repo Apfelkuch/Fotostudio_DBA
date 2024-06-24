@@ -3,8 +3,9 @@ package de.hsbi.fotostudio.controller;
 import de.hsbi.fotostudio.modul.Basket;
 import de.hsbi.fotostudio.modul.BasketItem;
 import de.hsbi.fotostudio.modul.Item;
-import de.hsbi.fotostudio.modul.Product;
+import de.hsbi.fotostudio.modul.Produkt;
 import de.hsbi.fotostudio.modul.Products;
+import de.hsbi.fotostudio.modul.Service;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -90,12 +91,13 @@ public class MenuBean implements Serializable{
         basket.addOrder();
         for (BasketItem basketItem : basket.getBasket()) {
             Item item = basketItem.getItem();
-            if (item instanceof Product) {
-                Product product = (Product) item;
-                product.setAmount(product.getAmount() - basketItem.getCount());
-                if(!products.updateProduct(product.getId(), product)) {
+            if (item instanceof Produkt) {
+                Produkt product = (Produkt) item;
+                product.setMenge(product.getMenge()- basketItem.getCount());
+                if(!products.updateProduct(product.getPId(), product)) {
                     LOG.info("[MenuBean] product could not be updated");
                 }
+            } else if (item instanceof Service) {
             } else {
                 LOG.info("[MenuBean] invalid item in basket");
             }

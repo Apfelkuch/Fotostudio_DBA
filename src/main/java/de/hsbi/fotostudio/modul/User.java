@@ -1,143 +1,169 @@
 package de.hsbi.fotostudio.modul;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+
 /**
- * Represents a User in the photo studio system.
- * Each user has a username, password, email, birthday, and role.
- * The role determines the level of access the user has within the system.
- * Roles: 0 = nobody, 1 = admin, 2 = janis
+ * This class is model for a User
+ *
+ * @version 1.1
+ * @author Janis Wiegräbe
  */
-public class User {
+@Entity
+@Table(name = "user")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findByUId", query = "SELECT u FROM User u WHERE u.uId = :uId"),
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
+    @NamedQuery(name = "User.findByVorname", query = "SELECT u FROM User u WHERE u.vorname = :vorname"),
+    @NamedQuery(name = "User.findByGeburtsdatum", query = "SELECT u FROM User u WHERE u.geburtsdatum = :geburtsdatum")})
+public class User implements Serializable {
 
-    // Attributes
-    private int id;
-    private String username; // User's username
-    private String password; // User's password
-    private String email;    // User's email
-    private Birthday bday; // User's birthday
-    private int role;        // User's role (0 = nobody, 1 = admin, 2 = janis)
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "U_ID")
+    private Integer uId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "NAME")
+    private String name;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "VORNAME")
+    private String vorname;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "GEBURTSDATUM")
+    @Temporal(TemporalType.DATE)
+    private Date geburtsdatum;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkUId")
+    private Collection<Personal> personalCollection;
+    @JoinColumn(name = "FK_A_ID", referencedColumnName = "A_ID")
+    @ManyToOne(optional = false)
+    private Adresse fkAId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkUId")
+    private Collection<Customer> customerCollection;
 
-    // Constructor
-    /**
-     * Default constructor initializes user with default values.
-     * Username: "INVALID"
-     * Password: "0000"
-     * Email: "INVALID@INVALID.com"
-     * Birthday: default Birthday object
-     * Role: nobody (0)
-     */
     public User() {
-        id = -1;
-        username = "INVALID";
-        password = "0000";
-        email = "INVALID@INVALID.com";
-        bday = new Birthday();
-        role = 0;
     }
 
-    /**
-     * Constructor to create a user with specified attributes.
-     * @param pUsername The username of the user
-     * @param pPassword The password of the user
-     * @param pEmail The email of the user
-     * @param pBirthday The birthday of the user
-     * @param pRole The role of the user (0 = nobody, 1 = admin, 2 = janis)
-     */
-    public User(int pId, String pUsername, String pPassword, String pEmail, Birthday pBirthday, int pRole) {
-        id = pId;
-        username = pUsername;
-        password = pPassword;
-        email = pEmail;
-        bday = pBirthday;
-        role = pRole;
+    public User(Integer uId) {
+        this.uId = uId;
     }
 
-    // Getter and Setter Methods
-
-    public int getId() {
-        return id;
+    public User(Integer uId, String name, String vorname, Date geburtsdatum) {
+        this.uId = uId;
+        this.name = name;
+        this.vorname = vorname;
+        this.geburtsdatum = geburtsdatum;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Integer getUId() {
+        return uId;
+    }
+
+    public void setUId(Integer uId) {
+        this.uId = uId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getVorname() {
+        return vorname;
+    }
+
+    public void setVorname(String vorname) {
+        this.vorname = vorname;
+    }
+
+    public Date getGeburtsdatum() {
+        return geburtsdatum;
+    }
+
+    public void setGeburtsdatum(Date geburtsdatum) {
+        this.geburtsdatum = geburtsdatum;
+    }
+
+    @XmlTransient
+    public Collection<Personal> getPersonalCollection() {
+        return personalCollection;
+    }
+
+    public void setPersonalCollection(Collection<Personal> personalCollection) {
+        this.personalCollection = personalCollection;
+    }
+
+    public Adresse getFkAId() {
+        return fkAId;
+    }
+
+    public void setFkAId(Adresse fkAId) {
+        this.fkAId = fkAId;
+    }
+
+    @XmlTransient
+    public Collection<Customer> getCustomerCollection() {
+        return customerCollection;
+    }
+
+    public void setCustomerCollection(Collection<Customer> customerCollection) {
+        this.customerCollection = customerCollection;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (uId != null ? uId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof User)) {
+            return false;
+        }
+        User other = (User) object;
+        if ((this.uId == null && other.uId != null) || (this.uId != null && !this.uId.equals(other.uId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "de.hsbi.fotostudio.modul.User[ uId=" + uId + " ]";
     }
     
-    /**
-     * Get the username of the user.
-     * @return The username of the user
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Set the username of the user.
-     * @param username The username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * Get the role of the user.
-     * @return The role of the user
-     */
-    public int getRole() {
-        return role; 
-    }
-
-    /**
-     * Set the role of the user.
-     * @param role The role to set
-     */
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    /**
-     * Get the password of the user.
-     * @return The password of the user
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Set the password of the user.
-     * @param password The password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * Get the email of the user.
-     * @return The email of the user
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Set the email of the user.
-     * @param email The email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Get the birthday of the user.
-     * @return The birthday of the user
-     */
-    public Birthday getBday() {
-        return bday;
-    }
-
-    /**
-     * Set the birthday of the user.
-     * @param bday The birthday to set
-     */
-    public void setBday(Birthday bday) {
-        this.bday = bday;
-    }
 }

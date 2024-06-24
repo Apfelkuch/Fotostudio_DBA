@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 10. Jun 2024 um 12:23
+-- Erstellungszeit: 23. Jun 2024 um 14:34
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -84,7 +84,9 @@ INSERT INTO `customer` (`C_ID`, `BENUTZERNAME`, `PASSWORT`, `EMAIL`, `ROLLE`, `F
 (10, 'ApertureArtist', '543210', 'aperture@example.com', 0, 5, '2024-06-07 13:49:24', 0),
 (11, 'FotoMaster', '33445', 'fotomaster@domain.com', 0, 18, '2024-06-09 10:33:25', 0),
 (12, 'CamExpert', '77654', 'camexpert@domain.com', 0, 19, '2024-06-09 10:33:25', 0),
-(14, 'Jürgen', 'jürgen', 'jfranz@hsbi.de', 0, 21, '2024-06-10 09:02:34', 0);
+(14, 'Jürgen', 'jürgen', 'jfranz@hsbi.de', 0, 21, '2024-06-10 09:02:34', 0),
+(15, 'mengel', 'mengel', 'engel@gmail.com', 0, 22, '2024-06-10 12:25:45', 0),
+(16, 'Tomtom', 'tomtom', 'tom@tom.de', 0, 23, '2024-06-18 06:22:27', 0);
 
 -- --------------------------------------------------------
 
@@ -164,7 +166,13 @@ INSERT INTO `orders` (`O_ID`, `FK_C_ID`, `ZEITSTEMPEL`, `LIEFERDATUM`) VALUES
 (69, 12, '2022-01-12 16:10:00', '2022-01-25'),
 (70, 14, '2024-06-10 09:03:19', '2024-06-24'),
 (71, 14, '2024-06-10 09:03:25', '2024-06-24'),
-(72, 14, '2024-06-10 09:03:30', '2024-06-24');
+(72, 14, '2024-06-10 09:03:30', '2024-06-24'),
+(73, 15, '2024-06-10 12:26:44', '2024-06-24'),
+(74, 15, '2024-06-10 12:27:11', '2024-06-24'),
+(75, 15, '2024-06-10 12:27:21', '2024-06-24'),
+(76, 15, '2024-06-10 12:27:39', '2024-06-24'),
+(78, 16, '2024-06-18 06:35:24', '2024-07-02'),
+(79, 16, '2024-06-18 09:18:25', '2024-07-02');
 
 -- --------------------------------------------------------
 
@@ -209,7 +217,7 @@ CREATE TABLE `produkt` (
   `PREIS` decimal(10,2) UNSIGNED ZEROFILL NOT NULL DEFAULT 00000000.00,
   `MENGE` bigint(7) UNSIGNED ZEROFILL NOT NULL DEFAULT 0000000,
   `LAGERSTATUS` enum('In Stock','Low Stock','Out of Stock') NOT NULL DEFAULT 'In Stock',
-  `LETZTE ÄNDERUNG` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `ZEITSTEMPEL` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `DATEIPFAD` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
@@ -217,17 +225,18 @@ CREATE TABLE `produkt` (
 -- Daten für Tabelle `produkt`
 --
 
-INSERT INTO `produkt` (`P_ID`, `NAME`, `BESCHREIBUNG`, `KATEGORIE`, `ABRECHNUNGSART`, `PREIS`, `MENGE`, `LAGERSTATUS`, `LETZTE ÄNDERUNG`, `DATEIPFAD`) VALUES
-(1, 'Sony Alpha 7 IV Body', 'Sony Alpha 7 IV:\r\n\r\n- Verbesserte Video Funktionen mit seitlich schwenkbaren Bildschirm und mehr\r\n- Videoauflösung von 4K 60p (Nur im Super-35-mm-Modus)\r\n- Rückwärtig belichteter Exmor R-Vollformatsensor\r\n- Neueste Echtzeit-Tracking-Technologie\r\n- Autofok', 'Equipment', 'Pro Objekt', 00002399.00, 0000100, 'In Stock', '2024-06-06 15:07:32', 'sony_alpha7vi.jpg'),
-(2, 'Sony SEL 24-70mm/2,8 G-Master Version 2', 'Das Sony SEL2470GM2 Vollformat-Objektiv: Ein besonders leichtes Objektiv mit großer Blendenöffnung, höchster Bildqualität und verbesserter Bedienbarkeit für Fotos und Filme. Es bietet fortschrittliches optisches Design, zwei XA-Elemente (extrem asphärisch', 'Equipment', 'Pro Objekt', 00002399.00, 0000004, 'Low Stock', '2024-06-10 09:03:19', 'sony_sel_24-70MM.jpg'),
-(3, 'verbranntes Toastbrot', 'lecker, aber krebserregend ;)', 'Equipment', 'Pro Objekt', 01000000.00, 0000001, 'Low Stock', '2024-06-06 15:17:46', 'toastbrot.jpg'),
+INSERT INTO `produkt` (`P_ID`, `NAME`, `BESCHREIBUNG`, `KATEGORIE`, `ABRECHNUNGSART`, `PREIS`, `MENGE`, `LAGERSTATUS`, `ZEITSTEMPEL`, `DATEIPFAD`) VALUES
+(1, 'Sony Alpha 7 IV Body', 'Sony Alpha 7 IV:\n\n- Verbesserte Video Funktionen mit seitlich schwenkbaren Bildschirm und mehr\n- Videoauflösung von 4K 60p (Nur im Super-35-mm-Modus)\n- Rückwärtig belichteter Exmor R-Vollformatsensor\n- Neueste Echtzeit-Tracking-Technologie\n- Autofok', 'Equipment', 'Pro Objekt', 00002399.00, 0000100, 'In Stock', '2024-06-18 07:03:46', 'sony_alpha7vi.jpg'),
+(2, 'Sony SEL 24-70mm/2,8 G-Master Version 2', 'Das Sony SEL2470GM2 Vollformat-Objektiv: Ein besonders leichtes Objektiv mit großer Blendenöffnung, höchster Bildqualität und verbesserter Bedienbarkeit für Fotos und Filme. Es bietet fortschrittliches optisches Design, zwei XA-Elemente (extrem asphärisch', 'Equipment', 'Pro Objekt', 00002399.00, 0000004, 'In Stock', '2024-06-18 07:04:04', 'sony_sel_24-70MM.jpg'),
+(3, 'verbranntes Toastbrot', 'lecker, aber krebserregend ;)', 'Equipment', 'Pro Objekt', 01000000.00, 0000000, 'Low Stock', '2024-06-10 12:26:44', 'toastbrot.jpg'),
 (4, 'Canon EOS R5 Body', 'Canon EOS R5\r\n\r\n- 5 Achsen integrierter Bildstabilisator IBIS\r\n- 4K/120p RAW-Video im Vollformat\r\n- 8K RAW-Video im Vollformat mit interner Aufzeichnung\r\n- Volle kreative Freiheit bei deinen Filmaufnahmen\r\n- Zwei Speicherkarten-Steckplätze\r\n', 'Equipment', 'Pro Objekt', 00003499.00, 0000250, 'In Stock', '2024-06-06 15:20:48', 'canon_eos_r5_body.jpg'),
 (5, 'Canon RF 1200mm F8L IS USM', 'Canon RF 1200mm F8L IS USM - Leichtes Superteleobjektiv\r\n\r\n- Hohe Lichtstärke\r\n- 4-Stufen-Bildstabilisator\r\n- 9-Lamellen-Irisblende\r\n- Konfigurierbare Bedienelemente\r\n- Hochwertige Vergütung\r\n- Ausgewogene Gewichtsverteilung\r\n- Blende in 1/8 Stufen\r\n- Vie', 'Equipment', 'Pro Objekt', 00023449.00, 0000000, 'Out of Stock', '2024-06-06 15:25:18', 'canon_rf_1200mm_f8l.jpg'),
-(6, 'Sachtler SAC3012 System Video 30 Kohlefaser mit Stativkopf, EFP 2 MCF-Stativ, Mittelspinne und Abdeckung ', 'Sachtler SAC3012 System Video 30 Kohlefaser mit Stativkopf, EFP 2 MCF-Stativ, Mittelspinne und Abdeckung\r\n\r\nOb Du im Studio oder vor Ort arbeitest, Du brauchst einen Stativkopf, mit dem Du schnell und effektiv arbeiten kannst. Der Sachtler Video 30 HD ist', 'Equipment', 'Pro Objekt', 00013142.89, 0000033, 'In Stock', '2024-06-06 15:29:14', 'sachtler_stativ.jpg'),
+(6, 'Sachtler SAC3012 System Video 30 Kohlefaser mit Stativkopf, EFP 2 MCF-Stativ, Mittelspinne und Abdeckung ', 'Sachtler SAC3012 System Video 30 Kohlefaser mit Stativkopf, EFP 2 MCF-Stativ, Mittelspinne und Abdeckung\r\n\r\nOb Du im Studio oder vor Ort arbeitest, Du brauchst einen Stativkopf, mit dem Du schnell und effektiv arbeiten kannst. Der Sachtler Video 30 HD ist', 'Equipment', 'Pro Objekt', 00013142.89, 0000031, 'In Stock', '2024-06-18 06:36:24', 'sachtler_stativ.jpg'),
 (7, 'Canon Speedlite EL-10 ', 'Canon Speedlite EL-10\r\n\r\nDas Speedlite EL-10 bietet eine Wiederaufladezeit von nur ca. 1,5 Sekunden und lässt sich nahtlos in verknüpfte benutzerdefinierte Modi und eine Blitzfernsteuerung integrieren. Dank der Kompatibilität mit dem Multifunktions-Zubehö', 'Equipment', 'Pro Objekt', 00000299.00, 0000345, 'Out of Stock', '2024-06-06 15:44:50', 'canon_speedlite_el-10.jpg'),
 (8, 'Sony Alpha 9 III mit FE 300mm F2.8 GM OSS G-Master ', '\r\nSony Alpha 9 III mit FE 300mm F2.8 GM OSS G-Master\r\n\r\nDie Alpha 9 III verfügt über einen neu entwickelten Exmor RS™ Bildsensor - den weltweit ersten Stacked 24,6-Megapixel-CMOS-Vollformat-Sensor mit Global Shutter-System. Eine Revolution im Kameradesign', 'Equipment', 'Pro Objekt', 00012499.00, 0000009, 'Low Stock', '2024-06-06 15:34:50', 'sony_alpha_9_III_mit_fe_300MM.jpg'),
 (9, 'Hoppstar Expert Laurel ', 'Hoppstar Expert Laurel\r\n\r\nDie Hoppstar Expert ist die ideale Kinderkamera mit allen Funktionen, die man im täglichen Leben braucht. Mit zusätzlicher Selfie-Kamera auf der Rückseite, 16 GB Speicherplatz für bis zu 8.000 Fotos und einer Videokamera Funktion', 'Equipment', 'Pro Person', 00000089.90, 0004321, 'In Stock', '2024-06-06 15:37:19', 'hoppstar_expert_laurel.jpg'),
-(10, 'B+W Vario-Filter ND 82mm MRC XS-Pro Digital Nano ', 'Variabler Graufilter ND Vario\r\n\r\nFlexible Lichtkontrolle ohne Filterwechsel', 'Equipment', 'Pro Objekt', 00000201.05, 0000555, 'In Stock', '2024-06-06 15:42:11', 'nd_filter.jpg');
+(10, 'B+W Vario-Filter ND 82mm MRC XS-Pro Digital Nano ', 'Variabler Graufilter ND Vario\r\n\r\nFlexible Lichtkontrolle ohne Filterwechsel', 'Equipment', 'Pro Objekt', 00000201.05, 0000555, 'In Stock', '2024-06-06 15:42:11', 'nd_filter.jpg'),
+(11, 'Test', 'Test Produkt', 'Equipment', 'Pro Objekt', 00000014.00, 0000007, 'Out of Stock', '2024-06-18 06:48:43', 'image_not_found.jpg');
 
 -- --------------------------------------------------------
 
@@ -258,7 +267,11 @@ INSERT INTO `produktdetail` (`PD_ID`, `FK_O_ID`, `FK_P_ID`, `MENGE`) VALUES
 (9, 6, 1, 0000001),
 (10, 19, 8, 0000004),
 (11, 70, 2, 0000005),
-(12, 72, 3, 0000001);
+(12, 72, 3, 0000001),
+(13, 73, 3, 0000001),
+(14, 73, 6, 0000033),
+(15, 76, 8, 0000009),
+(17, 78, 6, 0000001);
 
 -- --------------------------------------------------------
 
@@ -283,7 +296,7 @@ CREATE TABLE `service` (
 --
 
 INSERT INTO `service` (`S_ID`, `NAME`, `BESCHREIBUNG`, `KATEGORIE`, `ABRECHNUNGSART`, `PREIS`, `LAGERSTATUS`, `ZEITSTEMPEL`, `DATEIPFAD`) VALUES
-(1, 'CEWE FOTOBUCH Groß ', '- Praktisches Hochformat: ca. 21 x - 28 cm | ca. A4 \r\n- Besonders beliebt als Reise- oder Jahrbuch\r\n- Hochwertige Veredelung mit fühlbaren Effekten\r\n- Passende Geschenkbox für dieses Format erhältlich\r\n- FSC®-zertifiziertes Fotoprodukt \r\n\r\n', 'Innerhaus', 'Pro Objekt', 00000019.95, 'In Stock', '2024-06-06 16:02:49', 'cewe_fotobuch.jpg'),
+(1, 'CEWE FOTOBUCH Groß ', '- Praktisches Hochformat: ca. 21 x - 28 cm | ca. A4 \n- Besonders beliebt als Reise- oder Jahrbuch\n- Hochwertige Veredelung mit fühlbaren Effekten\n- Passende Geschenkbox für dieses Format erhältlich\n- FSC®-zertifiziertes Fotoprodukt \n\n', 'Innerhaus', 'Pro Objekt', 00000019.95, 'In Stock', '2024-06-18 07:02:17', 'cewe_fotobuch.jpg'),
 (2, 'CEWE FOTOBUCH Klein', '- Praktisches Hochformat: ca. 21 x - 28 cm | ca. A5 \r\n- Besonders beliebt als Reise- oder Jahrbuch\r\n- Hochwertige Veredelung mit fühlbaren Effekten\r\n- Passende Geschenkbox für dieses Format erhältlich\r\n- FSC®-zertifiziertes Fotoprodukt \r\n\r\n', 'Innerhaus', 'Pro Objekt', 00000014.95, 'In Stock', '2024-06-06 16:02:49', 'cewe_fotobuch.jpg'),
 (3, 'Color-Kleinbildfilme', '- Filmentwicklung erfolgt immer in Verbindung mit Fotoabzügen\r\n- Fotos im Format 9 x 13 cm bis 13 x 18 cm\r\n- Fotoabzüge in Hochglanz und Matt - Digitalisierung auf Foto-CD möglich\r\n- Digitale Belichtung der Fotos mit 300 dpi ', 'Alles', 'Pro Bild', 00000002.30, 'In Stock', '2024-06-06 16:11:02', 'analogbilder_entwickeln.jpg'),
 (4, 'Schwarz/Weiß-Kleinbildfilme\r\n', '- Fotos im Format 10x15 und 13x18\r\n- Fotoabzüge in Hochglanz\r\n- Digitalisierung auf dm-Foto-CD möglich ', 'Innerhaus', 'Pro Bild', 00000001.75, 'Low Stock', '2024-06-06 16:11:02', 'analogbilder_entwickeln.jpg'),
@@ -292,7 +305,8 @@ INSERT INTO `service` (`S_ID`, `NAME`, `BESCHREIBUNG`, `KATEGORIE`, `ABRECHNUNGS
 (7, 'Videografie', 'Videografie made in Bielefeld.\r\n\r\nBewegte Bilder faszinieren uns: Egal, ob Du einen Videografen für Deine Hochzeit suchst oder einen Film für YouTube drehen willst. Vielleicht möchtest Du auch einen Veranstaltungsmitschnitt, Imagefilm oder eine Diashow vo', 'Außerhaus', 'Pro Person', 00000060.00, 'In Stock', '2024-06-06 16:17:42', 'videografie.jpg'),
 (8, '30 Minuten Fotoshooting', '- Inkl. 1 Bild als Ausdruck und Datei\r\n- Wähle dein Lieblingsfoto aus ca. 80 verschiedenen Aufnahmen aus\r\n', 'Innerhaus', 'Pro Person', 00000049.99, 'In Stock', '2024-06-06 16:24:47', 'porträtfoto.jpg'),
 (9, '60 Minuten Fotoshooting', '- Inkl. 1 Bild aus Ausdruck und Datei\r\n- Wähle dein Lieblingsfoto aus ca. 120 verschiedenen Aufnahmen aus\r\n', 'Innerhaus', 'Pro Person', 00000099.99, 'In Stock', '2024-06-06 16:24:47', 'porträtfoto.jpg'),
-(10, 'Familienfotografie', '„Unsere wertvollsten Erinnerungen sind niemals inszeniert oder\r\nerzwungen“', 'Außerhaus', 'Pro Familie', 00000025.00, 'In Stock', '2024-06-06 16:31:13', 'familienbilder.jpg');
+(10, 'Familienfotografie', '„Unsere wertvollsten Erinnerungen sind niemals inszeniert oder\r\nerzwungen“', 'Außerhaus', 'Pro Familie', 00000025.00, 'In Stock', '2024-06-06 16:31:13', 'familienbilder.jpg'),
+(11, 'Test', 'Test Service', 'Innerhaus', 'Pro Objekt', 00000017.00, 'Low Stock', '2024-06-18 06:47:16', 'image_not_found.jpg');
 
 -- --------------------------------------------------------
 
@@ -321,7 +335,9 @@ INSERT INTO `servicedetail` (`SD_ID`, `FK_O_ID`, `FK_S_ID`, `MENGE`) VALUES
 (7, 5, 1, 0000002),
 (8, 20, 7, 0000004),
 (9, 1, 3, 0000010),
-(10, 17, 10, 0000001);
+(10, 17, 10, 0000001),
+(11, 78, 5, 0000001),
+(12, 79, 6, 0000001);
 
 -- --------------------------------------------------------
 
@@ -377,25 +393,27 @@ INSERT INTO `user` (`U_ID`, `NAME`, `VORNAME`, `GEBURTSDATUM`, `FK_A_ID`) VALUES
 (16, 'NONE', 'NONE', '1899-12-12', 2),
 (18, 'Streber', 'Tina', '1994-10-26', 5),
 (19, 'Kicherer', 'Fritz', '1993-02-14', 2),
-(21, 'Jürgen', 'Hans', '2020-06-20', 5);
+(21, 'Jürgen', 'Hans', '2020-06-20', 5),
+(22, 'mengel', 'Hans', '2005-03-02', 5),
+(23, 'Tomtom', 'Hans', '2020-06-20', 5);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `zubehör`
+-- Tabellenstruktur für Tabelle `zubehoer`
 --
 
-CREATE TABLE `zubehör` (
+CREATE TABLE `zubehoer` (
   `Z_ID` int(11) NOT NULL,
   `ARTIKELNAME` varchar(255) CHARACTER SET utf16 COLLATE utf16_german2_ci NOT NULL,
   `ARTIKELBESCHREIBUNG` text CHARACTER SET utf16 COLLATE utf16_german2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci;
 
 --
--- Daten für Tabelle `zubehör`
+-- Daten für Tabelle `zubehoer`
 --
 
-INSERT INTO `zubehör` (`Z_ID`, `ARTIKELNAME`, `ARTIKELBESCHREIBUNG`) VALUES
+INSERT INTO `zubehoer` (`Z_ID`, `ARTIKELNAME`, `ARTIKELBESCHREIBUNG`) VALUES
 (1, 'Sony USB-C Ladekabel', 'Das Sony USB-C Ladekabel ist ideal zum schnellen und effizienten Aufladen Ihrer Sony Kameras und anderer Geräte. Robustes Design für dauerhafte Nutzung.'),
 (2, 'Canon USB-C Ladekabel', 'Das Canon USB-C Ladekabel ermöglicht schnelles Aufladen und Datentransfer für Canon Kameras. Hohe Qualität und Zuverlässigkeit.'),
 (3, 'Sony NP-FZ100 Akku', 'Der Sony NP-FZ100 ist ein wiederaufladbarer Akku für Sony Alpha Kameras, der lange Laufzeiten und zuverlässige Leistung bietet.'),
@@ -491,9 +509,9 @@ ALTER TABLE `user`
   ADD KEY `UFK_G_ID` (`GEBURTSDATUM`);
 
 --
--- Indizes für die Tabelle `zubehör`
+-- Indizes für die Tabelle `zubehoer`
 --
-ALTER TABLE `zubehör`
+ALTER TABLE `zubehoer`
   ADD PRIMARY KEY (`Z_ID`);
 
 --
@@ -510,7 +528,7 @@ ALTER TABLE `adresse`
 -- AUTO_INCREMENT für Tabelle `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `C_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT für Tabelle `lieferumfang`
@@ -522,7 +540,7 @@ ALTER TABLE `lieferumfang`
 -- AUTO_INCREMENT für Tabelle `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `O_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT für Tabelle `personal`
@@ -534,25 +552,25 @@ ALTER TABLE `personal`
 -- AUTO_INCREMENT für Tabelle `produkt`
 --
 ALTER TABLE `produkt`
-  MODIFY `P_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `P_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT für Tabelle `produktdetail`
 --
 ALTER TABLE `produktdetail`
-  MODIFY `PD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `PD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT für Tabelle `service`
 --
 ALTER TABLE `service`
-  MODIFY `S_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `S_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT für Tabelle `servicedetail`
 --
 ALTER TABLE `servicedetail`
-  MODIFY `SD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `SD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT für Tabelle `servicepersonal`
@@ -564,12 +582,12 @@ ALTER TABLE `servicepersonal`
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT für Tabelle `zubehör`
+-- AUTO_INCREMENT für Tabelle `zubehoer`
 --
-ALTER TABLE `zubehör`
+ALTER TABLE `zubehoer`
   MODIFY `Z_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
@@ -587,7 +605,7 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `lieferumfang`
   ADD CONSTRAINT `LFK_P_ID` FOREIGN KEY (`FK_P_ID`) REFERENCES `produkt` (`P_ID`),
-  ADD CONSTRAINT `LFK_Z_ID` FOREIGN KEY (`FK_Z_ID`) REFERENCES `zubehör` (`Z_ID`);
+  ADD CONSTRAINT `LFK_Z_ID` FOREIGN KEY (`FK_Z_ID`) REFERENCES `zubehoer` (`Z_ID`);
 
 --
 -- Constraints der Tabelle `orders`

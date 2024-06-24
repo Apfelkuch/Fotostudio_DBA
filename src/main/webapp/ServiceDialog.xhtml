@@ -35,7 +35,7 @@
                                  cols="30"
                                  autoResize="false"
                                  id="DESCRIPTION" 
-                                 value="#{serviceDialogBean.currentService.description}"
+                                 value="#{serviceDialogBean.currentService.beschreibung}"
                                  readonly="#{!serviceDialogBean.editing}"
                                  style="width: 100%"
                                  placeholder="Servicebeschreibung" >
@@ -45,15 +45,14 @@
                 </p:inputTextarea>
                 <h:outputText value="Kategorie:" />
                 <p:selectOneMenu id="CATEGORY"
-                                 value="#{serviceDialogBean.currentService.category}" 
+                                 value="#{serviceDialogBean.currentService.kategorieff}" 
                                  valueChangeListener="#{serviceDialogBean.getCategory}"
-                                 editable="#{serviceDialogBean.editing}"
                                  converter="serviceCategoryConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
-                        itemLabel="#{serviceDialogBean.currentService.category.name}" 
-                        itemValue="#{serviceDialogBean.currentService.category}" 
+                        itemLabel="#{serviceDialogBean.currentService.kategorieff.name}" 
+                        itemValue="#{serviceDialogBean.currentService.kategorieff}" 
                         noSelectionOption="true" />
                     <f:selectItems 
                         value="#{serviceDialogBean.category_list}" 
@@ -67,28 +66,28 @@
                 </p:selectOneMenu>
                 <h:outputText value="Abrechnungsart:" />
                 <p:selectOneMenu id="BILLINGTYPE"
-                                 value="#{serviceDialogBean.currentService.billingType.name}" 
+                                 value="#{serviceDialogBean.currentService.abrechnungsartff}" 
                                  valueChangeListener="#{serviceDialogBean.getBillingType}"
-                                 editable="#{serviceDialogBean.editing}"
+                                 converter="billingTypeConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
-                        itemLabel="#{serviceDialogBean.currentService.billingType.name}" 
-                        itemValue="#{serviceDialogBean.currentService.billingType.name}" 
+                        itemLabel="#{serviceDialogBean.currentService.abrechnungsartff.name}" 
+                        itemValue="#{serviceDialogBean.currentService.abrechnungsartff}" 
                         noSelectionOption="true"/>
                     <f:selectItems 
                         value="#{serviceDialogBean.billingType_list}" 
                         itemDisabled="#{!productDialogBean.editing}"
                         var="billingType" 
                         itemLabel="#{billingType.name}" 
-                        itemValue="#{billingType.name}"/>
+                        itemValue="#{billingType}"/>
                     <p:ajax event="change"
                             process="@this" 
                             update="growl"/>
                 </p:selectOneMenu>
                 <h:outputText value="Preis:" />
                 <p:inputNumber id="PRICE" 
-                             value="#{serviceDialogBean.currentService.price}"
+                             value="#{serviceDialogBean.currentService.preis}"
                              readonly="#{!serviceDialogBean.editing}" 
                              style="width: 100%"
                              placeholder="0,0" 
@@ -99,15 +98,14 @@
                 </p:inputNumber>
                 <h:outputText value="Lagerstatus:" />
                 <p:selectOneMenu id="STORAGESTATUS"
-                                 value="#{serviceDialogBean.currentService.storageStatus}" 
+                                 value="#{serviceDialogBean.currentService.lagerstatusff}" 
                                  valueChangeListener="#{serviceDialogBean.getStorageStatus}"
-                                 editable="#{serviceDialogBean.editing}"
                                  converter="storageStatusConverter"
                                  hideNoSelectionOption="true"
                                  style="width: 100%" >
                     <f:selectItem 
-                        itemLabel="#{serviceDialogBean.currentService.storageStatus.name}" 
-                        itemValue="#{serviceDialogBean.currentService.storageStatus}" 
+                        itemLabel="#{serviceDialogBean.currentService.lagerstatusff.name}" 
+                        itemValue="#{serviceDialogBean.currentService.lagerstatusff}" 
                         noSelectionOption="true"/>
                     <f:selectItems 
                         value="#{serviceDialogBean.storageStatus_list}" 

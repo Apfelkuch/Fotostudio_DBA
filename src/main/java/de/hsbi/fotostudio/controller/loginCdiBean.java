@@ -1,6 +1,6 @@
 package de.hsbi.fotostudio.controller;
 
-import de.hsbi.fotostudio.modul.User;
+import de.hsbi.fotostudio.modul.Customer;
 import de.hsbi.fotostudio.util.DataBean;
 import de.hsbi.fotostudio.util.Util;
 import jakarta.inject.Named;
@@ -36,16 +36,16 @@ public class loginCdiBean implements Serializable {
      */
     public void loginProject() {
         // Attempt to authenticate the user
-        User currentUser = dataBean.login(uname, password);
+        Customer currentUser = dataBean.login(uname, password);
         // Check if authentication was successful and data is valid
         if (currentUser != null && nameDataOk == true && pwdDataOk == true) {
 
             // Get Http Session and store user details
             HttpSession session = Util.getSession();
-            session.setAttribute("customerId", currentUser.getId());
+            session.setAttribute("customerId", currentUser.getCId());
             session.setAttribute("username", uname);
             session.setAttribute("userid", session.getId());
-            session.setAttribute("userrole", currentUser.getRole());
+            session.setAttribute("userrole", currentUser.getRolle());
             session.setAttribute("loggedin", true);
             // Display a success message
             FacesContext.getCurrentInstance().addMessage(
