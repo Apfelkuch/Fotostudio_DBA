@@ -14,9 +14,9 @@ import org.primefaces.PrimeFaces;
 
 /**
  * Managed Bean for user registration. This bean handles user input, validates
- * it, and interacts with the LoginHandler to register new users.
- *
- * @author Frederick
+ * it, and interacts with the DataBean to register new users.
+ * @version  0.1
+ * @author Frederick Zahn
  */
 @Named(value = "registerCdiBean")
 @ViewScoped

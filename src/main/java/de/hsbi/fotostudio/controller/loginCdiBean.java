@@ -14,8 +14,10 @@ import java.io.Serializable;
 import org.primefaces.PrimeFaces;
 
 /**
- *
- * @author Frederick
+ * Managed Bean for user login. This bean handles user input, validates
+ * it, and interacts with the DataBean to login the users.
+ * @version 0.1
+ * @author Frederick Zahn
  */
 @Named(value = "loginCdiBean")
 @SessionScoped

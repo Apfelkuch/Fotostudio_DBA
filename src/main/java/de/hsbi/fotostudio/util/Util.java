@@ -6,63 +6,78 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Utility class providing methods for handling user sessions and messages in the photo studio application.
+ * Utility class providing methods for handling user sessions and messages in
+ * the photo studio application.
+ * @version 0.1
+ * @author Frederick
  */
 public class Util {
+
     /**
      * Retrieves the current HTTP session.
+     *
      * @return The current HTTP session
      */
     public static HttpSession getSession() {
         return (HttpSession) FacesContext
-                                .getCurrentInstance()
-                                .getExternalContext()
-                                .getSession(false);
+                .getCurrentInstance()
+                .getExternalContext()
+                .getSession(false);
     }
 
     /**
      * Retrieves the current HTTP servlet request.
+     *
      * @return The current HTTP servlet request
      */
     public static HttpServletRequest getRequest() {
         return (HttpServletRequest) FacesContext
-                                        .getCurrentInstance()
-                                        .getExternalContext()
-                                        .getRequest();
+                .getCurrentInstance()
+                .getExternalContext()
+                .getRequest();
     }
 
     /**
      * Retrieves the username of the current user from the session.
+     *
      * @return The username of the current user
      */
     public static String getUserName() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                                                          .getExternalContext()
-                                                          .getSession(false);
+                .getExternalContext()
+                .getSession(false);
         return session.getAttribute("username").toString();
     }
-    
+
+    /**
+     * Retrieves the CustomerId of the current user from the session.
+     *
+     * @return The CustomerId of the current user
+     */
     public static int getCustomerId() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                                                          .getExternalContext()
-                                                          .getSession(false);
+                .getExternalContext()
+                .getSession(false);
         return (int) session.getAttribute("customerId");
     }
 
     /**
      * Retrieves the user ID of the current user from the session.
+     *
      * @return The user ID of the current user
      */
     public static String getUserId() {
         HttpSession session = getSession();
-        if (session != null)
+        if (session != null) {
             return (String) session.getAttribute("userid");
-        else
+        } else {
             return null;
+        }
     }
-    
+
     /**
      * Retrieves the role of the current user from the session.
+     *
      * @return The role of the current user
      */
     public static int getUserRole() {
@@ -76,9 +91,10 @@ public class Util {
         }
         return -1;
     }
-    
+
     /**
      * Checks if a user is logged in.
+     *
      * @return True if a user is logged in, otherwise false
      */
     public static boolean isLoggedin() {
@@ -92,9 +108,10 @@ public class Util {
         }
         return false;
     }
-    
+
     /**
      * Adds a Faces message to the context.
+     *
      * @param summary The summary of the message
      * @param detail The detail of the message
      */
@@ -102,9 +119,10 @@ public class Util {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     /**
      * Adds a Faces message to a specific component.
+     *
      * @param uicomp The ID of the UI component
      * @param severity The severity of the message (info, error, warn)
      * @param summary The summary of the message
@@ -114,27 +132,27 @@ public class Util {
         switch (severity) {
             case "info":
                 FacesContext.getCurrentInstance().addMessage(
-                            uicomp,
-                            new FacesMessage(
-                                    FacesMessage.SEVERITY_INFO,
-                                    summary,
-                                    detail));
+                        uicomp,
+                        new FacesMessage(
+                                FacesMessage.SEVERITY_INFO,
+                                summary,
+                                detail));
                 break;
             case "error":
                 FacesContext.getCurrentInstance().addMessage(
-                            uicomp,
-                            new FacesMessage(
-                                    FacesMessage.SEVERITY_ERROR,
-                                    summary,
-                                    detail));
+                        uicomp,
+                        new FacesMessage(
+                                FacesMessage.SEVERITY_ERROR,
+                                summary,
+                                detail));
                 break;
             case "warn":
                 FacesContext.getCurrentInstance().addMessage(
-                            uicomp,
-                            new FacesMessage(
-                                    FacesMessage.SEVERITY_WARN,
-                                    summary,
-                                    detail));
+                        uicomp,
+                        new FacesMessage(
+                                FacesMessage.SEVERITY_WARN,
+                                summary,
+                                detail));
                 break;
         }
     }

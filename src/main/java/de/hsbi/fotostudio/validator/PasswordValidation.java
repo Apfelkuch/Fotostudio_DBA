@@ -8,6 +8,11 @@ import jakarta.faces.validator.FacesValidator;
 import jakarta.faces.validator.Validator;
 import java.io.Serializable;
 
+/**
+ * This class is the Validator for the password
+ * @version 0.1
+ * @author Frederick Zahn
+ */
 @FacesValidator(value = "passwordValidation")
 @SessionScoped
 public class PasswordValidation implements Validator, Serializable {
